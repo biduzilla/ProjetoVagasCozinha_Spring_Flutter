@@ -19,21 +19,26 @@ public class Curriculum {
     @Column(name = "id")
     private Integer id;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "nome")
     private String nome;
 
     @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "emailContatoCV")
+    @Column(name = "emailcontatocv")
     private String emailContatoCV;
 
-    @Column(name = "Sobre")
+    @Column(name = "sobre")
     private String Sobre;
 
-    
-    private List<Formacao> formacoes;
-    private String xp;
+    @OneToMany(mappedBy = "curriculum")
+    private List<Experiencia> experiencias;
+
+    @OneToMany(mappedBy = "curriculum")
     private List<Qualificacao> qualificacoes;
 
 }

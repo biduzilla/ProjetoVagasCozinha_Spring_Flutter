@@ -19,8 +19,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepositorio userRepositorio;
 
     @Override
-    public User salvarUser(User user) {
-        return userRepositorio.save(user);
+    public UserDto salvarUser(User user) {
+        userRepositorio.save(user);
+        UserDto userDto = new UserDto();
+        userDto.setEmail(user.getEmail());
+        userDto.setIdUser(user.getId());
+        return userDto;
     }
 
     @Override
@@ -30,7 +34,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUser() {
-        return userRepositorio.findAll();
+    public List<UserDto> getUser() {
+
+        List<UserDto> userDto = [];
+        return userDto;
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        userRepositorio.findById(id)
+                .map(user -> {
+                    userRepositorio.delete(user);
+                    return user;
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+    }
+
+    @Override
+    public void updateUser(Integer id, User user) {
+        userRepositorio.findById(id)
+                .map(userExistente -> {
+                    user.setId(userExistente.getId());
+                    userRepositorio.save(user);
+                    return userExistente;
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 }

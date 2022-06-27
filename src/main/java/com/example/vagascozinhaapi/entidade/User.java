@@ -25,4 +25,7 @@ public class User {
     @JsonIgnore
     @Column(name = "password", length = 100)
     private String password;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Curriculum curriculum;
 }

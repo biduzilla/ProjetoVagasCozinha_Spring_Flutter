@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface UserService {
 
-    User salvarUser(User user);
+    UserDto salvarUser(User user);
     User getUserById(Integer id);
-    List<User> getUser();
+    List<UserDto> getUser();
+    void deleteUser(Integer id);
+    void updateUser(Integer id, User user);
 }

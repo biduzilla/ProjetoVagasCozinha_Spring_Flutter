@@ -2,13 +2,10 @@ package com.example.vagascozinhaapi.controller;
 
 import com.example.vagascozinhaapi.dto.UserDto;
 import com.example.vagascozinhaapi.entidade.User;
-import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -32,7 +29,19 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User salvarUser(@RequestBody User user){
+    public UserDto salvarUser(@RequestBody User user){
         return userService.salvarUser(user);
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUser(@PathVariable Integer id, @RequestBody User user){
+        userService.updateUser(id, user);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Integer id){
+        userService.deleteUser(id);
     }
 }

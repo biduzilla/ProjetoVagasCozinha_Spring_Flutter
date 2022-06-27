@@ -10,18 +10,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tab_qualificacao")
-public class Qualificacao {
+@Table(name = "tab_experiencia")
+public class Experiencia {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "qualificacao")
-    private String qualificacao;
+    @Column(name = "experiencia")
+    private String experiencia;
 
-    @ManyToOne(targetEntity = Curriculum.class)
-    @JoinColumn(name = "qualificacao_curriculum_id")
-    private Curriculum curriculum;
+   @ManyToOne(targetEntity = Curriculum.class)
+   @JoinColumn(name = "experiencia_curriculum_id")
+   private Curriculum curriculum;
 }
