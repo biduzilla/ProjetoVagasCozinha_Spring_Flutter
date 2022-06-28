@@ -1,6 +1,7 @@
 package com.example.vagascozinhaapi.controller;
 
 import com.example.vagascozinhaapi.dto.UserDto;
+import com.example.vagascozinhaapi.dto.UserDtoId;
 import com.example.vagascozinhaapi.entidade.User;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("{id}")
-    public User getUserById(@PathVariable Integer id) {
+    public UserDto getUserById(@PathVariable Integer id) {
             return userService.getUserById(id);
     }
 
     @GetMapping()
-    public List<User> getUser() {
-        return userService.getUser();
+    public List<UserDtoId> getUserListId() {
+        return userService.getUserListId();
     }
 
 

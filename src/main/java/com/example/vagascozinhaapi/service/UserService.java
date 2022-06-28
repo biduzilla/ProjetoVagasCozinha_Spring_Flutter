@@ -1,6 +1,7 @@
 package com.example.vagascozinhaapi.service;
 
 import com.example.vagascozinhaapi.dto.UserDto;
+import com.example.vagascozinhaapi.dto.UserDtoId;
 import com.example.vagascozinhaapi.entidade.User;
 
 import java.util.List;
@@ -8,8 +9,9 @@ import java.util.List;
 public interface UserService {
 
     UserDto salvarUser(User user);
-    User getUserById(Integer id);
-    List<UserDto> getUser();
+    UserDto getUserById(Integer id);
+    List<User> getUser();
     void deleteUser(Integer id);
     void updateUser(Integer id, User user);
+    List<UserDtoId> getUserListId();
 }
