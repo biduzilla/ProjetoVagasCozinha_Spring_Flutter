@@ -47,8 +47,51 @@ public class CurriculumServiceImpl implements CurriculumService {
 
 
     @Override
-    public Curriculum getCv(Integer id) {
+    public CurriculumDto getCv(Integer id) {
         User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
-        return curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
+        if(user.getCurriculum() == null) {
+            throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
+        }
+        Curriculum cv =  curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
+
+        CurriculumDto curriculumDto = new CurriculumDto();
+        curriculumDto.setNome(cv.getNome());
+        curriculumDto.setEmailContatoCV(cv.getEmailContatoCV());
+        curriculumDto.setTelefone(cv.getTelefone());
+        curriculumDto.setSobre(cv.getSobre());
+        curriculumDto.setExperiencias(cv.getExperiencias());
+        curriculumDto.setQualificacoes(cv.getQualificacoes());
+        return curriculumDto;
+    }
+
+    @Override
+    public void updateCv(Integer id, CurriculumDto curriculumDto) {
+        User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+
+        if(user.getCurriculum() == null) {
+            throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
+        }
+
+        Curriculum cv = curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
+        cv.setNome(curriculumDto.getNome());
+        cv.setEmailContatoCV(curriculumDto.getEmailContatoCV());
+        cv.setTelefone(curriculumDto.getTelefone());
+        cv.setSobre(curriculumDto.getSobre());
+        cv.setExperiencias(curriculumDto.getExperiencias());
+        cv.setQualificacoes(curriculumDto.getQualificacoes());
+        curriculumRepository.save(cv);
+    }
+
+    @Override
+    public void deleteCv(Integer id) {
+        User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+        curriculumRepository.findById(user.getCurriculum().getId())
+                .map(curriculum -> {
+                    curriculumRepository.delete(curriculum);
+                    return curriculum;
+                })
+                .orElseThrow(CvNaoEncontrado::new);
+        user.setCv(false);
+        userRepositorio.save(user);
     }
 }
