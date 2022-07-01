@@ -8,11 +8,9 @@ import com.example.vagascozinhaapi.entidade.User;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,10 +25,13 @@ public class UserServiceImpl implements UserService {
     public UserDto salvarUser(User user) {
 
         if (!userRepositorio.existsByEmail(user.getEmail())){
+            user.setCv(false);
+
             userRepositorio.save(user);
             UserDto userDto = new UserDto();
             userDto.setEmail(user.getEmail());
             userDto.setIdUser(user.getId());
+            userDto.setCv(false);
             return userDto;
         }else {
             throw new RegrasNegocioException("Usuário já cadastrado");
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = new UserDto();
         userDto.setIdUser(user.getId());
         userDto.setEmail(user.getEmail());
+        userDto.setCv(user.getCv());
         return userDto;
     }
 
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getUser() {
         return userRepositorio.findAll();
     }
+
 
     public List<UserDtoId> getUserListId() {
         List<User> listaUsers = userRepositorio.findAll();

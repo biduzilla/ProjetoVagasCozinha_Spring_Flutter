@@ -1,5 +1,6 @@
 package com.example.vagascozinhaapi.entidade;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Curriculum {
     @Column(name = "id")
     private Integer id;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -33,12 +35,14 @@ public class Curriculum {
     private String emailContatoCV;
 
     @Column(name = "sobre")
-    private String Sobre;
+    private String sobre;
 
-    @OneToMany(mappedBy = "curriculum")
-    private List<Experiencia> experiencias;
+    @Column(name = "experiencias")
+    @ElementCollection
+    private List<String> experiencias;
 
-    @OneToMany(mappedBy = "curriculum")
-    private List<Qualificacao> qualificacoes;
+    @Column(name = "qualificacoes")
+    @ElementCollection
+    private List<String> qualificacoes;
 
 }

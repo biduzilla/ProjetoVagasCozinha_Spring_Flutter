@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
-    private Integer idUser;
-    private String email;
-    private Boolean cv;
+public class CurriculumDtoId {
+    private Integer id;
 }

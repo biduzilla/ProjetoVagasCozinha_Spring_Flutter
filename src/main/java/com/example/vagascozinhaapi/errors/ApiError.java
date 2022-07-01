@@ -8,9 +8,9 @@ import java.util.List;
 @Data
 public class ApiError {
     @Getter
-    private List<String> errors;
+    private List<String> error;
 
     public ApiError(String mensagemErro){
-        this.errors = List.of(mensagemErro);
+        this.error = List.of(mensagemErro);
     }
 }

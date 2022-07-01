@@ -1,5 +1,6 @@
 package com.example.vagascozinhaapi.controller;
 
+import com.example.vagascozinhaapi.Exception.CvNaoEncontrado;
 import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.errors.ApiError;
@@ -21,6 +22,12 @@ public class ApplicationControllerAdvice {
     @ExceptionHandler(UserNaoEncontrado.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handlePedidoNotFoundException(UserNaoEncontrado ex){
+        return new ApiError(ex.getMessage());
+    }
+
+    @ExceptionHandler(CvNaoEncontrado.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handlePedidoNotFoundException(CvNaoEncontrado ex){
         return new ApiError(ex.getMessage());
     }
 }

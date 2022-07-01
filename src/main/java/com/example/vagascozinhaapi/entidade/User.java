@@ -25,6 +25,9 @@ public class User {
     @Column(name = "password", length = 100)
     private String password;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @Column(name = "cv")
+    private Boolean cv;
+
+    @OneToOne(mappedBy = "user")
     private Curriculum curriculum;
 }
