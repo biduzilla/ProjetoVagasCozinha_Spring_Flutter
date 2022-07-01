@@ -43,5 +43,5 @@ public class Vaga {
     private double remuneracao;
 
     @Column(name = "dataPedido")
-    private LocalDate dataPedido;
+    private LocalDate dataPostada;
 }
