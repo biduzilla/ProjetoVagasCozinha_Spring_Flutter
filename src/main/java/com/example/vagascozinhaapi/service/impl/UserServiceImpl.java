@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto salvarUser(User user) {
 
-        if (!userRepositorio.existsByEmail(user.getEmail())){
+        if (!userRepositorio.existsByEmail(user.getEmail())) {
             user.setCv(false);
 
             userRepositorio.save(user);
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
             userDto.setIdUser(user.getId());
             userDto.setCv(false);
             return userDto;
-        }else {
+        } else {
             throw new RegrasNegocioException("Usuário já cadastrado");
         }
     }
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Integer id) {
-        User user =  userRepositorio.findById(id)
+        User user = userRepositorio.findById(id)
                 .orElseThrow(UserNaoEncontrado::new);
         UserDto userDto = new UserDto();
         userDto.setIdUser(user.getId());
@@ -66,6 +66,17 @@ public class UserServiceImpl implements UserService {
                 ).collect(Collectors.toList());
         userDtoId.setIdUser(listaUsers);
         return userDtoId;
+    }
+
+    @Override
+    public Integer loginUser(User user) {
+        User userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
+
+        if(userExist == null){
+            throw new RegrasNegocioException("Dados Incorretos");
+        }
+
+        return userExist.getId();
     }
 
 

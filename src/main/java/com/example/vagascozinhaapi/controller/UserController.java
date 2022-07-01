@@ -27,10 +27,16 @@ public class UserController {
         return userService.getUserListId();
     }
 
-    @PostMapping
+    @PostMapping("salvar")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto salvarUser(@RequestBody User user){
         return userService.salvarUser(user);
+    }
+
+    @PostMapping("login")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Integer loginUser(@RequestBody User user){
+        return userService.loginUser(user);
     }
 
     @PutMapping("{id}")

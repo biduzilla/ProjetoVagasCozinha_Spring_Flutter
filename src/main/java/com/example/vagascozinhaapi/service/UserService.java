@@ -19,4 +19,6 @@ public interface UserService {
     void updateUser(Integer id, User user);
 
     UserDtoId getUserListId();
+
+    Integer loginUser(User user);
 }

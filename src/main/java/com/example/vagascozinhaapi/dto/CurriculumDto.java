@@ -1,7 +1,5 @@
 package com.example.vagascozinhaapi.dto;
 
-import com.example.vagascozinhaapi.entidade.Experiencia;
-import com.example.vagascozinhaapi.entidade.Qualificacao;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

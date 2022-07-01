@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -30,4 +31,7 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Curriculum curriculum;
+
+    @OneToMany(mappedBy = "user")
+    private List<Vaga> vaga;
 }
