@@ -23,10 +23,9 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<UserDtoId> getUserListId() {
+    public UserDtoId getUserListId() {
         return userService.getUserListId();
     }
-
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

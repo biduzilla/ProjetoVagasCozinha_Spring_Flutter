@@ -18,5 +18,5 @@ public interface UserService {
 
     void updateUser(Integer id, User user);
 
-    List<UserDtoId> getUserListId();
+    UserDtoId getUserListId();
 }

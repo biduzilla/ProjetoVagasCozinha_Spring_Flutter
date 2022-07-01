@@ -56,20 +56,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public List<UserDtoId> getUserListId() {
-        List<User> listaUsers = userRepositorio.findAll();
-        return converter(listaUsers);
+    public UserDtoId getUserListId() {
+        UserDtoId userDtoId = new UserDtoId();
+
+        var listaUsers = userRepositorio.findAll()
+                .stream()
+                .map(
+                        User::getId
+                ).collect(Collectors.toList());
+        userDtoId.setIdUser(listaUsers);
+        return userDtoId;
     }
 
-    public List<UserDtoId> converter(List<User> listUser){
-        if (CollectionUtils.isEmpty(listUser)) {
-            return java.util.Collections.emptyList();
-        }
-
-         return listUser.stream().map(user -> UserDtoId.builder()
-                 .idUser(user.getId())
-                 .build()).collect(Collectors.toList());
-    }
 
     @Override
     public void deleteUser(Integer id) {
