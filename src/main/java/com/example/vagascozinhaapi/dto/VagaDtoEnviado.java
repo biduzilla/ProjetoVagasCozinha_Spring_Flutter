@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class VagaDtoEnviado {
     private Integer userId;
+    private Integer vagaId;
     private String cargo;
     private String descricao;
     private String local;

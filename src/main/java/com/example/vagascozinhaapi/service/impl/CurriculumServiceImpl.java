@@ -6,6 +6,7 @@ import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
 import com.example.vagascozinhaapi.entidade.Curriculum;
+import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.User;
 import com.example.vagascozinhaapi.repositorio.CurriculumRepository;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
@@ -24,8 +25,8 @@ public class CurriculumServiceImpl implements CurriculumService {
     @Override
     public CurriculumDtoId salvarCv(Integer id, CurriculumDto curriculumDto) {
         User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
-        if (!user.getCv()) {
-            user.setCv(true);
+        if (user.getCv() == StatusCv.NAO_CADASTRADO) {
+            user.setCv(StatusCv.CADASTRADO);
 
             Curriculum cv = new Curriculum();
             cv.setNome(curriculumDto.getNome());
@@ -91,7 +92,7 @@ public class CurriculumServiceImpl implements CurriculumService {
                     return curriculum;
                 })
                 .orElseThrow(CvNaoEncontrado::new);
-        user.setCv(false);
+        user.setCv(StatusCv.NAO_CADASTRADO);
         userRepositorio.save(user);
     }
 }

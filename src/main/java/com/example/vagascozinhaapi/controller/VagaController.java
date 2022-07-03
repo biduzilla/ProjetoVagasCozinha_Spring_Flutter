@@ -29,7 +29,19 @@ public class VagaController {
 
     @GetMapping("{idUser}/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoEnviado getListVagas(@PathVariable Integer idUser,@PathVariable Integer idVaga){
+    public VagaDtoEnviado getVagaById(@PathVariable Integer idUser,@PathVariable Integer idVaga){
         return vagaService.getVagaById(idUser,idVaga);
+    }
+
+    @PutMapping("update/{idVaga}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateVaga(@PathVariable Integer idVaga, @RequestBody VagaDtoRecebido vagaDtoRecebido){
+        vagaService.updateVaga(idVaga, vagaDtoRecebido);
+    }
+
+    @DeleteMapping ("{idUser}/{idVaga}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteVaga(@PathVariable Integer idUser,@PathVariable Integer idVaga){
+        vagaService.deleteVaga(idUser, idVaga);
     }
 }

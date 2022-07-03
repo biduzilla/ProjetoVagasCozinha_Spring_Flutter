@@ -4,6 +4,7 @@ import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.UserDto;
 import com.example.vagascozinhaapi.dto.UserDtoId;
+import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.User;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.service.UserService;
@@ -25,13 +26,13 @@ public class UserServiceImpl implements UserService {
     public UserDto salvarUser(User user) {
 
         if (!userRepositorio.existsByEmail(user.getEmail())) {
-            user.setCv(false);
+            user.setCv(StatusCv.NAO_CADASTRADO);
 
             userRepositorio.save(user);
             UserDto userDto = new UserDto();
             userDto.setEmail(user.getEmail());
             userDto.setIdUser(user.getId());
-            userDto.setCv(false);
+            userDto.setCv(StatusCv.NAO_CADASTRADO.name());
             return userDto;
         } else {
             throw new RegrasNegocioException("Usuário já cadastrado");
@@ -43,11 +44,12 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(Integer id) {
         User user = userRepositorio.findById(id)
                 .orElseThrow(UserNaoEncontrado::new);
-        UserDto userDto = new UserDto();
-        userDto.setIdUser(user.getId());
-        userDto.setEmail(user.getEmail());
-        userDto.setCv(user.getCv());
-        return userDto;
+
+        return UserDto.builder()
+                .idUser(user.getId())
+                .email(user.getEmail())
+                .cv(user.getCv().name())
+                .build();
     }
 
     @Override

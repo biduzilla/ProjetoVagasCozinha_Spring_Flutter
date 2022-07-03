@@ -1,5 +1,6 @@
 package com.example.vagascozinhaapi.entidade;
 
+import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class User {
     private String password;
 
     @Column(name = "cv")
-    private Boolean cv;
+    private StatusCv cv;
 
     @OneToOne(mappedBy = "user")
     private Curriculum curriculum;

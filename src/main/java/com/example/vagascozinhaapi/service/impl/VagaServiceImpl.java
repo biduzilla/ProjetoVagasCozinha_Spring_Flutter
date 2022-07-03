@@ -1,6 +1,8 @@
 package com.example.vagascozinhaapi.service.impl;
 
+import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
+import com.example.vagascozinhaapi.Exception.VagaNaoEncontrada;
 import com.example.vagascozinhaapi.Exception.VagaNaoEncontrado;
 import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
 import com.example.vagascozinhaapi.dto.VagaDtoId;
@@ -30,14 +32,7 @@ public class VagaServiceImpl implements VagaService {
         System.out.println("IdUSer: " + vagaDtoRecebido.getUserId());
         User user = userRepositorio.findById(vagaDtoRecebido.getUserId()).orElseThrow(UserNaoEncontrado::new);
 
-        Vaga vaga = new Vaga();
-        vaga.setCargo(vagaDtoRecebido.getCargo());
-        vaga.setDataPostada(LocalDate.now());
-        vaga.setDescricao(vagaDtoRecebido.getDescricao());
-        vaga.setLocal(vagaDtoRecebido.getLocal());
-        vaga.setRemuneracao(vagaDtoRecebido.getRemuneracao());
-        vaga.setRequisitos(vagaDtoRecebido.getRequisitos());
-        vaga.setUser(user);
+        Vaga vaga = DtoToVaga(vagaDtoRecebido, user);
 
         vagasRepository.save(vaga);
 
@@ -51,8 +46,6 @@ public class VagaServiceImpl implements VagaService {
                 .descricao(vaga.getDescricao())
                 .build();
 
-//         VagaDtoEnviado vagaDtoEnviado = new VagaDtoEnviado();
-//         return vagaDtoEnviado;
     }
 
     @Override
@@ -76,6 +69,7 @@ public class VagaServiceImpl implements VagaService {
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrado::new);
 
         return VagaDtoEnviado.builder()
+                .vagaId(idVaga)
                 .userId(idUSer)
                 .cargo(vaga.getCargo())
                 .descricao(vaga.getDescricao())
@@ -84,5 +78,52 @@ public class VagaServiceImpl implements VagaService {
                 .remuneracao(vaga.getRemuneracao())
                 .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .build();
+    }
+
+    @Override
+    public void updateVaga(Integer idVaga, VagaDtoRecebido vagaDtoRecebido) {
+        User user = userRepositorio.findById(vagaDtoRecebido.getUserId()).orElseThrow(UserNaoEncontrado::new);
+
+        if(user.getVaga() == null) {
+            throw new RegrasNegocioException("Vaga não cadastrado, cadastre um");
+        }
+
+        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
+        vaga.setId(idVaga);
+        vaga.setUser(user);
+        vaga.setRemuneracao(vagaDtoRecebido.getRemuneracao());
+        vaga.setCargo(vagaDtoRecebido.getCargo());
+        vaga.setDescricao(vagaDtoRecebido.getDescricao());
+        vaga.setLocal(vagaDtoRecebido.getLocal());
+        vaga.setRequisitos(vagaDtoRecebido.getRequisitos());
+
+        vagasRepository.save(vaga);
+    }
+
+    @Override
+    public void deleteVaga(Integer idUser, Integer idVaga) {
+        User user = userRepositorio.findById(idUser).orElseThrow(UserNaoEncontrado::new);
+        vagasRepository.findById(idVaga).map(
+                vaga -> {
+                    vagasRepository.delete(vaga);
+                    return vaga;
+                })
+                .orElseThrow(VagaNaoEncontrada::new);
+
+        userRepositorio.save(user);
+    }
+
+    public Vaga DtoToVaga(VagaDtoRecebido vagaDtoRecebido, User user){
+
+        Vaga vaga = new Vaga();
+        vaga.setCargo(vagaDtoRecebido.getCargo());
+        vaga.setDataPostada(LocalDate.now());
+        vaga.setDescricao(vagaDtoRecebido.getDescricao());
+        vaga.setLocal(vagaDtoRecebido.getLocal());
+        vaga.setRemuneracao(vagaDtoRecebido.getRemuneracao());
+        vaga.setRequisitos(vagaDtoRecebido.getRequisitos());
+        vaga.setUser(user);
+
+        return vaga;
     }
 }

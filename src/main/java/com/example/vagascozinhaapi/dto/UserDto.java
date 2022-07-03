@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class UserDto {
     private Integer idUser;
     private String email;
-    private Boolean cv;
+    private String cv;
 }
