@@ -36,6 +36,9 @@ public class Vaga {
     @Column(name = "local")
     private String local;
 
+    @Column(name = "horario")
+    private String horario;
+
     @Column(name = "requisitos")
     @ElementCollection
     List<String> requisitos;
@@ -47,6 +50,6 @@ public class Vaga {
     private LocalDate dataPostada;
 
     @Column(name = "requisitos")
-    @ElementCollection
+    @OneToMany
     private List<Curriculum> curriculum;
 }

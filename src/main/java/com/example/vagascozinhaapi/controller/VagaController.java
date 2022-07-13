@@ -40,6 +40,12 @@ public class VagaController {
         return vagaService.getVagaById(idUser,idVaga);
     }
 
+    @GetMapping("verVaga/{idUser}/{idVaga}")
+    @ResponseStatus(HttpStatus.OK)
+    public VagaDtoEnviado getVagaByIdEmpresa(@PathVariable Integer idUser,@PathVariable Integer idVaga){
+        return vagaService.getVagaByIdEmpresa(idUser,idVaga);
+    }
+
     @GetMapping("{idVaga}")
     @ResponseStatus(HttpStatus.OK)
     public Vaga getVagaByIdTeste(@PathVariable Integer idVaga){

@@ -15,6 +15,7 @@ public class VagaDtoRecebido {
     private String cargo;
     private String descricao;
     private String local;
+    private String horario;
     List<String> requisitos;
     private double remuneracao;
 }

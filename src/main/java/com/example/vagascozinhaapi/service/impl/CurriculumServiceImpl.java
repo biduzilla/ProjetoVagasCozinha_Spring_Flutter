@@ -32,6 +32,7 @@ public class CurriculumServiceImpl implements CurriculumService {
             cv.setNome(curriculumDto.getNome());
             cv.setEmailContatoCV(curriculumDto.getEmailContatoCV());
             cv.setSobre(curriculumDto.getSobre());
+            cv.setSemestre(curriculumDto.getSemestre());
             cv.setExperiencias(curriculumDto.getExperiencias());
             cv.setQualificacoes(curriculumDto.getQualificacoes());
             cv.setTelefone(curriculumDto.getTelefone());
@@ -59,6 +60,7 @@ public class CurriculumServiceImpl implements CurriculumService {
         curriculumDto.setNome(cv.getNome());
         curriculumDto.setEmailContatoCV(cv.getEmailContatoCV());
         curriculumDto.setTelefone(cv.getTelefone());
+        curriculumDto.setSemestre(cv.getSemestre());
         curriculumDto.setSobre(cv.getSobre());
         curriculumDto.setExperiencias(cv.getExperiencias());
         curriculumDto.setQualificacoes(cv.getQualificacoes());
@@ -77,6 +79,7 @@ public class CurriculumServiceImpl implements CurriculumService {
         cv.setNome(curriculumDto.getNome());
         cv.setEmailContatoCV(curriculumDto.getEmailContatoCV());
         cv.setTelefone(curriculumDto.getTelefone());
+        cv.setSemestre(curriculumDto.getSemestre());
         cv.setSobre(curriculumDto.getSobre());
         cv.setExperiencias(curriculumDto.getExperiencias());
         cv.setQualificacoes(curriculumDto.getQualificacoes());

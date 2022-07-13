@@ -39,10 +39,12 @@ public class VagaServiceImpl implements VagaService {
         vagasRepository.save(vaga);
 
         return VagaDtoEnviado.builder()
+                .vagaId(vaga.getId())
                 .userId(user.getId())
                 .cargo(vaga.getCargo())
                 .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .local(vaga.getLocal())
+                .horario(vaga.getHorario())
                 .remuneracao(vaga.getRemuneracao())
                 .requisitos(vaga.getRequisitos())
                 .descricao(vaga.getDescricao())
@@ -69,6 +71,34 @@ public class VagaServiceImpl implements VagaService {
         User user = userRepositorio.findById(idUSer).orElseThrow(UserNaoEncontrado::new);
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrado::new);
 
+
+        return VagaDtoEnviado.builder()
+                .vagaId(idVaga)
+                .userId(idUSer)
+                .cargo(vaga.getCargo())
+                .descricao(vaga.getDescricao())
+                .local(vaga.getLocal())
+                .horario(vaga.getHorario())
+                .requisitos(vaga.getRequisitos())
+                .remuneracao(vaga.getRemuneracao())
+                .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                .build();
+    }
+
+    @Override
+    public VagaDtoEnviado getVagaByIdEmpresa(Integer idUSer, Integer idVaga) {
+        User user = userRepositorio.findById(idUSer).orElseThrow(UserNaoEncontrado::new);
+        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrado::new);
+
+        List<Integer> listVagasId = vagasRepository.findAllByUserId(idUSer)
+                .stream()
+                .map(
+                        Vaga::getId
+                ).collect(Collectors.toList());
+        if(!listVagasId.contains(idVaga)){
+            throw new RegrasNegocioException("Essa vaga não te pertence!");
+        }
+
         List<CurriculumDto> cvDtoList = converter(idVaga);
 
         return VagaDtoEnviado.builder()
@@ -77,12 +107,14 @@ public class VagaServiceImpl implements VagaService {
                 .cargo(vaga.getCargo())
                 .descricao(vaga.getDescricao())
                 .local(vaga.getLocal())
+                .horario(vaga.getHorario())
                 .requisitos(vaga.getRequisitos())
                 .remuneracao(vaga.getRemuneracao())
                 .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .curriculumDtos(cvDtoList)
                 .build();
     }
+
 
     public Vaga getVagaByIdTeste(Integer idVaga) {
         return vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
@@ -101,6 +133,7 @@ public class VagaServiceImpl implements VagaService {
         vaga.setUser(user);
         vaga.setRemuneracao(vagaDtoRecebido.getRemuneracao());
         vaga.setCargo(vagaDtoRecebido.getCargo());
+        vaga.setHorario(vagaDtoRecebido.getHorario());
         vaga.setDescricao(vagaDtoRecebido.getDescricao());
         vaga.setLocal(vagaDtoRecebido.getLocal());
         vaga.setRequisitos(vagaDtoRecebido.getRequisitos());
@@ -140,6 +173,7 @@ public class VagaServiceImpl implements VagaService {
                 .cargo(vaga.getCargo())
                 .descricao(vaga.getDescricao())
                 .local(vaga.getLocal())
+                .horario(vaga.getHorario())
                 .requisitos(vaga.getRequisitos())
                 .remuneracao(vaga.getRemuneracao())
                 .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
@@ -155,12 +189,14 @@ public class VagaServiceImpl implements VagaService {
                 .stream()
                 .map(dto -> {
                     CurriculumDto cvDto = new CurriculumDto();
+                    cvDto.setIdCv(dto.getId());
                     cvDto.setNome(dto.getNome());
                     cvDto.setEmailContatoCV(dto.getEmailContatoCV());
                     cvDto.setTelefone(dto.getTelefone());
                     cvDto.setQualificacoes(dto.getQualificacoes());
                     cvDto.setExperiencias(dto.getExperiencias());
                     cvDto.setSobre(dto.getSobre());
+                    cvDto.setSemestre(dto.getSemestre());
                     return cvDto;
                 }).collect(Collectors.toList());
     }
@@ -172,6 +208,7 @@ public class VagaServiceImpl implements VagaService {
         vaga.setDataPostada(LocalDate.now());
         vaga.setDescricao(vagaDtoRecebido.getDescricao());
         vaga.setLocal(vagaDtoRecebido.getLocal());
+        vaga.setHorario(vagaDtoRecebido.getHorario());
         vaga.setRemuneracao(vagaDtoRecebido.getRemuneracao());
         vaga.setRequisitos(vagaDtoRecebido.getRequisitos());
         vaga.setUser(user);

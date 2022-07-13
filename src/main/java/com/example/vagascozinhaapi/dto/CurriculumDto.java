@@ -11,10 +11,12 @@ import java.util.List;
 @ToString
 @Builder
 public class CurriculumDto {
+    private Integer idCv;
     private String nome;
     private String emailContatoCV;
     private String telefone;
     private String sobre;
+    private String semestre;
     private List<String> experiencias;
     private List<String> qualificacoes;
 }

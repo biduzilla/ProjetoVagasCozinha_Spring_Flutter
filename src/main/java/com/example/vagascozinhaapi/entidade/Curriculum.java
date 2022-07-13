@@ -42,6 +42,9 @@ public class Curriculum {
     @Column(name = "sobre")
     private String sobre;
 
+    @Column(name = "semestre")
+    private String semestre;
+
     @Column(name = "experiencias")
     @ElementCollection
     private List<String> experiencias;
