@@ -1,16 +1,16 @@
 package com.example.vagascozinhaapi.entidade;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "tab_curriculum")
 public class Curriculum {
@@ -24,6 +24,11 @@ public class Curriculum {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+//    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "vaga_id")
+    private Vaga vaga;
 
     @Column(name = "nome")
     private String nome;

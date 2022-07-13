@@ -3,6 +3,7 @@ package com.example.vagascozinhaapi.controller;
 import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
 import com.example.vagascozinhaapi.dto.VagaDtoId;
 import com.example.vagascozinhaapi.dto.VagaDtoRecebido;
+import com.example.vagascozinhaapi.entidade.Vaga;
 import com.example.vagascozinhaapi.service.impl.VagaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,12 @@ public class VagaController {
         return vagaService.salvarVaga(vagaDtoRecebido);
     }
 
+    @PostMapping("aceitar/{idUser}/{idVaga}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public VagaDtoEnviado aceitarVaga(@PathVariable Integer idUser,@PathVariable Integer idVaga){
+        return vagaService.aceitarVaga(idUser, idVaga);
+    }
+
     @GetMapping("listVagas/{id}")
     @ResponseStatus(HttpStatus.OK)
     public VagaDtoId getListVagas(@PathVariable Integer id){
@@ -31,6 +38,12 @@ public class VagaController {
     @ResponseStatus(HttpStatus.OK)
     public VagaDtoEnviado getVagaById(@PathVariable Integer idUser,@PathVariable Integer idVaga){
         return vagaService.getVagaById(idUser,idVaga);
+    }
+
+    @GetMapping("{idVaga}")
+    @ResponseStatus(HttpStatus.OK)
+    public Vaga getVagaByIdTeste(@PathVariable Integer idVaga){
+        return vagaService.getVagaByIdTeste(idVaga);
     }
 
     @PutMapping("update/{idVaga}")

@@ -1,15 +1,15 @@
 package com.example.vagascozinhaapi.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Builder
 public class VagaDtoEnviado {
     private Integer userId;
@@ -20,4 +20,5 @@ public class VagaDtoEnviado {
     List<String> requisitos;
     private double remuneracao;
     private String dataPostada;
+    private List<CurriculumDto> curriculumDtos;
 }

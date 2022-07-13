@@ -10,4 +10,5 @@ public interface VagaService {
     VagaDtoEnviado getVagaById(Integer idUSer, Integer idVaga);
     void updateVaga(Integer idVaga, VagaDtoRecebido vagaDtoRecebido);
     void deleteVaga(Integer idUser, Integer idVaga);
+    VagaDtoEnviado aceitarVaga(Integer idUser, Integer idVaga);
 }

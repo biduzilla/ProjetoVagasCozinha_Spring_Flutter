@@ -3,6 +3,7 @@ package com.example.vagascozinhaapi.controller;
 import com.example.vagascozinhaapi.Exception.CvNaoEncontrado;
 import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
+import com.example.vagascozinhaapi.Exception.VagaNaoEncontrada;
 import com.example.vagascozinhaapi.errors.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,6 +29,12 @@ public class ApplicationControllerAdvice {
     @ExceptionHandler(CvNaoEncontrado.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handlePedidoNotFoundException(CvNaoEncontrado ex){
+        return new ApiError(ex.getMessage());
+    }
+
+    @ExceptionHandler(VagaNaoEncontrada.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handlePedidoNotFoundException(VagaNaoEncontrada ex){
         return new ApiError(ex.getMessage());
     }
 }

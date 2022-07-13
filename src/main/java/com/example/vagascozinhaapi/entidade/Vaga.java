@@ -2,17 +2,18 @@ package com.example.vagascozinhaapi.entidade;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "tab_vaga")
 public class Vaga {
@@ -44,4 +45,8 @@ public class Vaga {
 
     @Column(name = "dataPedido")
     private LocalDate dataPostada;
+
+    @Column(name = "requisitos")
+    @ElementCollection
+    private List<Curriculum> curriculum;
 }

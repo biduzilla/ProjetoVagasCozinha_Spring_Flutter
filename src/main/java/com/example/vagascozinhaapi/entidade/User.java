@@ -2,16 +2,16 @@ package com.example.vagascozinhaapi.entidade;
 
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "tab_user")
 public class User {
