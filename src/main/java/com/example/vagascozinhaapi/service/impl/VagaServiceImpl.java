@@ -13,6 +13,8 @@ import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.repositorio.VagasRepository;
 import com.example.vagascozinhaapi.service.VagaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -115,7 +117,6 @@ public class VagaServiceImpl implements VagaService {
                 .build();
     }
 
-
     public Vaga getVagaByIdTeste(Integer idVaga) {
         return vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
     }
@@ -161,6 +162,9 @@ public class VagaServiceImpl implements VagaService {
         Curriculum curriculum = curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
 
         List<Curriculum> cv = vaga.getCurriculum();
+        if (cv.contains(curriculum)){
+            throw new RegrasNegocioException("Você já está participando desta vaga!");
+        }
         cv.add(curriculum);
         vaga.setCurriculum(cv);
         vagasRepository.save(vaga);
@@ -215,4 +219,37 @@ public class VagaServiceImpl implements VagaService {
 
         return vaga;
     }
+
+    @Override
+    public List<VagaDtoEnviado> searchVaga(Integer idUser, Vaga filtro) {
+        User user = userRepositorio.findById(idUser).orElseThrow(UserNaoEncontrado::new);
+
+        ExampleMatcher matcher = ExampleMatcher
+                .matchingAny()
+                .withIgnoreCase()
+                .withStringMatcher(
+                        ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Vaga> example = Example.of(filtro, matcher);
+        List<Vaga> lista = vagasRepository.findAll(example);
+
+        return lista
+                .stream()
+                .map(
+                        vaga -> {
+                            VagaDtoEnviado vagaDto = new VagaDtoEnviado();
+                            vagaDto.setUserId(idUser);
+                            vagaDto.setVagaId(vaga.getId());
+                            vagaDto.setCargo(vaga.getCargo());
+                            vagaDto.setDescricao(vaga.getCargo());
+                            vagaDto.setLocal(vaga.getLocal());
+                            vagaDto.setHorario(vaga.getHorario());
+                            vagaDto.setRequisitos(vaga.getRequisitos());
+                            vagaDto.setRemuneracao(vaga.getRemuneracao());
+                            vagaDto.setDataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                            return vagaDto;
+                        }
+                ).collect(Collectors.toList());
+    }
+
 }
