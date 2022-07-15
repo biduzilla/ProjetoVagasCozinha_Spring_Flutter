@@ -3,16 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:vagas/auth/page/signUp.dart';
 
-class loginScreen extends StatefulWidget {
-  const loginScreen({Key? key}) : super(key: key);
+class signupScreen extends StatefulWidget {
+  const signupScreen({Key? key}) : super(key: key);
 
   @override
-  State<loginScreen> createState() => _loginScreen();
+  State<signupScreen> createState() => _signupScreen();
 }
 
-class _loginScreen extends State<loginScreen> {
+class _signupScreen extends State<signupScreen> {
   String? email;
   String? password;
   String? errorText;
@@ -200,16 +199,6 @@ class _loginScreen extends State<loginScreen> {
                     style: TextStyle(color: Colors.grey, fontSize: 16),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 3.5,
-                    width: MediaQuery.of(context).size.width / 1.5,
-                    child: SvgPicture.asset(
-                      'lib/assets/images/logo.svg',
-                    ),
-                  ),
-                ),
                 _buildEmailTF(),
                 _buildPasswordTF(),
                 SizedBox(
@@ -261,11 +250,6 @@ class _loginScreen extends State<loginScreen> {
                     TextButton(
                       onPressed: () {
                         print("resetar password");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => signupScreen()),
-                        );
                       },
                       child: Text(
                         "Registre",

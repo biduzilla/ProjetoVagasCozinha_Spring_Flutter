@@ -244,7 +244,10 @@ class _loginScreen extends State<loginScreen> {
                       });
                       return;
                     }
-
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => signupScreen()),
+                    );
                     // login(email, password);
                   },
                   child: const Text('Log In'),
@@ -261,11 +264,6 @@ class _loginScreen extends State<loginScreen> {
                     TextButton(
                       onPressed: () {
                         print("resetar password");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => signupScreen()),
-                        );
                       },
                       child: Text(
                         "Registre",

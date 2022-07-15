@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:vagas/auth/page/signUp.dart';
 
 class loginScreen extends StatefulWidget {
   const loginScreen({Key? key}) : super(key: key);
@@ -81,7 +80,7 @@ class _loginScreen extends State<loginScreen> {
 
   Future<http.Response> login(String email, String password) async {
     String token;
-    var url = Uri.parse('http://192.168.1.8:8080/api/users/salvar');
+    var url = Uri.parse('http://localhost:8080/api/users/salvar');
 
     Map data = {
       "email": email,
@@ -245,7 +244,7 @@ class _loginScreen extends State<loginScreen> {
                       return;
                     }
 
-                    // login(email, password);
+                    login(email, password);
                   },
                   child: const Text('Log In'),
                 ),
@@ -261,11 +260,6 @@ class _loginScreen extends State<loginScreen> {
                     TextButton(
                       onPressed: () {
                         print("resetar password");
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => signupScreen()),
-                        );
                       },
                       child: Text(
                         "Registre",
