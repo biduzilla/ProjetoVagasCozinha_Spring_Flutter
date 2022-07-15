@@ -62,7 +62,7 @@ public class VagaController {
     public List<VagaDtoEnviado> searchVaga(@PathVariable Integer idUser, Vaga filtro){
         return vagaService.searchVaga(idUser,filtro);
     }
-    
+
     @GetMapping("{idVaga}")
     @ResponseStatus(HttpStatus.OK)
     public Vaga getVagaByIdTeste(@PathVariable Integer idVaga){

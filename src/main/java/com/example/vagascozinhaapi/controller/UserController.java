@@ -33,8 +33,9 @@ public class UserController {
         return userService.salvarUser(user);
     }
 
+//    @CrossOrigin
     @PostMapping("login")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public Integer loginUser(@RequestBody User user){
         return userService.loginUser(user);
     }
