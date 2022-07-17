@@ -246,7 +246,8 @@ class _loginScreen extends State<loginScreen> {
                       return;
                     }
 
-                    login(email, password);
+                    // login(email, password);
+                    alertSpam(text: "teste");
                   },
                   child: const Text('Log In'),
                 ),

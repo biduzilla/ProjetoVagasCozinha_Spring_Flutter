@@ -27,13 +27,14 @@ public class UserController {
         return userService.getUserListId();
     }
 
+    @CrossOrigin
     @PostMapping("salvar")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto salvarUser(@RequestBody User user){
         return userService.salvarUser(user);
     }
 
-//    @CrossOrigin
+    @CrossOrigin
     @PostMapping("login")
     @ResponseStatus(HttpStatus.OK)
     public Integer loginUser(@RequestBody User user){
