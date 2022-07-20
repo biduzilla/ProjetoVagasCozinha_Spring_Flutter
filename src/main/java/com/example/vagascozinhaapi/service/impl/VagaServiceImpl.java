@@ -97,7 +97,7 @@ public class VagaServiceImpl implements VagaService {
                 .map(
                         Vaga::getId
                 ).collect(Collectors.toList());
-        if(!listVagasId.contains(idVaga)){
+        if (!listVagasId.contains(idVaga)) {
             throw new RegrasNegocioException("Essa vaga não te pertence!");
         }
 
@@ -162,7 +162,7 @@ public class VagaServiceImpl implements VagaService {
         Curriculum curriculum = curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
 
         List<Curriculum> cv = vaga.getCurriculum();
-        if (cv.contains(curriculum)){
+        if (cv.contains(curriculum)) {
             throw new RegrasNegocioException("Você já está participando desta vaga!");
         }
         cv.add(curriculum);
@@ -252,4 +252,27 @@ public class VagaServiceImpl implements VagaService {
                 ).collect(Collectors.toList());
     }
 
+    @Override
+    public VagaDtoId lastTenVagas(Integer idUser) {
+        User user = userRepositorio.findById(idUser).orElseThrow(UserNaoEncontrado::new);
+
+        VagaDtoId vagaDtoId = new VagaDtoId();
+
+        List<Integer> listVagas = vagasRepository.findAll()
+                .stream()
+                .map(
+                        Vaga::getId
+                ).collect(Collectors.toList());
+        vagaDtoId.setVagaId(listVagas);
+
+        if (vagaDtoId.getVagaId().size() > 10) {
+            vagaDtoId.setVagaId(vagaDtoId
+                    .getVagaId()
+                    .subList(vagaDtoId
+                            .getVagaId()
+                            .size() - 10, vagaDtoId.getVagaId()
+                            .size()));
+        }
+        return vagaDtoId;
+    }
 }

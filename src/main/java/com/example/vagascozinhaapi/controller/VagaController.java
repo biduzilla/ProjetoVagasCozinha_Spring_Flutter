@@ -57,6 +57,12 @@ public class VagaController {
         return vagaService.getVagaByIdEmpresa(idUser,idVaga);
     }
 
+    @GetMapping("lastVagas/{idUser}")
+    @ResponseStatus(HttpStatus.OK)
+    public VagaDtoId getLastVagas(@PathVariable Integer idUser){
+        return vagaService.lastTenVagas(idUser);
+    }
+
     @GetMapping("procurar/{idUser}")
     @ResponseStatus(HttpStatus.OK)
     public List<VagaDtoEnviado> searchVaga(@PathVariable Integer idUser, Vaga filtro){

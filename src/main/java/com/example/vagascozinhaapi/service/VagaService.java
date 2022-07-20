@@ -16,4 +16,5 @@ public interface VagaService {
     VagaDtoEnviado aceitarVaga(Integer idUser, Integer idVaga);
     VagaDtoEnviado getVagaByIdEmpresa(Integer idUSer, Integer idVaga);
     List<VagaDtoEnviado> searchVaga(Integer idUser, Vaga filtro);
+    VagaDtoId lastTenVagas(Integer idUser);
 }
