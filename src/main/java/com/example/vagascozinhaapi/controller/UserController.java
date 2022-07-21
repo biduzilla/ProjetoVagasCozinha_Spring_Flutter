@@ -17,11 +17,13 @@ public class UserController {
 
     private final UserService userService;
 
+    @CrossOrigin
     @GetMapping("{id}")
     public UserDto getUserById(@PathVariable Integer id) {
             return userService.getUserById(id);
     }
 
+    @CrossOrigin
     @GetMapping()
     public UserDtoId getUserListId() {
         return userService.getUserListId();
@@ -41,12 +43,14 @@ public class UserController {
         return userService.loginUser(user);
     }
 
+    @CrossOrigin
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@PathVariable Integer id, @RequestBody User user){
         userService.updateUser(id, user);
     }
 
+    @CrossOrigin
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Integer id){
