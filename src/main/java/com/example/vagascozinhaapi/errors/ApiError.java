@@ -13,4 +13,8 @@ public class ApiError {
     public ApiError(String mensagemErro){
         this.error = List.of(mensagemErro);
     }
+
+    public ApiError(List<String> error) {
+        this.error = error;
+    }
 }

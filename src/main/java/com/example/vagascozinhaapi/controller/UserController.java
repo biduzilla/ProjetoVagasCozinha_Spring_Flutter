@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,21 +33,21 @@ public class UserController {
     @CrossOrigin
     @PostMapping("salvar")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto salvarUser(@RequestBody User user){
+    public UserDto salvarUser(@RequestBody @Valid User user){
         return userService.salvarUser(user);
     }
 
     @CrossOrigin
     @PostMapping("login")
     @ResponseStatus(HttpStatus.OK)
-    public Integer loginUser(@RequestBody User user){
+    public Integer loginUser(@RequestBody @Valid User user){
         return userService.loginUser(user);
     }
 
     @CrossOrigin
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable Integer id, @RequestBody User user){
+    public void updateUser(@PathVariable Integer id, @RequestBody @Valid User user){
         userService.updateUser(id, user);
     }
 

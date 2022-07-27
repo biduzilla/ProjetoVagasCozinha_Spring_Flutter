@@ -15,6 +15,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class VagaController {
 
     @PostMapping("cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
-    public VagaDtoEnviado salvarVaga(@RequestBody VagaDtoRecebido vagaDtoRecebido){
+    public VagaDtoEnviado salvarVaga(@RequestBody @Valid VagaDtoRecebido vagaDtoRecebido){
         return vagaService.salvarVaga(vagaDtoRecebido);
     }
 
@@ -77,7 +78,7 @@ public class VagaController {
 
     @PutMapping("update/{idVaga}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateVaga(@PathVariable Integer idVaga, @RequestBody VagaDtoRecebido vagaDtoRecebido){
+    public void updateVaga(@PathVariable Integer idVaga, @RequestBody @Valid VagaDtoRecebido vagaDtoRecebido){
         vagaService.updateVaga(idVaga, vagaDtoRecebido);
     }
 

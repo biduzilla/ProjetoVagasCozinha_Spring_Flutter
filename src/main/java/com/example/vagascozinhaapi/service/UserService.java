@@ -3,6 +3,7 @@ package com.example.vagascozinhaapi.service;
 import com.example.vagascozinhaapi.dto.UserDto;
 import com.example.vagascozinhaapi.dto.UserDtoId;
 import com.example.vagascozinhaapi.entidade.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 

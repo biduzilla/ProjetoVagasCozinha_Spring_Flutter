@@ -9,20 +9,26 @@ import com.example.vagascozinhaapi.entidade.User;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserDetailsService {
 
     private final UserRepositorio userRepositorio;
 
-    @Override
+    @Autowired
+    private PasswordEncoder encoder;
+
     public UserDto salvarUser(User user) {
 
         if (!userRepositorio.existsByEmail(user.getEmail())) {
@@ -40,7 +46,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
     public UserDto getUserById(Integer id) {
         User user = userRepositorio.findById(id)
                 .orElseThrow(UserNaoEncontrado::new);
@@ -52,7 +57,6 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    @Override
     public List<User> getUser() {
         return userRepositorio.findAll();
     }
@@ -70,7 +74,6 @@ public class UserServiceImpl implements UserService {
         return userDtoId;
     }
 
-    @Override
     public Integer loginUser(User user) {
         User userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
 
@@ -82,7 +85,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
     public void deleteUser(Integer id) {
         userRepositorio.findById(id)
                 .map(user -> {
@@ -91,7 +93,6 @@ public class UserServiceImpl implements UserService {
                 }).orElseThrow(UserNaoEncontrado::new);
     }
 
-    @Override
     @Transactional
     public void updateUser(Integer id, User user) {
         userRepositorio.findById(id)
@@ -100,5 +101,10 @@ public class UserServiceImpl implements UserService {
                     userRepositorio.save(user);
                     return userExistente;
                 }).orElseThrow(UserNaoEncontrado::new);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }

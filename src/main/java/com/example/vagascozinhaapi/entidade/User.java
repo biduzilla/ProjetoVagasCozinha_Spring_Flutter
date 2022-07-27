@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Setter
@@ -21,9 +22,14 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "token")
+    private String token;
+
+    @NotEmpty(message = "{campo.email.obrigatorio}")
     @Column(name = "email", length = 100)
     private String email;
 
+    @NotEmpty(message = "{campo.password.obrigatorio}")
     @Column(name = "password", length = 100)
     private String password;
 
@@ -35,4 +41,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Vaga> vaga;
+
+    @Column(name = "admin")
+    private boolean admin;
 }

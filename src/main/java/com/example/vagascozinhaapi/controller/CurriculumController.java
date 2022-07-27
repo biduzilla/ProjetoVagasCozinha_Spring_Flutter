@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/curriculum/")
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ public class CurriculumController {
 
     @PostMapping("salvarCv/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CurriculumDtoId salvarCv(@RequestBody CurriculumDto curriculumDto, @PathVariable Integer id){
+    public CurriculumDtoId salvarCv(@RequestBody @Valid CurriculumDto curriculumDto, @PathVariable Integer id){
         return curriculumService.salvarCv(id, curriculumDto);
     }
 
@@ -27,7 +29,7 @@ public class CurriculumController {
 
     @PutMapping("updateCv/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCv(@PathVariable Integer id,@RequestBody CurriculumDto curriculumDto){
+    public void updateCv(@PathVariable Integer id,@RequestBody @Valid CurriculumDto curriculumDto){
         curriculumService.updateCv(id, curriculumDto);
     }
 
