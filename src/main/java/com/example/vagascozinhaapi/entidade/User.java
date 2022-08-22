@@ -1,7 +1,6 @@
 package com.example.vagascozinhaapi.entidade;
 
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Entity
+@Builder
 @Table(name = "tab_user")
 public class User {
 

@@ -1,16 +1,16 @@
-package com.example.vagascozinhaapi.service.impl;
+package com.example.vagascozinhaapi.dto.service.impl;
 
 import com.example.vagascozinhaapi.Exception.CvNaoEncontrado;
 import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
+import com.example.vagascozinhaapi.dto.service.CurriculumService;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.User;
 import com.example.vagascozinhaapi.repositorio.CurriculumRepository;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
-import com.example.vagascozinhaapi.service.CurriculumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.example.vagascozinhaapi.service;
+package com.example.vagascozinhaapi.dto.service;
 
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;

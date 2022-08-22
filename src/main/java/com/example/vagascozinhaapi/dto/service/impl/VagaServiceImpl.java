@@ -1,17 +1,17 @@
-package com.example.vagascozinhaapi.service.impl;
+package com.example.vagascozinhaapi.dto.service.impl;
 
 import com.example.vagascozinhaapi.Exception.*;
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
 import com.example.vagascozinhaapi.dto.VagaDtoId;
 import com.example.vagascozinhaapi.dto.VagaDtoRecebido;
+import com.example.vagascozinhaapi.dto.service.VagaService;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.User;
 import com.example.vagascozinhaapi.entidade.Vaga;
 import com.example.vagascozinhaapi.repositorio.CurriculumRepository;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.repositorio.VagasRepository;
-import com.example.vagascozinhaapi.service.VagaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

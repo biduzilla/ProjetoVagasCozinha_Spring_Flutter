@@ -2,7 +2,7 @@ package com.example.vagascozinhaapi.controller;
 
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
-import com.example.vagascozinhaapi.service.impl.CurriculumServiceImpl;
+import com.example.vagascozinhaapi.dto.service.impl.CurriculumServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

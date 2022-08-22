@@ -1,7 +1,6 @@
 package com.example.vagascozinhaapi.config;
 
-import com.example.vagascozinhaapi.security.JwtService;
-import com.example.vagascozinhaapi.service.UserService;
+import com.example.vagascozinhaapi.dto.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -9,27 +8,17 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService usuarioService;
-    @Autowired
-    private JwtService jwtService;
+    private UserServiceImpl usuarioService;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public OncePerRequestFilter jwtFilter() {
-        return new JwtAuthFilter(jwtService, usuarioService);
     }
 
     @Override
@@ -44,18 +33,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/clientes/**")
+                .antMatchers("/api/curriculum/**")
                 .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/pedidos/**")
-                .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/produtos/**")
-                .hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/usuarios/**")
+                .antMatchers("/api/vagas/**")
+                .hasRole("USER")
+                .antMatchers("/api/users/**")
+                .hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/api/users/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                .httpBasic();
     }
 }

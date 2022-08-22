@@ -7,7 +7,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -49,7 +48,6 @@ public class Vaga {
     @Column(name = "dataPedido")
     private LocalDate dataPostada;
 
-    @Column(name = "requisitos")
     @OneToMany
     private List<Curriculum> curriculum;
 }

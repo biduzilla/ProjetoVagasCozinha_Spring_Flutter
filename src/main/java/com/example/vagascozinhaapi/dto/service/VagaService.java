@@ -1,4 +1,4 @@
-package com.example.vagascozinhaapi.service;
+package com.example.vagascozinhaapi.dto.service;
 
 import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
 import com.example.vagascozinhaapi.dto.VagaDtoId;
