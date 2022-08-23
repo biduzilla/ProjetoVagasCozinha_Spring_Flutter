@@ -23,7 +23,7 @@ public class Curriculum {
     @JsonBackReference
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Usuario user;
 
 //    @JsonBackReference
     @ManyToOne

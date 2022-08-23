@@ -7,7 +7,7 @@ import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
-import com.example.vagascozinhaapi.entidade.User;
+import com.example.vagascozinhaapi.entidade.Usuario;
 import com.example.vagascozinhaapi.repositorio.CurriculumRepository;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.service.CurriculumService;
@@ -24,7 +24,7 @@ public class CurriculumServiceImpl implements CurriculumService {
 
     @Override
     public CurriculumDtoId salvarCv(Integer id, CurriculumDto curriculumDto) {
-        User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+        Usuario user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
         if (user.getCv() == StatusCv.NAO_CADASTRADO) {
             user.setCv(StatusCv.CADASTRADO);
 
@@ -50,7 +50,7 @@ public class CurriculumServiceImpl implements CurriculumService {
 
     @Override
     public CurriculumDto getCv(Integer id) {
-        User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+        Usuario user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
         if(user.getCurriculum() == null) {
             throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
         }
@@ -69,7 +69,7 @@ public class CurriculumServiceImpl implements CurriculumService {
 
     @Override
     public void updateCv(Integer id, CurriculumDto curriculumDto) {
-        User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+        Usuario user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
 
         if(user.getCurriculum() == null) {
             throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
@@ -88,14 +88,14 @@ public class CurriculumServiceImpl implements CurriculumService {
 
     @Override
     public void deleteCv(Integer id) {
-        User user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
-        curriculumRepository.findById(user.getCurriculum().getId())
+        Usuario usuario = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+        curriculumRepository.findById(usuario.getCurriculum().getId())
                 .map(curriculum -> {
                     curriculumRepository.delete(curriculum);
                     return curriculum;
                 })
                 .orElseThrow(CvNaoEncontrado::new);
-        user.setCv(StatusCv.NAO_CADASTRADO);
-        userRepositorio.save(user);
+        usuario.setCv(StatusCv.NAO_CADASTRADO);
+        userRepositorio.save(usuario);
     }
 }

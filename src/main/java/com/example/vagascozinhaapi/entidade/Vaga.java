@@ -7,7 +7,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -21,7 +20,7 @@ public class Vaga {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Usuario user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

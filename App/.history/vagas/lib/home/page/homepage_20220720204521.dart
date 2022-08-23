@@ -14,7 +14,7 @@ class homePageScreen extends StatefulWidget {
 
 class _homePageScreenState extends State<homePageScreen> {
   final String? token;
-  User user;
+  User usuario;
 
   Future<User?> getUser(int product) async {
     var url = Uri.parse('http://192.168.0.32:8080/api/users/${token}');
@@ -38,7 +38,7 @@ class _homePageScreenState extends State<homePageScreen> {
       print("Mostrar Produto sucesso!");
 
       setState(() {
-        user = (User.fromJson(jsonDecode(response.body)));
+        usuario = (User.fromJson(jsonDecode(response.body)));
       });
       return User.fromJson(jsonDecode(response.body));
     } else {

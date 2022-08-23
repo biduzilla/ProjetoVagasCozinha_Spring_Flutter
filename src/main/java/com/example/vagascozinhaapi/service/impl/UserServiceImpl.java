@@ -5,14 +5,11 @@ import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.UserDto;
 import com.example.vagascozinhaapi.dto.UserDtoId;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
-import com.example.vagascozinhaapi.entidade.User;
+import com.example.vagascozinhaapi.entidade.Usuario;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +19,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepositorio userRepositorio;
 
     @Autowired
     private PasswordEncoder encoder;
 
-    public UserDto salvarUser(User user) {
+    public UserDto salvarUser(Usuario user) {
 
         if (!userRepositorio.existsByEmail(user.getEmail())) {
             user.setCv(StatusCv.NAO_CADASTRADO);
@@ -38,6 +35,7 @@ public class UserServiceImpl implements UserDetailsService {
             UserDto userDto = new UserDto();
             userDto.setEmail(user.getEmail());
             userDto.setIdUser(user.getId());
+            userDto.setSenha(user.getPassword());
             userDto.setCv(StatusCv.NAO_CADASTRADO.name());
             return userDto;
         } else {
@@ -47,7 +45,7 @@ public class UserServiceImpl implements UserDetailsService {
 
 
     public UserDto getUserById(Integer id) {
-        User user = userRepositorio.findById(id)
+        Usuario user = userRepositorio.findById(id)
                 .orElseThrow(UserNaoEncontrado::new);
 
         return UserDto.builder()
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserDetailsService {
                 .build();
     }
 
-    public List<User> getUser() {
+    public List<Usuario> getUser() {
         return userRepositorio.findAll();
     }
 
@@ -68,14 +66,14 @@ public class UserServiceImpl implements UserDetailsService {
         var listaUsers = userRepositorio.findAll()
                 .stream()
                 .map(
-                        User::getId
+                        Usuario::getId
                 ).collect(Collectors.toList());
         userDtoId.setIdUser(listaUsers);
         return userDtoId;
     }
 
-    public Integer loginUser(User user) {
-        User userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
+    public Integer loginUser(Usuario user) {
+        Usuario userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
 
         if(userExist == null){
             throw new RegrasNegocioException("Dados Incorretos");
@@ -84,6 +82,12 @@ public class UserServiceImpl implements UserDetailsService {
         return userExist.getId();
     }
 
+    public void salvarTokenUser(Usuario user, String token) {
+        Usuario userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
+        userExist.setToken(token);
+        userRepositorio.save(userExist);
+
+    }
 
     public void deleteUser(Integer id) {
         userRepositorio.findById(id)
@@ -94,7 +98,7 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
     @Transactional
-    public void updateUser(Integer id, User user) {
+    public void updateUser(Integer id, Usuario user) {
         userRepositorio.findById(id)
                 .map(userExistente -> {
                     user.setId(userExistente.getId());
@@ -103,8 +107,4 @@ public class UserServiceImpl implements UserDetailsService {
                 }).orElseThrow(UserNaoEncontrado::new);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
-    }
 }

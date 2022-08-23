@@ -1,7 +1,9 @@
 package com.example.vagascozinhaapi.config;
 
+import com.example.vagascozinhaapi.security.JwtAuthFilter;
 import com.example.vagascozinhaapi.security.JwtService;
 import com.example.vagascozinhaapi.service.UserService;
+import com.example.vagascozinhaapi.service.impl.UsuarioServiceAuthImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -19,18 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService usuarioService;
-    @Autowired
-    private JwtService jwtService;
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public OncePerRequestFilter jwtFilter() {
-        return new JwtAuthFilter(jwtService, usuarioService);
-    }
+    private UsuarioServiceAuthImpl usuarioService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,23 +30,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf()
+                .disable()
                 .authorizeRequests()
-                .antMatchers("/api/clientes/**")
-                .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/pedidos/**")
-                .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/produtos/**")
-                .hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/usuarios/**")
+                .antMatchers( "/api/vagas/**")
+                .hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/api/users/**")
+                .hasRole("USER")
+                .antMatchers(HttpMethod.POST, "/api/users/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                .httpBasic();
     }
 }

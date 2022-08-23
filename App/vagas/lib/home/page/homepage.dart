@@ -14,7 +14,7 @@ class homePageScreen extends StatefulWidget {
 
 class _homePageScreenState extends State<homePageScreen> {
   final String? token;
-  User? user;
+  User? usuario;
   String email = "carregando";
 
   void initState() {
@@ -41,7 +41,7 @@ class _homePageScreenState extends State<homePageScreen> {
         await http.get(url, headers: {"Content-Type": "application/json"});
 
     setState(() {
-      user = User.fromJson(jsonDecode(response.body));
+      usuario = User.fromJson(jsonDecode(response.body));
     });
 
     print("${response.statusCode}");
@@ -49,7 +49,7 @@ class _homePageScreenState extends State<homePageScreen> {
 
     if (response.statusCode == 200) {
       print("Get User OK");
-      email = user!.email;
+      email = usuario!.email;
     } else {
       print("Error Get User");
     }

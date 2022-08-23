@@ -80,7 +80,7 @@ class _loginScreen extends State<loginScreen> {
 
   Future<Object> signUp(String email, String password) {
     String token;
-    var url = Uri.parse('https://back-end-pdm.herokuapp.com/user/login/');
+    var url = Uri.parse('https://back-end-pdm.herokuapp.com/usuario/login/');
     var response = await http
         .post(url, body: {'email': '$email', 'password': '$password'});
 

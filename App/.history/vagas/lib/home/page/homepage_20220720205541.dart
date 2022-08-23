@@ -14,7 +14,7 @@ class homePageScreen extends StatefulWidget {
 
 class _homePageScreenState extends State<homePageScreen> {
   final String? token;
-  User? user;
+  User? usuario;
   String? email;
 
   void initState() {
@@ -25,7 +25,7 @@ class _homePageScreenState extends State<homePageScreen> {
         email = "carregando";
       } else {
         signIn();
-        email = user!.email;
+        email = usuario!.email;
       }
     });
   }
@@ -52,7 +52,7 @@ class _homePageScreenState extends State<homePageScreen> {
       print("Mostrar Produto sucesso!");
 
       setState(() {
-        user = User.fromJson(jsonDecode(response.body));
+        usuario = User.fromJson(jsonDecode(response.body));
       });
       return User.fromJson(jsonDecode(response.body));
     } else {
@@ -67,7 +67,7 @@ class _homePageScreenState extends State<homePageScreen> {
         await http.post(url, headers: {"Content-Type": "application/json"});
 
     setState(() {
-      user = User.fromJson(jsonDecode(response.body));
+      usuario = User.fromJson(jsonDecode(response.body));
     });
 
     print("${response.statusCode}");

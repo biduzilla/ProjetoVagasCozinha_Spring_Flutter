@@ -2,24 +2,25 @@ package com.example.vagascozinhaapi.service;
 
 import com.example.vagascozinhaapi.dto.UserDto;
 import com.example.vagascozinhaapi.dto.UserDtoId;
-import com.example.vagascozinhaapi.entidade.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.example.vagascozinhaapi.entidade.Usuario;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserDto salvarUser(User user);
+    UserDto salvarUser(Usuario user);
 
     UserDto getUserById(Integer id);
 
-    List<User> getUser();
+    List<Usuario> getUser();
 
     void deleteUser(Integer id);
 
-    void updateUser(Integer id, User user);
+    void updateUser(Integer id, Usuario user);
 
     UserDtoId getUserListId();
 
-    Integer loginUser(User user);
+    Integer loginUser(Usuario user);
+
+    void salvarTokenUser(Usuario user, String token);
 }

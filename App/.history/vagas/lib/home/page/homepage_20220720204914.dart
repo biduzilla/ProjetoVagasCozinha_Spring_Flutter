@@ -14,7 +14,7 @@ class homePageScreen extends StatefulWidget {
 
 class _homePageScreenState extends State<homePageScreen> {
   Final String? token;
-  late User user;
+  late User usuario;
 
   void initState() {
     super.initState();
@@ -46,7 +46,7 @@ class _homePageScreenState extends State<homePageScreen> {
       print("Mostrar Produto sucesso!");
 
       setState(() {
-        user = (User.fromJson(jsonDecode(response.body)));
+        usuario = (User.fromJson(jsonDecode(response.body)));
       });
       return User.fromJson(jsonDecode(response.body));
     } else {
@@ -86,7 +86,7 @@ class _homePageScreenState extends State<homePageScreen> {
         children: [
           Container(
             child: Row(children: [
-              Text(user.email),
+              Text(usuario.email),
             ]),
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width / 1,
