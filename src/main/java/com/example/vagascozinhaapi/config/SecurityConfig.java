@@ -22,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UsuarioServiceAuthImpl usuarioService;
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,6 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
+    @Bean
+    public OncePerRequestFilter jwtFilter(){
+        return new JwtAuthFilter(jwtService,usuarioService);
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,12 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/api/vagas/**")
                 .hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/api/users/**")
+                .antMatchers("/api/curriculum/**")
                 .hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/api/users/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

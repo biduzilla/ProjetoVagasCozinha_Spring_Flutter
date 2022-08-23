@@ -35,4 +35,14 @@ public class UsuarioServiceAuthImpl implements UserDetailsService {
                 .roles(roles)
                 .build();
     }
+
+    public UserDetails autenticar(Usuario usuario){
+        UserDetails user = loadUserByUsername(usuario.getEmail());
+        boolean senhaBatem = encoder.matches(usuario.getPassword(), user.getPassword());
+
+        if(senhaBatem){
+            return user;
+        }
+        throw new SenhaInvalidaException();
+    }
 }

@@ -27,8 +27,8 @@ public class JwtService {
     @Value("${security.jwt.key}")
     private String key;
 
-    private String gerarToken(Usuario usuario) {
-        long expString = Long.valueOf(expiracao);
+    public String gerarToken(Usuario usuario) {
+        long expString = Long.parseLong(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Date data = Date.from(dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant());
 
@@ -61,7 +61,7 @@ public class JwtService {
     }
 
     public String obterLoginUser(String token) throws ExpiredJwtException{
-        return (String) obterClaims(token).getSubject();
+        return obterClaims(token).getSubject();
     }
 
     public static void main(String[] args) {
@@ -75,53 +75,4 @@ public class JwtService {
         System.out.println(tokenValido);
         System.out.println(jwtService.obterLoginUser(token));
     }
-//    @Value("${security.jwt.expiracao}")
-//    private String expiracao;
-//
-//    @Value("${security.jwt.key}")
-//    private String key;
-//
-//    public String gerarToken(Usuario user) throws ExpiredJwtException {
-//        long expString = Long.parseLong(expiracao);
-//        LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
-//        Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
-//        Date date = Date.from(instant);
-//
-//        return Jwts.builder()
-//                .setSubject(user.getEmail())
-//                .setExpiration(date)
-//                .signWith(SignatureAlgorithm.HS512, key)
-//                .compact();
-//
-//
-//    }
-//
-//    private Claims obterClaims(String token){
-//        return Jwts
-//                .parser()
-//                .setSigningKey(key)
-//                .parseClaimsJws(token)
-//                .getBody();
-//
-//    }
-//
-//    public boolean tokenValid(String token){
-//        try{
-//            Claims claims = obterClaims(token);
-//            Date dataExpiration = claims.getExpiration();
-//            LocalDateTime data = dataExpiration
-//                    .toInstant()
-//                    .atZone(ZoneId.systemDefault())
-//                    .toLocalDateTime();
-//            return !LocalDateTime.now().isAfter(data);
-//
-//        }
-//        catch (Exception e){
-//            return false;
-//        }
-//    }
-//
-//    public String obterLoginUser(String token) throws ExpiredJwtException{
-//        return (String) obterClaims(token).getSubject();
-//    }
 }

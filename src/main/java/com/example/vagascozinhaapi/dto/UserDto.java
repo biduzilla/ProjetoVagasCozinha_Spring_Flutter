@@ -11,6 +11,5 @@ import lombok.*;
 public class UserDto {
     private Integer idUser;
     private String email;
-    private String senha;
     private String cv;
 }
