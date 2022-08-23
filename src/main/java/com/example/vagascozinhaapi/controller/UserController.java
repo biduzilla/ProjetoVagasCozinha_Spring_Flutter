@@ -71,20 +71,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public TokenDTO authUser(@RequestBody @Valid CredenciaisDto credenciaisDto) {
         return userService.authUser(credenciaisDto);
-//        try {
-//            Usuario usuario =
-//                    Usuario.builder()
-//                            .email(credenciaisDto.getLogin())
-//                            .password(credenciaisDto.getSenha())
-//                            .build();
-//
-//            UserDetails userAutentificado = usuarioServiceImpl.autenticar(usuario);
-//            String token = jwtService.gerarToken(usuario);
-//
-//            return new TokenDTO(usuario.getEmail(), token);
-//        } catch (UsernameNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-//        }
     }
 
     @CrossOrigin
