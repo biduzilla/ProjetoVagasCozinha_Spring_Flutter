@@ -33,9 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public OncePerRequestFilter jwtFilter(){
-        return new JwtAuthFilter(jwtService,usuarioService);
+    public OncePerRequestFilter jwtFilter() {
+        return new JwtAuthFilter(jwtService, usuarioService);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,10 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers( "/api/vagas/**")
+                .antMatchers("/api/vagas/**")
                 .hasRole("USER")
                 .antMatchers("/api/curriculum/**")
                 .hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/api/users/**")
+                .permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/users/**")
+                .permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users/**")
                 .permitAll()
                 .anyRequest().authenticated()

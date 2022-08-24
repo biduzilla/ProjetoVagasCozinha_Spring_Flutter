@@ -1,6 +1,8 @@
 package com.example.vagascozinhaapi.service.impl;
 
 import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
+import com.example.vagascozinhaapi.Exception.TokenInvalidoException;
+import com.example.vagascozinhaapi.Exception.UserJaCadastrado;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.CredenciaisDto;
 import com.example.vagascozinhaapi.dto.TokenDTO;
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
             UserDto userDto = new UserDto();
             userDto.setEmail(user.getEmail());
             userDto.setIdUser(user.getId());
+            userDto.setToken(user.getToken());
             userDto.setCv(StatusCv.NAO_CADASTRADO.name());
             return userDto;
         } else {
@@ -119,8 +122,8 @@ public class UserServiceImpl implements UserService {
         try {
             Usuario usuario =
                     Usuario.builder()
-                            .email(credenciaisDto.getLogin())
-                            .password(credenciaisDto.getSenha())
+                            .email(credenciaisDto.getEmail())
+                            .password(credenciaisDto.getPassword())
                             .build();
 
             UserDetails userAutentificado = usuarioServiceImpl.autenticar(usuario);
@@ -137,4 +140,25 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
+    public TokenDTO atualizar(Usuario user) {
+        Usuario usuario = userRepositorio.findByToken(user.getToken()).orElseThrow(TokenInvalidoException::new);
+
+        if (userRepositorio.existsByEmail(user.getEmail())){
+            throw new UserJaCadastrado();
+        }
+
+        String senhaCriptografada = encoder.encode(user.getPassword());
+        user.setPassword(senhaCriptografada);
+
+        usuario.setId(usuario.getId());
+
+        usuario.setPassword(user.getPassword());
+        usuario.setEmail(user.getEmail());
+        String token = jwtService.gerarToken(usuario);
+        usuario.setToken(token);
+        userRepositorio.save(usuario);
+
+        return new TokenDTO(usuario.getEmail(), token);
+    }
 }

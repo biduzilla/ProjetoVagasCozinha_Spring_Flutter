@@ -12,4 +12,5 @@ public class UserDto {
     private Integer idUser;
     private String email;
     private String cv;
+    private String token;
 }

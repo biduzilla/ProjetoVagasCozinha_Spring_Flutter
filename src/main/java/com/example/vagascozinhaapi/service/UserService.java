@@ -26,4 +26,6 @@ public interface UserService {
     Integer loginUser(Usuario user);
 
     void salvarTokenUser(Usuario user, String token);
+
+    public TokenDTO atualizar(Usuario user);
 }

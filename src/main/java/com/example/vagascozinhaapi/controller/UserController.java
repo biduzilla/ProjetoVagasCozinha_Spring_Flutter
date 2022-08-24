@@ -39,13 +39,20 @@ public class UserController {
     }
 
     @CrossOrigin
+    @PutMapping("/atualizar")
+    @ResponseStatus(HttpStatus.OK)
+    public TokenDTO acharToken(@RequestBody Usuario user) {
+        return userService.atualizar(user);
+    }
+
+    @CrossOrigin
     @GetMapping()
     public UserDtoId getUserListId() {
         return userService.getUserListId();
     }
 
     @GetMapping("/mostrarUser")
-    public List<Usuario> mostrarUser(){
+    public List<Usuario> mostrarUser() {
         return userRepositorio.findAll();
     }
 
