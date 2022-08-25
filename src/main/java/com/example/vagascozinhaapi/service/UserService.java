@@ -25,4 +25,6 @@ public interface UserService {
     Integer loginUser(Usuario user);
 
     TokenDTO atualizar(Usuario user);
+
+    UserDto getDadosUser(TokenDTO tokenDTO);
 }

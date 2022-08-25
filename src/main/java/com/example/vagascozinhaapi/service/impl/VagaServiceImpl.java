@@ -5,6 +5,7 @@ import com.example.vagascozinhaapi.dto.*;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Usuario;
 import com.example.vagascozinhaapi.entidade.Vaga;
+import com.example.vagascozinhaapi.entidade.VagaInteressada;
 import com.example.vagascozinhaapi.repositorio.CurriculumRepository;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.repositorio.VagasRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -155,6 +157,7 @@ public class VagaServiceImpl implements VagaService {
     }
 
     @Override
+    @Transactional
     public VagaDtoEnviado aceitarVaga(Integer idVaga, TokenDTO tokenDTO) {
         Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
@@ -167,6 +170,10 @@ public class VagaServiceImpl implements VagaService {
         cv.add(curriculum);
         vaga.setCurriculum(cv);
         vagasRepository.save(vaga);
+
+        List<VagaInteressada> vagas = user.getVagaAceita();
+        vagas.add(converterVagaToInteressada(vaga));
+        userRepositorio.save(user);
 
         List<CurriculumDto> cvDtoList = converter(idVaga);
 
@@ -181,6 +188,19 @@ public class VagaServiceImpl implements VagaService {
                 .remuneracao(vaga.getRemuneracao())
                 .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .curriculumDtos(cvDtoList)
+                .build();
+    }
+
+    public VagaInteressada converterVagaToInteressada(Vaga vaga){
+        return VagaInteressada.builder()
+                .id(vaga.getId())
+                .cargo(vaga.getCargo())
+                .descricao(vaga.getDescricao())
+                .local(vaga.getLocal())
+                .horario(vaga.getHorario())
+                .requisitos(vaga.getRequisitos())
+                .remuneracao(vaga.getRemuneracao())
+                .dataPostada(vaga.getDataPostada())
                 .build();
     }
 

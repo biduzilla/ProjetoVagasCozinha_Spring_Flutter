@@ -2,6 +2,6 @@ package com.example.vagascozinhaapi.Exception;
 
 public class TokenInvalidoException extends RuntimeException{
     public TokenInvalidoException() {
-        super("Token Invalido!");
+        super("Token Inválido!");
     }
 }

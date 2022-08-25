@@ -74,6 +74,13 @@ public class UserController {
     }
 
     @CrossOrigin
+    @PostMapping("getDados")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getDados(@RequestBody @Valid TokenDTO tokenDTO) {
+        return userService.getDadosUser(tokenDTO);
+    }
+
+    @CrossOrigin
     @PostMapping("/auth")
     @ResponseStatus(HttpStatus.OK)
     public TokenDTO authUser(@RequestBody @Valid CredenciaisDto credenciaisDto) {
@@ -85,7 +92,7 @@ public class UserController {
     @DeleteMapping("/deletar")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@RequestBody TokenDTO tokenDTO) {
-         userService.deleteUser(tokenDTO);
+        userService.deleteUser(tokenDTO);
     }
 
 }

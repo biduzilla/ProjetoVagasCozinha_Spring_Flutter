@@ -14,8 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "tab_vaga")
-public class Vaga {
+@Builder
+@Table(name = "tab_vagaInteressada")
+public class VagaInteressada {
 
     @JsonBackReference
     @ManyToOne
@@ -23,7 +24,6 @@ public class Vaga {
     private Usuario user;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "cargo")
@@ -47,7 +47,4 @@ public class Vaga {
 
     @Column(name = "dataPedido")
     private LocalDate dataPostada;
-
-    @OneToMany
-    private List<Curriculum> curriculum;
 }

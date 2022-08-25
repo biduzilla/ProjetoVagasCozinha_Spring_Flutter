@@ -1,16 +1,14 @@
 package com.example.vagascozinhaapi.service.impl;
 
-import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
-import com.example.vagascozinhaapi.Exception.TokenInvalidoException;
-import com.example.vagascozinhaapi.Exception.UserJaCadastrado;
-import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
-import com.example.vagascozinhaapi.dto.CredenciaisDto;
-import com.example.vagascozinhaapi.dto.TokenDTO;
-import com.example.vagascozinhaapi.dto.UserDto;
-import com.example.vagascozinhaapi.dto.UserDtoId;
+import com.example.vagascozinhaapi.Exception.*;
+import com.example.vagascozinhaapi.dto.*;
+import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.Usuario;
+import com.example.vagascozinhaapi.entidade.Vaga;
+import com.example.vagascozinhaapi.entidade.VagaInteressada;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
+import com.example.vagascozinhaapi.repositorio.VagasRepository;
 import com.example.vagascozinhaapi.security.JwtService;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepositorio userRepositorio;
     private final UsuarioServiceAuthImpl usuarioServiceImpl;
     private final JwtService jwtService;
+
+    private final VagasRepository vagasRepository;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -133,11 +135,28 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public List<VagaDtoEnviado> converter(List<VagaInteressada> vaga) {
+        return vaga
+                .stream()
+                .map(dtoVaga -> {
+                    return VagaDtoEnviado.builder()
+                            .vagaId(dtoVaga.getId())
+                            .cargo(dtoVaga.getCargo())
+                            .descricao(dtoVaga.getDescricao())
+                            .local(dtoVaga.getLocal())
+                            .horario(dtoVaga.getHorario())
+                            .requisitos(dtoVaga.getRequisitos())
+                            .remuneracao(dtoVaga.getRemuneracao())
+                            .dataPostada(dtoVaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                            .build();
+                }).collect(Collectors.toList());
+    }
+
     @Transactional
     public TokenDTO atualizar(Usuario user) {
         Usuario usuario = userRepositorio.findByToken(user.getToken()).orElseThrow(TokenInvalidoException::new);
 
-        if (userRepositorio.existsByEmail(user.getEmail())){
+        if (userRepositorio.existsByEmail(user.getEmail())) {
             throw new UserJaCadastrado();
         }
 
@@ -153,5 +172,18 @@ public class UserServiceImpl implements UserService {
         userRepositorio.save(usuario);
 
         return new TokenDTO(usuario.getEmail(), token);
+    }
+
+    @Override
+    public UserDto getDadosUser(TokenDTO tokenDTO) {
+        Usuario usuario = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
+
+        List<VagaDtoEnviado> vagaDtoEnviados = converter(usuario.getVagaAceita());
+
+        return UserDto.builder()
+                .email(usuario.getEmail())
+                .cv(usuario.getCv().name())
+                .vagasAceitas(vagaDtoEnviados)
+                .build();
     }
 }

@@ -5,6 +5,7 @@ import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
 import com.example.vagascozinhaapi.dto.VagaDtoId;
 import com.example.vagascozinhaapi.dto.VagaDtoRecebido;
 import com.example.vagascozinhaapi.entidade.Vaga;
+import com.example.vagascozinhaapi.repositorio.VagasRepository;
 import com.example.vagascozinhaapi.service.impl.VagaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 public class VagaController {
 
     private final VagaServiceImpl vagaService;
+    private final VagasRepository vagasRepository;
 
     @PostMapping("cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,7 +46,7 @@ public class VagaController {
         return vagaService.getVagaById(tokenDTO,idVaga);
     }
 
-    @PostMapping("verVaga/{idVaga}")
+    @PostMapping("minhasVagas/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
     public VagaDtoEnviado getVagaByIdEmpresa(@RequestBody @Valid TokenDTO tokenDTO,@PathVariable Integer idVaga){
         return vagaService.getVagaByIdEmpresa(tokenDTO,idVaga);
@@ -79,4 +81,6 @@ public class VagaController {
     public void deleteVaga(@RequestBody @Valid TokenDTO tokenDTO,@PathVariable Integer idVaga){
         vagaService.deleteVaga(tokenDTO, idVaga);
     }
+
+
 }
