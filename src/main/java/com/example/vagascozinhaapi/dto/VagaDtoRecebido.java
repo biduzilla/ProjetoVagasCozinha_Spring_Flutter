@@ -3,6 +3,7 @@ package com.example.vagascozinhaapi.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Setter
@@ -12,6 +13,9 @@ import java.util.List;
 @ToString
 @Builder
 public class VagaDtoRecebido {
+
+    @NotNull(message = "{campo.token.obrigatorio}")
+    private String token;
     private Integer userId;
     @NotEmpty(message = "{campo.cargo.obrigatorio}")
     private String cargo;

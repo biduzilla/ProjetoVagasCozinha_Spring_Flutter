@@ -93,15 +93,8 @@ public class UserServiceImpl implements UserService {
         return userExist.getId();
     }
 
-    public void salvarTokenUser(Usuario user, String token) {
-        Usuario userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
-        userExist.setToken(token);
-        userRepositorio.save(userExist);
-
-    }
-
-    public void deleteUser(Integer id) {
-        userRepositorio.findById(id)
+    public void deleteUser(TokenDTO tokenDTO) {
+        userRepositorio.findByToken(tokenDTO.getToken())
                 .map(user -> {
                     userRepositorio.delete(user);
                     return user;

@@ -2,9 +2,11 @@ package com.example.vagascozinhaapi.service.impl;
 
 import com.example.vagascozinhaapi.Exception.CvNaoEncontrado;
 import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
+import com.example.vagascozinhaapi.Exception.TokenInvalidoException;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
+import com.example.vagascozinhaapi.dto.TokenDTO;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.Usuario;
@@ -23,8 +25,8 @@ public class CurriculumServiceImpl implements CurriculumService {
     private final UserRepositorio userRepositorio;
 
     @Override
-    public CurriculumDtoId salvarCv(Integer id, CurriculumDto curriculumDto) {
-        Usuario user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+    public CurriculumDtoId salvarCv(CurriculumDto curriculumDto) {
+        Usuario user = userRepositorio.findByToken(curriculumDto.getToken()).orElseThrow(TokenInvalidoException::new);
         if (user.getCv() == StatusCv.NAO_CADASTRADO) {
             user.setCv(StatusCv.CADASTRADO);
 
@@ -49,27 +51,37 @@ public class CurriculumServiceImpl implements CurriculumService {
 
 
     @Override
-    public CurriculumDto getCv(Integer id) {
-        Usuario user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+    public CurriculumDto getCv(TokenDTO tokenDTO) {
+        Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
         if(user.getCurriculum() == null) {
             throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
         }
         Curriculum cv =  curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
 
-        CurriculumDto curriculumDto = new CurriculumDto();
-        curriculumDto.setNome(cv.getNome());
-        curriculumDto.setEmailContatoCV(cv.getEmailContatoCV());
-        curriculumDto.setTelefone(cv.getTelefone());
-        curriculumDto.setSemestre(cv.getSemestre());
-        curriculumDto.setSobre(cv.getSobre());
-        curriculumDto.setExperiencias(cv.getExperiencias());
-        curriculumDto.setQualificacoes(cv.getQualificacoes());
-        return curriculumDto;
+//        CurriculumDto curriculumDto = new CurriculumDto();
+//        curriculumDto.setIdCv(cv.getId());
+//        curriculumDto.setNome(cv.getNome());
+//        curriculumDto.setEmailContatoCV(cv.getEmailContatoCV());
+//        curriculumDto.setTelefone(cv.getTelefone());
+//        curriculumDto.setSemestre(cv.getSemestre());
+//        curriculumDto.setSobre(cv.getSobre());
+//        curriculumDto.setExperiencias(cv.getExperiencias());
+//        curriculumDto.setQualificacoes(cv.getQualificacoes());
+        return CurriculumDto.builder()
+                .idCv(cv.getId())
+                .nome(cv.getNome())
+                .emailContatoCV(cv.getEmailContatoCV())
+                .telefone(cv.getTelefone())
+                .semestre(cv.getSemestre())
+                .sobre(cv.getSobre())
+                .experiencias(cv.getExperiencias())
+                .qualificacoes(cv.getQualificacoes())
+                .build();
     }
 
-    @Override
-    public void updateCv(Integer id, CurriculumDto curriculumDto) {
-        Usuario user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+     @Override
+    public void updateCv(CurriculumDto curriculumDto) {
+        Usuario user = userRepositorio.findByToken(curriculumDto.getToken()).orElseThrow(TokenInvalidoException::new);
 
         if(user.getCurriculum() == null) {
             throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
@@ -87,8 +99,8 @@ public class CurriculumServiceImpl implements CurriculumService {
     }
 
     @Override
-    public void deleteCv(Integer id) {
-        Usuario usuario = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+    public void deleteCv(TokenDTO tokenDTO) {
+        Usuario usuario = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
         curriculumRepository.findById(usuario.getCurriculum().getId())
                 .map(curriculum -> {
                     curriculumRepository.delete(curriculum);

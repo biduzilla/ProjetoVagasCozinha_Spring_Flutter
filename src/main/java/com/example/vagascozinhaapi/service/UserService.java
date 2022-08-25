@@ -11,21 +11,18 @@ import java.util.List;
 public interface UserService {
 
     TokenDTO authUser(CredenciaisDto credenciaisDto);
+
     UserDto salvarUser(Usuario user);
 
     UserDto getUserById(Integer id);
 
     List<Usuario> getUser();
 
-    void deleteUser(Integer id);
-
-    void updateUser(Integer id, Usuario user);
+    void deleteUser(TokenDTO tokenDTO);
 
     UserDtoId getUserListId();
 
     Integer loginUser(Usuario user);
 
-    void salvarTokenUser(Usuario user, String token);
-
-    public TokenDTO atualizar(Usuario user);
+    TokenDTO atualizar(Usuario user);
 }

@@ -2,6 +2,7 @@ package com.example.vagascozinhaapi.controller;
 
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
+import com.example.vagascozinhaapi.dto.TokenDTO;
 import com.example.vagascozinhaapi.service.impl.CurriculumServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,26 +17,26 @@ public class CurriculumController {
 
     private final CurriculumServiceImpl curriculumService;
 
-    @PostMapping("salvarCv/{id}")
+    @PostMapping("/salvarCv")
     @ResponseStatus(HttpStatus.CREATED)
-    public CurriculumDtoId salvarCv(@RequestBody @Valid CurriculumDto curriculumDto, @PathVariable Integer id){
-        return curriculumService.salvarCv(id, curriculumDto);
+    public CurriculumDtoId salvarCv(@RequestBody @Valid CurriculumDto curriculumDto){
+        return curriculumService.salvarCv(curriculumDto);
     }
 
-    @GetMapping("getCv/{id}")
-    public CurriculumDto getCv(@PathVariable Integer id){
-        return curriculumService.getCv(id);
+    @GetMapping("/getCv")
+    public CurriculumDto getCv(@RequestBody TokenDTO tokenDTO){
+        return curriculumService.getCv(tokenDTO);
     }
 
-    @PutMapping("updateCv/{id}")
+    @PutMapping("/updateCv")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCv(@PathVariable Integer id,@RequestBody @Valid CurriculumDto curriculumDto){
-        curriculumService.updateCv(id, curriculumDto);
+    public void updateCv(@RequestBody @Valid CurriculumDto curriculumDto){
+        curriculumService.updateCv(curriculumDto);
     }
 
-    @DeleteMapping("deleteCv/{id}")
+    @DeleteMapping("/deleteCv")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCv(@PathVariable Integer id){
-        curriculumService.deleteCv(id);
+    public void deleteCv(@RequestBody TokenDTO tokenDTO){
+        curriculumService.deleteCv(tokenDTO);
     }
 }

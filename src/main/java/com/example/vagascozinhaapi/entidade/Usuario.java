@@ -41,7 +41,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "user")
     private List<Vaga> vaga;
-
+    
     @Column(name = "admin")
     private boolean admin;
 }
