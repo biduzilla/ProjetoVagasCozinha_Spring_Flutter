@@ -5,7 +5,6 @@ import com.example.vagascozinhaapi.dto.*;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Usuario;
 import com.example.vagascozinhaapi.entidade.Vaga;
-import com.example.vagascozinhaapi.entidade.VagaInteressada;
 import com.example.vagascozinhaapi.repositorio.CurriculumRepository;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import com.example.vagascozinhaapi.repositorio.VagasRepository;
@@ -18,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,6 +73,14 @@ public class VagaServiceImpl implements VagaService {
     @Override
     public VagaDtoEnviado getVagaById(TokenDTO tokenDTO, Integer idVaga) {
         Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
+
+        if (!vagasRepository.existsById(idVaga)){
+            List<Integer> listCandidaturas = user.getCandidaturas();
+            listCandidaturas.removeAll(List.of(idVaga));
+            userRepositorio.save(user);
+            throw new VagaNaoEncontrada();
+        }
+
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrado::new);
 
 
@@ -171,9 +180,14 @@ public class VagaServiceImpl implements VagaService {
         vaga.setCurriculum(cv);
         vagasRepository.save(vaga);
 
-        List<VagaInteressada> vagas = user.getVagaAceita();
-        vagas.add(converterVagaToInteressada(vaga));
+        List<Integer> addVagaToList = user.getCandidaturas();
+        addVagaToList.add(vaga.getId());
+        user.setCandidaturas(addVagaToList);
         userRepositorio.save(user);
+
+//        List<VagaInteressada> vagas = user.getVagaAceita();
+//        vagas.add(converterVagaToInteressada(vaga));
+//        userRepositorio.save(user);
 
         List<CurriculumDto> cvDtoList = converter(idVaga);
 
@@ -187,20 +201,7 @@ public class VagaServiceImpl implements VagaService {
                 .requisitos(vaga.getRequisitos())
                 .remuneracao(vaga.getRemuneracao())
                 .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
-                .curriculumDtos(cvDtoList)
-                .build();
-    }
-
-    public VagaInteressada converterVagaToInteressada(Vaga vaga){
-        return VagaInteressada.builder()
-                .id(vaga.getId())
-                .cargo(vaga.getCargo())
-                .descricao(vaga.getDescricao())
-                .local(vaga.getLocal())
-                .horario(vaga.getHorario())
-                .requisitos(vaga.getRequisitos())
-                .remuneracao(vaga.getRemuneracao())
-                .dataPostada(vaga.getDataPostada())
+//                .curriculumDtos(cvDtoList)
                 .build();
     }
 

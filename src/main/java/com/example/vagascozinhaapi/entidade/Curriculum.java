@@ -25,10 +25,10 @@ public class Curriculum {
     @JoinColumn(name = "user_id")
     private Usuario user;
 
-//    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "vaga_id")
-    private Vaga vaga;
+////    @JsonBackReference
+//    @ManyToOne
+//    @JoinColumn(name = "vaga_id")
+//    private Vaga vaga;
 
     @Column(name = "nome")
     private String nome;

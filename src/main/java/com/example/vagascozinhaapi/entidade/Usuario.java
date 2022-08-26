@@ -44,8 +44,12 @@ public class Usuario {
     @OneToMany(mappedBy = "user")
     private List<Vaga> vaga;
 
-    @OneToMany(mappedBy = "user")
-    private List<VagaInteressada> vagaAceita;
+    @Column(name = "candidaturas")
+    @ElementCollection
+    private List<Integer> candidaturas;
+
+//    @OneToMany(mappedBy = "user")
+//    private List<VagaInteressada> vagaAceita;
 
     @Column(name = "admin")
     private boolean admin;

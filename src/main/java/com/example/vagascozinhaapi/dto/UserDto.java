@@ -15,5 +15,5 @@ public class UserDto {
     private String email;
     private String cv;
     private String token;
-    private List<VagaDtoEnviado> vagasAceitas;
+    private List<Integer> vagasAceitas;
 }
