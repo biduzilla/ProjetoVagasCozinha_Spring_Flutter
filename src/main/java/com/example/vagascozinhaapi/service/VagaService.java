@@ -11,7 +11,7 @@ import java.util.List;
 public interface VagaService {
     VagaDtoEnviado salvarVaga(VagaDtoRecebido vagaDtoRecebido);
     VagaDtoId getListVagaById(TokenDTO tokenDTO);
-    VagaDtoEnviado getVagaById(TokenDTO tokenDTO, Integer idVaga);
+    VagaDtoEnviado getVagaById(String token, Integer idVaga);
     void updateVaga(Integer idVaga, VagaDtoRecebido vagaDtoRecebido);
     void deleteVaga(TokenDTO tokenDTO, Integer idVaga);
     VagaDtoEnviado aceitarVaga(Integer idVaga, TokenDTO tokenDTO);

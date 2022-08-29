@@ -8,9 +8,11 @@ import com.example.vagascozinhaapi.entidade.Vaga;
 import com.example.vagascozinhaapi.repositorio.VagasRepository;
 import com.example.vagascozinhaapi.service.impl.VagaServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -20,7 +22,6 @@ import java.util.List;
 public class VagaController {
 
     private final VagaServiceImpl vagaService;
-    private final VagasRepository vagasRepository;
 
     @PostMapping("cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,10 +41,10 @@ public class VagaController {
         return vagaService.getListVagaById(tokenDTO);
     }
 
-    @PostMapping("/{idVaga}")
+    @GetMapping("/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoEnviado getVagaById(@RequestBody @Valid TokenDTO tokenDTO, @PathVariable Integer idVaga){
-        return vagaService.getVagaById(tokenDTO,idVaga);
+    public VagaDtoEnviado getVagaById(@RequestHeader("Authorization") String token , @PathVariable Integer idVaga){
+        return vagaService.getVagaById(token,idVaga);
     }
 
     @PostMapping("minhasVagas/{idVaga}")
@@ -64,11 +65,11 @@ public class VagaController {
         return vagaService.searchVaga(tokenDTO,filtro);
     }
 
-    @GetMapping("{idVaga}")
-    @ResponseStatus(HttpStatus.OK)
-    public Vaga getVagaByIdTeste(@PathVariable Integer idVaga){
-        return vagaService.getVagaByIdTeste(idVaga);
-    }
+//    @GetMapping("{idVaga}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Vaga getVagaByIdTeste(@PathVariable Integer idVaga){
+//        return vagaService.getVagaByIdTeste(idVaga);
+//    }
 
     @PutMapping("update/{idVaga}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

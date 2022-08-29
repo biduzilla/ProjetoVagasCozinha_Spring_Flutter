@@ -46,6 +46,12 @@ public class ApplicationControllerAdvice {
         return new ApiError(ex.getMessage());
     }
 
+    @ExceptionHandler(VagaApagadaNaoEncontrada.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleVagaNotFoundException(VagaApagadaNaoEncontrada ex){
+        return new ApiError(ex.getMessage());
+    }
+
     @ExceptionHandler(UserJaCadastrado.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleUserFoundException(UserJaCadastrado ex){

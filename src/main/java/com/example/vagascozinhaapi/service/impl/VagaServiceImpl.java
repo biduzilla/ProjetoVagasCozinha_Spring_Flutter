@@ -12,6 +12,8 @@ import com.example.vagascozinhaapi.service.VagaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,18 +72,24 @@ public class VagaServiceImpl implements VagaService {
 
     }
 
+    public String retornarToken(String token){
+        return token.split(" ")[1];
+    }
     @Override
-    public VagaDtoEnviado getVagaById(TokenDTO tokenDTO, Integer idVaga) {
-        Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
+    @Transactional(noRollbackFor = VagaApagadaNaoEncontrada.class)
+    public VagaDtoEnviado getVagaById(String token, Integer idVaga) {
+        token = retornarToken(token);
+        Usuario user = userRepositorio.findByToken(token).orElseThrow(TokenInvalidoException::new);
 
-        if (!vagasRepository.existsById(idVaga)){
+        if (user.getCandidaturas().contains(idVaga) && !vagasRepository.existsById(idVaga)){
             List<Integer> listCandidaturas = user.getCandidaturas();
             listCandidaturas.removeAll(List.of(idVaga));
             userRepositorio.save(user);
-            throw new VagaNaoEncontrada();
+            throw new VagaApagadaNaoEncontrada();
+
         }
 
-        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrado::new);
+        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
 
 
         return VagaDtoEnviado.builder()
@@ -165,12 +173,19 @@ public class VagaServiceImpl implements VagaService {
         userRepositorio.save(user);
     }
 
+    public Curriculum validCv(Usuario user){
+        if (user.getCurriculum() == null){
+            throw new CvNaoEncontrado();
+        }
+        return curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
+    }
     @Override
     @Transactional
     public VagaDtoEnviado aceitarVaga(Integer idVaga, TokenDTO tokenDTO) {
         Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-        Curriculum curriculum = curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
+        Curriculum curriculum = validCv(user);
+
 
         List<Curriculum> cv = vaga.getCurriculum();
         if (cv.contains(curriculum)) {
@@ -272,18 +287,29 @@ public class VagaServiceImpl implements VagaService {
                 ).collect(Collectors.toList());
     }
 
-    @Override
-    public VagaDtoId lastTenVagas(TokenDTO tokenDTO) {
-        Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
-
+    public VagaDtoId getAllVagasId(){
         VagaDtoId vagaDtoId = new VagaDtoId();
-
         List<Integer> listVagas = vagasRepository.findAll()
                 .stream()
                 .map(
                         Vaga::getId
                 ).collect(Collectors.toList());
-        vagaDtoId.setVagaId(listVagas);
+         vagaDtoId.setVagaId(listVagas);
+         return vagaDtoId;
+    }
+
+    @Override
+    public VagaDtoId lastTenVagas(TokenDTO tokenDTO) {
+        Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
+
+        VagaDtoId vagaDtoId = getAllVagasId();
+
+//        List<Integer> listVagas = vagasRepository.findAll()
+//                .stream()
+//                .map(
+//                        Vaga::getId
+//                ).collect(Collectors.toList());
+//        vagaDtoId.setVagaId(listVagas);
 
         if (vagaDtoId.getVagaId().size() > 10) {
             vagaDtoId.setVagaId(vagaDtoId
