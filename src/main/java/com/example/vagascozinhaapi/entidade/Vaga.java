@@ -38,8 +38,9 @@ public class Vaga {
     @Column(name = "horario")
     private String horario;
 
-    @Column(name = "requisitos")
     @ElementCollection
+    @CollectionTable(name = "tab_requisitos", joinColumns = @JoinColumn(name = "tab_vaga")) // 2
+    @Column(name = "requisitos")
     List<String> requisitos;
 
     @Column(name = "remuneracao")
@@ -48,6 +49,6 @@ public class Vaga {
     @Column(name = "dataPedido")
     private LocalDate dataPostada;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vaga")
     private List<Curriculum> curriculum;
 }

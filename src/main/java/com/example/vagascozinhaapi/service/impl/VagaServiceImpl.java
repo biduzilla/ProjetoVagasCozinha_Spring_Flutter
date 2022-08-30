@@ -120,11 +120,6 @@ public class VagaServiceImpl implements VagaService {
                 .curriculumDtos(cvDtoList)
                 .build();
     }
-
-    public Vaga getVagaByIdTeste(Integer idVaga) {
-        return vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-    }
-
     public boolean verificarDonoVaga(Usuario user, Integer idVaga) {
         List<Integer> listVagasId = vagasRepository.findAllByUserId(user.getId())
                 .stream()

@@ -44,8 +44,9 @@ public class Usuario {
     @OneToMany(mappedBy = "user")
     private List<Vaga> vaga;
 
-    @Column(name = "candidaturas")
     @ElementCollection
+    @Column(name = "candidaturas")
+    @CollectionTable(name = "tab_candidaturas", joinColumns = @JoinColumn(name = "tab_user"))
     private List<Integer> candidaturas;
 
     @Column(name = "admin")

@@ -20,6 +20,11 @@ public class Curriculum {
     @Column(name = "id")
     private Integer id;
 
+//    @JsonBackReference
+    @ManyToOne()
+    @JoinColumn(name = "vaga_id")
+    private Vaga vaga;
+
     @JsonBackReference
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -40,12 +45,14 @@ public class Curriculum {
     @Column(name = "semestre")
     private String semestre;
 
-    @Column(name = "experiencias")
     @ElementCollection
+    @CollectionTable(name = "tab_experiencias", joinColumns = @JoinColumn(name = "tab_curriculum"))
+    @Column(name = "experiencias")
     private List<String> experiencias;
 
-    @Column(name = "qualificacoes")
     @ElementCollection
+    @CollectionTable(name = "tab_qualificacoes", joinColumns = @JoinColumn(name = "tab_curriculum"))
+    @Column(name = "qualificacoes")
     private List<String> qualificacoes;
 
 }
