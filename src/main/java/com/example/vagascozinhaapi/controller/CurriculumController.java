@@ -19,24 +19,24 @@ public class CurriculumController {
 
     @PostMapping("/salvarCv")
     @ResponseStatus(HttpStatus.CREATED)
-    public CurriculumDtoId salvarCv(@RequestBody @Valid CurriculumDto curriculumDto){
-        return curriculumService.salvarCv(curriculumDto);
+    public CurriculumDtoId salvarCv(@RequestBody @Valid CurriculumDto curriculumDto, @RequestHeader("Authorization") String token){
+        return curriculumService.salvarCv(curriculumDto, token);
     }
 
     @GetMapping("/getCv")
-    public CurriculumDto getCv(@RequestBody TokenDTO tokenDTO){
-        return curriculumService.getCv(tokenDTO);
+    public CurriculumDto getCv(@RequestHeader("Authorization") String token){
+        return curriculumService.getCv(token);
     }
 
     @PutMapping("/updateCv")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateCv(@RequestBody @Valid CurriculumDto curriculumDto){
-        curriculumService.updateCv(curriculumDto);
+    public void updateCv(@RequestBody @Valid CurriculumDto curriculumDto, @RequestHeader("Authorization") String token){
+        curriculumService.updateCv(curriculumDto, token);
     }
 
     @DeleteMapping("/deleteCv")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCv(@RequestBody TokenDTO tokenDTO){
-        curriculumService.deleteCv(tokenDTO);
+    public void deleteCv(@RequestHeader("Authorization") String token){
+        curriculumService.deleteCv(token);
     }
 }

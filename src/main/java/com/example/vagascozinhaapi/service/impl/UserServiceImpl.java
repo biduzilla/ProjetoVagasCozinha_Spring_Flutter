@@ -87,8 +87,9 @@ public class UserServiceImpl implements UserService {
         return userExist.getId();
     }
 
-    public void deleteUser(TokenDTO tokenDTO) {
-        userRepositorio.findByToken(tokenDTO.getToken())
+    public void deleteUser(String token) {
+        token = token.split(" ")[1];
+        userRepositorio.findByToken(token)
                 .map(user -> {
                     userRepositorio.delete(user);
                     return user;
@@ -123,7 +124,8 @@ public class UserServiceImpl implements UserService {
             return new TokenDTO(usuario.getEmail(), token);
 
         } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+            throw new UserNaoEncontrado();
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
 

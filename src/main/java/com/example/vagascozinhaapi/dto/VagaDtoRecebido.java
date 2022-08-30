@@ -14,8 +14,6 @@ import java.util.List;
 @Builder
 public class VagaDtoRecebido {
 
-    @NotNull(message = "{campo.token.obrigatorio}")
-    private String token;
     private Integer userId;
     @NotEmpty(message = "{campo.cargo.obrigatorio}")
     private String cargo;

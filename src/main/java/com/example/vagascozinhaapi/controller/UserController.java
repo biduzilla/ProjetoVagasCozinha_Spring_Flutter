@@ -91,8 +91,8 @@ public class UserController {
     @CrossOrigin
     @DeleteMapping("/deletar")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteUser(@RequestBody TokenDTO tokenDTO) {
-        userService.deleteUser(tokenDTO);
+    public void deleteUser(@RequestHeader("Authorization") String token) {
+        userService.deleteUser(token);
     }
 
 }

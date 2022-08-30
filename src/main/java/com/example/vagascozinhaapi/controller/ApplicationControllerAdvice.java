@@ -23,7 +23,7 @@ public class ApplicationControllerAdvice {
     }
 
     @ExceptionHandler(UserNaoEncontrado.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleUserNotFoundException(UserNaoEncontrado ex){
         return new ApiError(ex.getMessage());
     }

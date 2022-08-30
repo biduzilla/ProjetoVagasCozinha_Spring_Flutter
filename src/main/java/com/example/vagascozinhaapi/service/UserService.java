@@ -18,7 +18,7 @@ public interface UserService {
 
     List<Usuario> getUser();
 
-    void deleteUser(TokenDTO tokenDTO);
+    void deleteUser(String token);
 
     UserDtoId getUserListId();
 

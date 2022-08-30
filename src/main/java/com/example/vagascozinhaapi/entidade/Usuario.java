@@ -48,9 +48,6 @@ public class Usuario {
     @ElementCollection
     private List<Integer> candidaturas;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<VagaInteressada> vagaAceita;
-
     @Column(name = "admin")
     private boolean admin;
 }

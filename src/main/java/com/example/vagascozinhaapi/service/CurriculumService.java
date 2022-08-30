@@ -7,8 +7,8 @@ import com.example.vagascozinhaapi.dto.TokenDTO;
 
 public interface CurriculumService {
 
-    CurriculumDtoId salvarCv(CurriculumDto curriculumDto);
-    CurriculumDto getCv(TokenDTO tokenDTO);
-    void updateCv(CurriculumDto curriculumDto);
-    void deleteCv(TokenDTO tokenDTO);
+    CurriculumDtoId salvarCv(CurriculumDto curriculumDto, String token);
+    CurriculumDto getCv(String token);
+    void updateCv(CurriculumDto curriculumDto, String token);
+    void deleteCv(String token);
 }

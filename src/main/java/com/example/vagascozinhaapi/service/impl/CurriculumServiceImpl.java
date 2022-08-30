@@ -23,10 +23,11 @@ public class CurriculumServiceImpl implements CurriculumService {
 
     private final CurriculumRepository curriculumRepository;
     private final UserRepositorio userRepositorio;
+    private final UsuarioServiceAuthImpl usuarioServiceAuth;
 
     @Override
-    public CurriculumDtoId salvarCv(CurriculumDto curriculumDto) {
-        Usuario user = userRepositorio.findByToken(curriculumDto.getToken()).orElseThrow(TokenInvalidoException::new);
+    public CurriculumDtoId salvarCv(CurriculumDto curriculumDto, String token) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
         if (user.getCv() == StatusCv.NAO_CADASTRADO) {
             user.setCv(StatusCv.CADASTRADO);
 
@@ -51,8 +52,8 @@ public class CurriculumServiceImpl implements CurriculumService {
 
 
     @Override
-    public CurriculumDto getCv(TokenDTO tokenDTO) {
-        Usuario user = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
+    public CurriculumDto getCv(String token) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
         if(user.getCurriculum() == null) {
             throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
         }
@@ -80,8 +81,8 @@ public class CurriculumServiceImpl implements CurriculumService {
     }
 
      @Override
-    public void updateCv(CurriculumDto curriculumDto) {
-        Usuario user = userRepositorio.findByToken(curriculumDto.getToken()).orElseThrow(TokenInvalidoException::new);
+    public void updateCv(CurriculumDto curriculumDto, String token) {
+         Usuario user = usuarioServiceAuth.searchUserbyToken(token);
 
         if(user.getCurriculum() == null) {
             throw new RegrasNegocioException("Curriculo não cadastrado, cadastre um");
@@ -99,8 +100,8 @@ public class CurriculumServiceImpl implements CurriculumService {
     }
 
     @Override
-    public void deleteCv(TokenDTO tokenDTO) {
-        Usuario usuario = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
+    public void deleteCv(String token) {
+        Usuario usuario = usuarioServiceAuth.searchUserbyToken(token);
         curriculumRepository.findById(usuario.getCurriculum().getId())
                 .map(curriculum -> {
                     curriculumRepository.delete(curriculum);

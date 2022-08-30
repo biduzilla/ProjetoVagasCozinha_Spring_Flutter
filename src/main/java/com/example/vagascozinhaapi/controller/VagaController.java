@@ -25,20 +25,20 @@ public class VagaController {
 
     @PostMapping("cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
-    public VagaDtoEnviado salvarVaga(@RequestBody @Valid VagaDtoRecebido vagaDtoRecebido){
-        return vagaService.salvarVaga(vagaDtoRecebido);
+    public VagaDtoEnviado salvarVaga(@RequestBody @Valid VagaDtoRecebido vagaDtoRecebido, @RequestHeader("Authorization") String token){
+        return vagaService.salvarVaga(vagaDtoRecebido, token);
     }
 
     @PostMapping("aceitar/{idVaga}")
     @ResponseStatus(HttpStatus.CREATED)
-    public VagaDtoEnviado aceitarVaga(@PathVariable Integer idVaga, @RequestBody @Valid TokenDTO tokenDTO){
-        return vagaService.aceitarVaga(idVaga, tokenDTO);
+    public VagaDtoEnviado aceitarVaga(@PathVariable Integer idVaga, @RequestHeader("Authorization") String token){
+        return vagaService.aceitarVaga(idVaga, token);
     }
 
-    @PostMapping("listVagas")
+    @GetMapping("minhasVagas")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoId getListVagas(@RequestBody @Valid TokenDTO tokenDTO){
-        return vagaService.getListVagaById(tokenDTO);
+    public VagaDtoId getListVagas(@RequestHeader("Authorization") String token){
+        return vagaService.getListVagaById(token);
     }
 
     @GetMapping("/{idVaga}")
@@ -47,22 +47,22 @@ public class VagaController {
         return vagaService.getVagaById(token,idVaga);
     }
 
-    @PostMapping("minhasVagas/{idVaga}")
+    @GetMapping("verMinhasVagas/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoEnviado getVagaByIdEmpresa(@RequestBody @Valid TokenDTO tokenDTO,@PathVariable Integer idVaga){
-        return vagaService.getVagaByIdEmpresa(tokenDTO,idVaga);
+    public VagaDtoEnviado getVagaByIdEmpresa(@RequestHeader("Authorization") String token,@PathVariable Integer idVaga){
+        return vagaService.getVagaByIdEmpresa(token,idVaga);
     }
 
-    @PostMapping("/lastVagas")
+    @GetMapping("/lastVagas")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoId getLastVagas(@RequestBody @Valid TokenDTO tokenDTO){
-        return vagaService.lastTenVagas(tokenDTO);
+    public VagaDtoId getLastVagas(@RequestHeader("Authorization") String token){
+        return vagaService.lastTenVagas(token);
     }
 
-    @PostMapping("procurar")
+    @GetMapping("procurar")
     @ResponseStatus(HttpStatus.OK)
-    public List<VagaDtoEnviado> searchVaga(@RequestBody TokenDTO tokenDTO, Vaga filtro){
-        return vagaService.searchVaga(tokenDTO,filtro);
+    public List<VagaDtoEnviado> searchVaga(@RequestHeader("Authorization") String token, Vaga filtro){
+        return vagaService.searchVaga(token,filtro);
     }
 
 //    @GetMapping("{idVaga}")
@@ -73,14 +73,14 @@ public class VagaController {
 
     @PutMapping("update/{idVaga}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateVaga(@PathVariable Integer idVaga, @RequestBody @Valid VagaDtoRecebido vagaDtoRecebido){
-        vagaService.updateVaga(idVaga, vagaDtoRecebido);
+    public void updateVaga(@PathVariable Integer idVaga, @RequestBody @Valid VagaDtoRecebido vagaDtoRecebido, @RequestHeader("Authorization") String token){
+        vagaService.updateVaga(idVaga, vagaDtoRecebido, token);
     }
 
     @DeleteMapping ("/{idVaga}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteVaga(@RequestBody @Valid TokenDTO tokenDTO,@PathVariable Integer idVaga){
-        vagaService.deleteVaga(tokenDTO, idVaga);
+    public void deleteVaga(@RequestHeader("Authorization") String token,@PathVariable Integer idVaga){
+        vagaService.deleteVaga(token, idVaga);
     }
 
 
