@@ -35,7 +35,7 @@ public class ApplicationControllerAdvice {
     }
 
     @ExceptionHandler(SenhaInvalidaException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleSenhaInvalidaException(SenhaInvalidaException ex){
         return new ApiError(ex.getMessage());
     }
@@ -53,7 +53,7 @@ public class ApplicationControllerAdvice {
     }
 
     @ExceptionHandler(UserJaCadastrado.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleUserFoundException(UserJaCadastrado ex){
         return new ApiError(ex.getMessage());
     }

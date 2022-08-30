@@ -82,11 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Integer loginUser(Usuario user) {
-        Usuario userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
-
-        if (userExist == null) {
-            throw new RegrasNegocioException("Dados Incorretos");
-        }
+        Usuario userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword()).orElseThrow(UserJaCadastrado::new);
 
         return userExist.getId();
     }
@@ -133,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public TokenDTO atualizar(Usuario user) {
-        Usuario usuario = userRepositorio.findByToken(user.getToken()).orElseThrow(TokenInvalidoException::new);
+        Usuario usuario = usuarioServiceImpl.searchUserbyToken(user.getToken());
 
         if (userRepositorio.existsByEmail(user.getEmail())) {
             throw new UserJaCadastrado();
@@ -153,9 +149,8 @@ public class UserServiceImpl implements UserService {
         return new TokenDTO(usuario.getEmail(), token);
     }
 
-    @Override
-    public UserDto getDadosUser(TokenDTO tokenDTO) {
-        Usuario usuario = userRepositorio.findByToken(tokenDTO.getToken()).orElseThrow(TokenInvalidoException::new);
+    public UserDto getDadosUser(String token) {
+        Usuario usuario = usuarioServiceImpl.searchUserbyToken(token);
 
         return UserDto.builder()
                 .email(usuario.getEmail())

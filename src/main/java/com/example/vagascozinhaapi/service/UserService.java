@@ -26,5 +26,5 @@ public interface UserService {
 
     TokenDTO atualizar(Usuario user);
 
-    UserDto getDadosUser(TokenDTO tokenDTO);
+    UserDto getDadosUser(String token);
 }

@@ -1,9 +1,6 @@
 package com.example.vagascozinhaapi.service;
 
-import com.example.vagascozinhaapi.dto.TokenDTO;
-import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
-import com.example.vagascozinhaapi.dto.VagaDtoId;
-import com.example.vagascozinhaapi.dto.VagaDtoRecebido;
+import com.example.vagascozinhaapi.dto.*;
 import com.example.vagascozinhaapi.entidade.Vaga;
 
 import java.util.List;

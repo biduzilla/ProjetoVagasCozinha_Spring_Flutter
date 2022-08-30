@@ -74,10 +74,10 @@ public class UserController {
     }
 
     @CrossOrigin
-    @PostMapping("getDados")
+    @GetMapping("getDados")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getDados(@RequestBody @Valid TokenDTO tokenDTO) {
-        return userService.getDadosUser(tokenDTO);
+    public UserDto getDados(@RequestHeader("Authorization") String token) {
+        return userService.getDadosUser(token);
     }
 
     @CrossOrigin

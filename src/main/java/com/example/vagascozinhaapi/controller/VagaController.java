@@ -43,7 +43,7 @@ public class VagaController {
 
     @GetMapping("/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoEnviado getVagaById(@RequestHeader("Authorization") String token , @PathVariable Integer idVaga){
+    public VagaDtoEnviado getVagaById(@RequestHeader("Authorization") String token, @PathVariable Integer idVaga){
         return vagaService.getVagaById(token,idVaga);
     }
 
