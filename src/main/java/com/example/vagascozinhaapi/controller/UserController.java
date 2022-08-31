@@ -39,13 +39,20 @@ public class UserController {
     }
 
     @CrossOrigin
+    @PutMapping("/atualizar")
+    @ResponseStatus(HttpStatus.OK)
+    public TokenDTO updateUser(@RequestBody Usuario user) {
+        return userService.atualizar(user);
+    }
+
+    @CrossOrigin
     @GetMapping()
     public UserDtoId getUserListId() {
         return userService.getUserListId();
     }
 
     @GetMapping("/mostrarUser")
-    public List<Usuario> mostrarUser(){
+    public List<Usuario> mostrarUser() {
         return userRepositorio.findAll();
     }
 
@@ -67,38 +74,25 @@ public class UserController {
     }
 
     @CrossOrigin
+    @GetMapping("getDados")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto getDados(@RequestHeader("Authorization") String token) {
+        return userService.getDadosUser(token);
+    }
+
+    @CrossOrigin
     @PostMapping("/auth")
     @ResponseStatus(HttpStatus.OK)
     public TokenDTO authUser(@RequestBody @Valid CredenciaisDto credenciaisDto) {
         return userService.authUser(credenciaisDto);
-//        try {
-//            Usuario usuario =
-//                    Usuario.builder()
-//                            .email(credenciaisDto.getLogin())
-//                            .password(credenciaisDto.getSenha())
-//                            .build();
-//
-//            UserDetails userAutentificado = usuarioServiceImpl.autenticar(usuario);
-//            String token = jwtService.gerarToken(usuario);
-//
-//            return new TokenDTO(usuario.getEmail(), token);
-//        } catch (UsernameNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-//        }
     }
 
-    @CrossOrigin
-    @PutMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable Integer id, @RequestBody @Valid Usuario user) {
-        userService.updateUser(id, user);
-    }
 
     @CrossOrigin
-    @DeleteMapping("{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Integer id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/deletar")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@RequestHeader("Authorization") String token) {
+        userService.deleteUser(token);
     }
 
 }

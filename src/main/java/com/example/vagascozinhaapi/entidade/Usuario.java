@@ -2,6 +2,8 @@ package com.example.vagascozinhaapi.entidade;
 
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -41,6 +43,11 @@ public class Usuario {
 
     @OneToMany(mappedBy = "user")
     private List<Vaga> vaga;
+
+    @ElementCollection
+    @Column(name = "candidaturas")
+    @CollectionTable(name = "tab_candidaturas", joinColumns = @JoinColumn(name = "tab_user"))
+    private List<Integer> candidaturas;
 
     @Column(name = "admin")
     private boolean admin;

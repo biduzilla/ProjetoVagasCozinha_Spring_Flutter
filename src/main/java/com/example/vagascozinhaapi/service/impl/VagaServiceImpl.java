@@ -1,10 +1,7 @@
 package com.example.vagascozinhaapi.service.impl;
 
 import com.example.vagascozinhaapi.Exception.*;
-import com.example.vagascozinhaapi.dto.CurriculumDto;
-import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
-import com.example.vagascozinhaapi.dto.VagaDtoId;
-import com.example.vagascozinhaapi.dto.VagaDtoRecebido;
+import com.example.vagascozinhaapi.dto.*;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Usuario;
 import com.example.vagascozinhaapi.entidade.Vaga;
@@ -16,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,12 +27,12 @@ public class VagaServiceImpl implements VagaService {
     private final VagasRepository vagasRepository;
     private final UserRepositorio userRepositorio;
     private final CurriculumRepository curriculumRepository;
+    private final UsuarioServiceAuthImpl usuarioServiceAuth;
 
 
     @Override
-    public VagaDtoEnviado salvarVaga(VagaDtoRecebido vagaDtoRecebido) {
-        System.out.println("IdUSer: " + vagaDtoRecebido.getUserId());
-        Usuario user = userRepositorio.findById(vagaDtoRecebido.getUserId()).orElseThrow(UserNaoEncontrado::new);
+    public VagaDtoEnviado salvarVaga(VagaDtoRecebido vagaDtoRecebido, String token) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
 
         Vaga vaga = DtoToVaga(vagaDtoRecebido, user);
 
@@ -55,28 +53,39 @@ public class VagaServiceImpl implements VagaService {
     }
 
     @Override
-    public VagaDtoId getListVagaById(Integer id) {
-        Usuario user = userRepositorio.findById(id).orElseThrow(UserNaoEncontrado::new);
+    public VagaDtoId getListVagaById(String token) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
 
         var listVagas = user.getVaga()
                 .stream()
                 .map(Vaga::getId)
                 .collect(Collectors.toList());
 
-        VagaDtoId vagaDtoId = new VagaDtoId();
-        vagaDtoId.setVagaId(listVagas);
-        return vagaDtoId;
+        return VagaDtoId.builder()
+                .vagaId(listVagas)
+                .build();
+
     }
 
     @Override
-    public VagaDtoEnviado getVagaById(Integer idUSer, Integer idVaga) {
-        Usuario user = userRepositorio.findById(idUSer).orElseThrow(UserNaoEncontrado::new);
-        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrado::new);
+    @Transactional(noRollbackFor = VagaApagadaNaoEncontrada.class)
+    public VagaDtoEnviado getVagaById(String token, Integer idVaga) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
+
+        if (user.getCandidaturas().contains(idVaga) && !vagasRepository.existsById(idVaga)) {
+            List<Integer> listCandidaturas = user.getCandidaturas();
+            listCandidaturas.removeAll(List.of(idVaga));
+            userRepositorio.save(user);
+            throw new VagaApagadaNaoEncontrada();
+
+        }
+
+        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
 
 
         return VagaDtoEnviado.builder()
                 .vagaId(idVaga)
-                .userId(idUSer)
+                .userId(user.getId())
                 .cargo(vaga.getCargo())
                 .descricao(vaga.getDescricao())
                 .local(vaga.getLocal())
@@ -88,16 +97,11 @@ public class VagaServiceImpl implements VagaService {
     }
 
     @Override
-    public VagaDtoEnviado getVagaByIdEmpresa(Integer idUSer, Integer idVaga) {
-        Usuario user = userRepositorio.findById(idUSer).orElseThrow(UserNaoEncontrado::new);
-        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrado::new);
+    public VagaDtoEnviado getVagaByIdEmpresa(String token, Integer idVaga) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
+        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
 
-        List<Integer> listVagasId = vagasRepository.findAllByUserId(idUSer)
-                .stream()
-                .map(
-                        Vaga::getId
-                ).collect(Collectors.toList());
-        if (!listVagasId.contains(idVaga)) {
+        if (verificarDonoVaga(user, idVaga)) {
             throw new RegrasNegocioException("Essa vaga não te pertence!");
         }
 
@@ -105,7 +109,7 @@ public class VagaServiceImpl implements VagaService {
 
         return VagaDtoEnviado.builder()
                 .vagaId(idVaga)
-                .userId(idUSer)
+                .userId(user.getId())
                 .cargo(vaga.getCargo())
                 .descricao(vaga.getDescricao())
                 .local(vaga.getLocal())
@@ -116,17 +120,25 @@ public class VagaServiceImpl implements VagaService {
                 .curriculumDtos(cvDtoList)
                 .build();
     }
-
-    public Vaga getVagaByIdTeste(Integer idVaga) {
-        return vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
+    public boolean verificarDonoVaga(Usuario user, Integer idVaga) {
+        List<Integer> listVagasId = vagasRepository.findAllByUserId(user.getId())
+                .stream()
+                .map(
+                        Vaga::getId
+                ).collect(Collectors.toList());
+        return !listVagasId.contains(idVaga);
     }
 
     @Override
-    public void updateVaga(Integer idVaga, VagaDtoRecebido vagaDtoRecebido) {
-        Usuario user = userRepositorio.findById(vagaDtoRecebido.getUserId()).orElseThrow(UserNaoEncontrado::new);
+    public void updateVaga(Integer idVaga, VagaDtoRecebido vagaDtoRecebido, String token) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
 
         if (user.getVaga() == null) {
             throw new RegrasNegocioException("Vaga não cadastrado, cadastre um");
+        }
+
+        if (verificarDonoVaga(user, idVaga)) {
+            throw new RegrasNegocioException("Essa vaga não te pertence!");
         }
 
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
@@ -143,8 +155,13 @@ public class VagaServiceImpl implements VagaService {
     }
 
     @Override
-    public void deleteVaga(Integer idUser, Integer idVaga) {
-        Usuario user = userRepositorio.findById(idUser).orElseThrow(UserNaoEncontrado::new);
+    public void deleteVaga(String token, Integer idVaga) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
+
+        if (verificarDonoVaga(user, idVaga)) {
+            throw new RegrasNegocioException("Essa vaga não te pertence!");
+        }
+
         vagasRepository.findById(idVaga).map(
                         vaga -> {
                             vagasRepository.delete(vaga);
@@ -155,11 +172,20 @@ public class VagaServiceImpl implements VagaService {
         userRepositorio.save(user);
     }
 
+    public Curriculum validCv(Usuario user) {
+        if (user.getCurriculum() == null) {
+            throw new CvNaoEncontrado();
+        }
+        return curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
+    }
+
     @Override
-    public VagaDtoEnviado aceitarVaga(Integer idUser, Integer idVaga) {
-        Usuario user = userRepositorio.findById(idUser).orElseThrow(UserNaoEncontrado::new);
+    @Transactional
+    public VagaDtoEnviado aceitarVaga(Integer idVaga, String token) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-        Curriculum curriculum = curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
+        Curriculum curriculum = validCv(user);
+
 
         List<Curriculum> cv = vaga.getCurriculum();
         if (cv.contains(curriculum)) {
@@ -169,11 +195,14 @@ public class VagaServiceImpl implements VagaService {
         vaga.setCurriculum(cv);
         vagasRepository.save(vaga);
 
-        List<CurriculumDto> cvDtoList = converter(idVaga);
+        List<Integer> addVagaToList = user.getCandidaturas();
+        addVagaToList.add(vaga.getId());
+        user.setCandidaturas(addVagaToList);
+        userRepositorio.save(user);
 
         return VagaDtoEnviado.builder()
                 .vagaId(idVaga)
-                .userId(idUser)
+                .userId(user.getId())
                 .cargo(vaga.getCargo())
                 .descricao(vaga.getDescricao())
                 .local(vaga.getLocal())
@@ -181,7 +210,6 @@ public class VagaServiceImpl implements VagaService {
                 .requisitos(vaga.getRequisitos())
                 .remuneracao(vaga.getRemuneracao())
                 .dataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
-                .curriculumDtos(cvDtoList)
                 .build();
     }
 
@@ -221,8 +249,8 @@ public class VagaServiceImpl implements VagaService {
     }
 
     @Override
-    public List<VagaDtoEnviado> searchVaga(Integer idUser, Vaga filtro) {
-        Usuario user = userRepositorio.findById(idUser).orElseThrow(UserNaoEncontrado::new);
+    public List<VagaDtoEnviado> searchVaga(String token, Vaga filtro) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
 
         ExampleMatcher matcher = ExampleMatcher
                 .matchingAny()
@@ -231,14 +259,18 @@ public class VagaServiceImpl implements VagaService {
                         ExampleMatcher.StringMatcher.CONTAINING);
 
         Example<Vaga> example = Example.of(filtro, matcher);
+
         List<Vaga> lista = vagasRepository.findAll(example);
+        if (lista.isEmpty()){
+            throw new VagaNaoEncontrada();
+        }
 
         return lista
                 .stream()
                 .map(
                         vaga -> {
                             VagaDtoEnviado vagaDto = new VagaDtoEnviado();
-                            vagaDto.setUserId(idUser);
+                            vagaDto.setUserId(user.getId());
                             vagaDto.setVagaId(vaga.getId());
                             vagaDto.setCargo(vaga.getCargo());
                             vagaDto.setDescricao(vaga.getCargo());
@@ -252,18 +284,29 @@ public class VagaServiceImpl implements VagaService {
                 ).collect(Collectors.toList());
     }
 
-    @Override
-    public VagaDtoId lastTenVagas(Integer idUser) {
-        Usuario user = userRepositorio.findById(idUser).orElseThrow(UserNaoEncontrado::new);
-
+    public VagaDtoId getAllVagasId() {
         VagaDtoId vagaDtoId = new VagaDtoId();
-
         List<Integer> listVagas = vagasRepository.findAll()
                 .stream()
                 .map(
                         Vaga::getId
                 ).collect(Collectors.toList());
         vagaDtoId.setVagaId(listVagas);
+        return vagaDtoId;
+    }
+
+    @Override
+    public VagaDtoId lastTenVagas(String token) {
+        Usuario user = usuarioServiceAuth.searchUserbyToken(token);
+
+        VagaDtoId vagaDtoId = getAllVagasId();
+
+//        List<Integer> listVagas = vagasRepository.findAll()
+//                .stream()
+//                .map(
+//                        Vaga::getId
+//                ).collect(Collectors.toList());
+//        vagaDtoId.setVagaId(listVagas);
 
         if (vagaDtoId.getVagaId().size() > 10) {
             vagaDtoId.setVagaId(vagaDtoId
