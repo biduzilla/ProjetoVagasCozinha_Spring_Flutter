@@ -2,7 +2,6 @@ package com.example.vagascozinhaapi.service;
 
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
-import com.example.vagascozinhaapi.dto.TokenDTO;
 
 
 public interface CurriculumService {

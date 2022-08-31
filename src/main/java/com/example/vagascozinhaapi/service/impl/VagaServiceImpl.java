@@ -301,13 +301,6 @@ public class VagaServiceImpl implements VagaService {
 
         VagaDtoId vagaDtoId = getAllVagasId();
 
-//        List<Integer> listVagas = vagasRepository.findAll()
-//                .stream()
-//                .map(
-//                        Vaga::getId
-//                ).collect(Collectors.toList());
-//        vagaDtoId.setVagaId(listVagas);
-
         if (vagaDtoId.getVagaId().size() > 10) {
             vagaDtoId.setVagaId(vagaDtoId
                     .getVagaId()

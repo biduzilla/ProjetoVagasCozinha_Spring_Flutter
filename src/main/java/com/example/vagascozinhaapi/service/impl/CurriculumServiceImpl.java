@@ -2,11 +2,8 @@ package com.example.vagascozinhaapi.service.impl;
 
 import com.example.vagascozinhaapi.Exception.CvNaoEncontrado;
 import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
-import com.example.vagascozinhaapi.Exception.TokenInvalidoException;
-import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.CurriculumDto;
 import com.example.vagascozinhaapi.dto.CurriculumDtoId;
-import com.example.vagascozinhaapi.dto.TokenDTO;
 import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.Usuario;
@@ -59,15 +56,6 @@ public class CurriculumServiceImpl implements CurriculumService {
         }
         Curriculum cv =  curriculumRepository.findById(user.getCurriculum().getId()).orElseThrow(CvNaoEncontrado::new);
 
-//        CurriculumDto curriculumDto = new CurriculumDto();
-//        curriculumDto.setIdCv(cv.getId());
-//        curriculumDto.setNome(cv.getNome());
-//        curriculumDto.setEmailContatoCV(cv.getEmailContatoCV());
-//        curriculumDto.setTelefone(cv.getTelefone());
-//        curriculumDto.setSemestre(cv.getSemestre());
-//        curriculumDto.setSobre(cv.getSobre());
-//        curriculumDto.setExperiencias(cv.getExperiencias());
-//        curriculumDto.setQualificacoes(cv.getQualificacoes());
         return CurriculumDto.builder()
                 .idCv(cv.getId())
                 .nome(cv.getNome())

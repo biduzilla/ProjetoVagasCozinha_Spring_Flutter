@@ -3,7 +3,6 @@ package com.example.vagascozinhaapi.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Setter
@@ -14,8 +13,6 @@ import java.util.List;
 @Builder
 public class CurriculumDto {
     private Integer idCv;
-//    @NotNull(message = "{campo.token.obrigatorio}")
-//    private String token;
     @NotEmpty(message = "{campo.nome.obrigatorio}")
     private String nome;
     @NotEmpty(message = "{campo.email.obrigatorio}")

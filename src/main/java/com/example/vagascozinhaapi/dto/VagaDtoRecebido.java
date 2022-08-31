@@ -3,7 +3,6 @@ package com.example.vagascozinhaapi.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Setter

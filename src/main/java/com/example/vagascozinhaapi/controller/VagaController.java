@@ -1,18 +1,14 @@
 package com.example.vagascozinhaapi.controller;
 
-import com.example.vagascozinhaapi.dto.TokenDTO;
 import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
 import com.example.vagascozinhaapi.dto.VagaDtoId;
 import com.example.vagascozinhaapi.dto.VagaDtoRecebido;
 import com.example.vagascozinhaapi.entidade.Vaga;
-import com.example.vagascozinhaapi.repositorio.VagasRepository;
 import com.example.vagascozinhaapi.service.impl.VagaServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 

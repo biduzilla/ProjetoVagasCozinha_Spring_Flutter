@@ -2,7 +2,6 @@ package com.example.vagascozinhaapi.config;
 
 import com.example.vagascozinhaapi.security.JwtAuthFilter;
 import com.example.vagascozinhaapi.security.JwtService;
-import com.example.vagascozinhaapi.service.UserService;
 import com.example.vagascozinhaapi.service.impl.UsuarioServiceAuthImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
