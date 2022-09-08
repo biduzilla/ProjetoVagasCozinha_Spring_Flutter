@@ -16,7 +16,7 @@ import java.util.List;
 public class Curriculum {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -25,7 +25,7 @@ public class Curriculum {
     @JoinColumn(name = "user_id")
     private Usuario user;
 
-//    @JsonBackReference
+    //    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "vaga_id")
     private Vaga vaga;
@@ -45,12 +45,11 @@ public class Curriculum {
     @Column(name = "semestre")
     private String semestre;
 
-    @Column(name = "experiencias")
+    @Column(name = "tab_experiencias")
     @ElementCollection
     private List<String> experiencias;
 
-    @Column(name = "qualificacoes")
+    @Column(name = "tab_qualificacoes")
     @ElementCollection
     private List<String> qualificacoes;
-
 }

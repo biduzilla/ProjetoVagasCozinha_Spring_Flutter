@@ -23,7 +23,7 @@ public class Vaga {
     private Usuario user;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "cargo")
@@ -45,7 +45,7 @@ public class Vaga {
     @Column(name = "remuneracao")
     private double remuneracao;
 
-    @Column(name = "dataPedido")
+    @Column(name = "data_postada")
     private LocalDate dataPostada;
 
     @Column(name = "requisitos")

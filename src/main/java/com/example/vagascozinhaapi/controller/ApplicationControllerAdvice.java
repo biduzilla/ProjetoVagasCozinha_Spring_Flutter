@@ -1,9 +1,6 @@
 package com.example.vagascozinhaapi.controller;
 
-import com.example.vagascozinhaapi.Exception.CvNaoEncontrado;
-import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
-import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
-import com.example.vagascozinhaapi.Exception.VagaNaoEncontrada;
+import com.example.vagascozinhaapi.Exception.*;
 import com.example.vagascozinhaapi.errors.ApiError;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -26,20 +23,44 @@ public class ApplicationControllerAdvice {
     }
 
     @ExceptionHandler(UserNaoEncontrado.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handlePedidoNotFoundException(UserNaoEncontrado ex){
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleUserNotFoundException(UserNaoEncontrado ex){
         return new ApiError(ex.getMessage());
     }
 
     @ExceptionHandler(CvNaoEncontrado.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handlePedidoNotFoundException(CvNaoEncontrado ex){
+    public ApiError handleCVNotFoundException(CvNaoEncontrado ex){
+        return new ApiError(ex.getMessage());
+    }
+
+    @ExceptionHandler(SenhaInvalidaException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleSenhaInvalidaException(SenhaInvalidaException ex){
         return new ApiError(ex.getMessage());
     }
 
     @ExceptionHandler(VagaNaoEncontrada.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handlePedidoNotFoundException(VagaNaoEncontrada ex){
+    public ApiError handleVagaNotFoundException(VagaNaoEncontrada ex){
+        return new ApiError(ex.getMessage());
+    }
+
+    @ExceptionHandler(VagaApagadaNaoEncontrada.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleVagaNotFoundException(VagaApagadaNaoEncontrada ex){
+        return new ApiError(ex.getMessage());
+    }
+
+    @ExceptionHandler(UserJaCadastrado.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleUserFoundException(UserJaCadastrado ex){
+        return new ApiError(ex.getMessage());
+    }
+
+    @ExceptionHandler(TokenInvalidoException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiError handleInvalidTOkenException(TokenInvalidoException ex){
         return new ApiError(ex.getMessage());
     }
 

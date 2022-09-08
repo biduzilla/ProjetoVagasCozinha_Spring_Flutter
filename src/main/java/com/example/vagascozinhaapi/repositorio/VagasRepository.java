@@ -10,6 +10,8 @@ import java.util.List;
 public interface VagasRepository extends JpaRepository<Vaga, Integer> {
     List<Vaga> findAllByUserId(Integer id);
 
+    boolean existsById(Integer id);
+
     @Query(value = " select * from vaga c where c.cargo like '%:cargo%' ", nativeQuery = true)
     List<Vaga> encontrarPorCargo( @Param("cargo") String cargo );
 }

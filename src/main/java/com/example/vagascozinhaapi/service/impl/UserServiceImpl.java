@@ -1,11 +1,11 @@
 package com.example.vagascozinhaapi.service.impl;
 
 import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
+import com.example.vagascozinhaapi.Exception.UserJaCadastrado;
 import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
 import com.example.vagascozinhaapi.dto.CredenciaisDto;
 import com.example.vagascozinhaapi.dto.TokenDTO;
 import com.example.vagascozinhaapi.dto.UserDto;
-import com.example.vagascozinhaapi.dto.UserDtoId;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.Usuario;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
@@ -13,16 +13,11 @@ import com.example.vagascozinhaapi.security.JwtService;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepositorio userRepositorio;
     private final UsuarioServiceAuthImpl usuarioServiceImpl;
     private final JwtService jwtService;
+
 
     @Autowired
     private PasswordEncoder encoder;
@@ -44,61 +40,18 @@ public class UserServiceImpl implements UserService {
             UserDto userDto = new UserDto();
             userDto.setEmail(user.getEmail());
             userDto.setIdUser(user.getId());
+            userDto.setToken(user.getToken());
             userDto.setCv(StatusCv.NAO_CADASTRADO.name());
+
             return userDto;
         } else {
             throw new RegrasNegocioException("Usuário já cadastrado");
         }
     }
 
-
-    public UserDto getUserById(Integer id) {
-        Usuario user = userRepositorio.findById(id)
-                .orElseThrow(UserNaoEncontrado::new);
-
-        return UserDto.builder()
-                .idUser(user.getId())
-                .email(user.getEmail())
-                .cv(user.getCv().name())
-                .build();
-    }
-
-    public List<Usuario> getUser() {
-        return userRepositorio.findAll();
-    }
-
-
-    public UserDtoId getUserListId() {
-        UserDtoId userDtoId = new UserDtoId();
-
-        var listaUsers = userRepositorio.findAll()
-                .stream()
-                .map(
-                        Usuario::getId
-                ).collect(Collectors.toList());
-        userDtoId.setIdUser(listaUsers);
-        return userDtoId;
-    }
-
-    public Integer loginUser(Usuario user) {
-        Usuario userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
-
-        if (userExist == null) {
-            throw new RegrasNegocioException("Dados Incorretos");
-        }
-
-        return userExist.getId();
-    }
-
-    public void salvarTokenUser(Usuario user, String token) {
-        Usuario userExist = userRepositorio.findByEmailAndAndPassword(user.getEmail(), user.getPassword());
-        userExist.setToken(token);
-        userRepositorio.save(userExist);
-
-    }
-
-    public void deleteUser(Integer id) {
-        userRepositorio.findById(id)
+    public void deleteUser(String token) {
+        token = token.split(" ")[1];
+        userRepositorio.findByToken(token)
                 .map(user -> {
                     userRepositorio.delete(user);
                     return user;
@@ -119,8 +72,8 @@ public class UserServiceImpl implements UserService {
         try {
             Usuario usuario =
                     Usuario.builder()
-                            .email(credenciaisDto.getLogin())
-                            .password(credenciaisDto.getSenha())
+                            .email(credenciaisDto.getEmail())
+                            .password(credenciaisDto.getPassword())
                             .build();
 
             UserDetails userAutentificado = usuarioServiceImpl.autenticar(usuario);
@@ -133,8 +86,39 @@ public class UserServiceImpl implements UserService {
             return new TokenDTO(usuario.getEmail(), token);
 
         } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+            throw new UserNaoEncontrado();
         }
     }
 
+    @Transactional
+    public TokenDTO atualizar(Usuario user) {
+        Usuario usuario = usuarioServiceImpl.searchUserbyToken(user.getToken());
+
+        if (userRepositorio.existsByEmail(user.getEmail())) {
+            throw new UserJaCadastrado();
+        }
+
+        String senhaCriptografada = encoder.encode(user.getPassword());
+        user.setPassword(senhaCriptografada);
+
+        usuario.setId(usuario.getId());
+
+        usuario.setPassword(user.getPassword());
+        usuario.setEmail(user.getEmail());
+        String token = jwtService.gerarToken(usuario);
+        usuario.setToken(token);
+        userRepositorio.save(usuario);
+
+        return new TokenDTO(usuario.getEmail(), token);
+    }
+
+    public UserDto getDadosUser(String token) {
+        Usuario usuario = usuarioServiceImpl.searchUserbyToken(token);
+
+        return UserDto.builder()
+                .email(usuario.getEmail())
+                .cv(usuario.getCv().name())
+                .vagasAceitas(usuario.getCandidaturas())
+                .build();
+    }
 }

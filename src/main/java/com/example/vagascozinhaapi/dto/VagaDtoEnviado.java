@@ -3,7 +3,6 @@ package com.example.vagascozinhaapi.dto;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Setter
 @Getter

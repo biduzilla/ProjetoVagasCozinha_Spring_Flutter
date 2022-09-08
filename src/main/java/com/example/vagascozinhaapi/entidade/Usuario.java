@@ -18,7 +18,7 @@ import java.util.List;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -41,6 +41,11 @@ public class Usuario {
 
     @OneToMany(mappedBy = "user")
     private List<Vaga> vaga;
+
+    @ElementCollection
+    @Column(name = "candidaturas")
+    @CollectionTable(name = "tab_candidaturas", joinColumns = @JoinColumn(name = "tab_user"))
+    private List<Integer> candidaturas;
 
     @Column(name = "admin")
     private boolean admin;

@@ -3,15 +3,9 @@ package com.example.vagascozinhaapi.controller;
 import com.example.vagascozinhaapi.dto.VagaDtoEnviado;
 import com.example.vagascozinhaapi.dto.VagaDtoId;
 import com.example.vagascozinhaapi.dto.VagaDtoRecebido;
-import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Vaga;
-import com.example.vagascozinhaapi.repositorio.CurriculumRepository;
-import com.example.vagascozinhaapi.repositorio.UserRepositorio;
-import com.example.vagascozinhaapi.repositorio.VagasRepository;
 import com.example.vagascozinhaapi.service.impl.VagaServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,67 +18,60 @@ import java.util.List;
 public class VagaController {
 
     private final VagaServiceImpl vagaService;
-    private final VagasRepository vagasRepository;
-    private final UserRepositorio userRepositorio;
-    private final CurriculumRepository curriculumRepository;
 
     @PostMapping("cadastrar")
     @ResponseStatus(HttpStatus.CREATED)
-    public VagaDtoEnviado salvarVaga(@RequestBody @Valid VagaDtoRecebido vagaDtoRecebido){
-        return vagaService.salvarVaga(vagaDtoRecebido);
+    public VagaDtoEnviado salvarVaga(@RequestBody @Valid VagaDtoRecebido vagaDtoRecebido, @RequestHeader("Authorization") String token){
+        return vagaService.salvarVaga(vagaDtoRecebido, token);
     }
 
-    @PostMapping("aceitar/{idUser}/{idVaga}")
+    @PostMapping("aceitar/{idVaga}")
     @ResponseStatus(HttpStatus.CREATED)
-    public VagaDtoEnviado aceitarVaga(@PathVariable Integer idUser,@PathVariable Integer idVaga){
-        return vagaService.aceitarVaga(idUser, idVaga);
+    public VagaDtoEnviado aceitarVaga(@PathVariable Integer idVaga, @RequestHeader("Authorization") String token){
+        return vagaService.aceitarVaga(idVaga, token);
     }
 
-    @GetMapping("listVagas/{id}")
+    @GetMapping("minhasVagas")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoId getListVagas(@PathVariable Integer id){
-        return vagaService.getListVagaById(id);
+    public VagaDtoId getListVagas(@RequestHeader("Authorization") String token){
+        return vagaService.getListVagaById(token);
     }
 
-    @GetMapping("{idUser}/{idVaga}")
+    @GetMapping("/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoEnviado getVagaById(@PathVariable Integer idUser,@PathVariable Integer idVaga){
-        return vagaService.getVagaById(idUser,idVaga);
+    public VagaDtoEnviado getVagaById(@RequestHeader("Authorization") String token, @PathVariable Integer idVaga){
+        return vagaService.getVagaById(token,idVaga);
     }
 
-    @GetMapping("verVaga/{idUser}/{idVaga}")
+    @GetMapping("verMinhasVagas/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoEnviado getVagaByIdEmpresa(@PathVariable Integer idUser,@PathVariable Integer idVaga){
-        return vagaService.getVagaByIdEmpresa(idUser,idVaga);
+    public VagaDtoEnviado getVagaByIdEmpresa(@RequestHeader("Authorization") String token,@PathVariable Integer idVaga){
+        return vagaService.getVagaByIdEmpresa(token,idVaga);
     }
 
-    @GetMapping("lastVagas/{idUser}")
+    @GetMapping("/lastVagas")
     @ResponseStatus(HttpStatus.OK)
-    public VagaDtoId getLastVagas(@PathVariable Integer idUser){
-        return vagaService.lastTenVagas(idUser);
+    public VagaDtoId getLastVagas(@RequestHeader("Authorization") String token){
+        return vagaService.lastTenVagas(token);
     }
 
-    @GetMapping("procurar/{idUser}")
+    @GetMapping("procurar")
     @ResponseStatus(HttpStatus.OK)
-    public List<VagaDtoEnviado> searchVaga(@PathVariable Integer idUser, Vaga filtro){
-        return vagaService.searchVaga(idUser,filtro);
-    }
-
-    @GetMapping("{idVaga}")
-    @ResponseStatus(HttpStatus.OK)
-    public Vaga getVagaByIdTeste(@PathVariable Integer idVaga){
-        return vagaService.getVagaByIdTeste(idVaga);
+    public List<VagaDtoEnviado> searchVaga(@RequestHeader("Authorization") String token, Vaga filtro){
+        return vagaService.searchVaga(token,filtro);
     }
 
     @PutMapping("update/{idVaga}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateVaga(@PathVariable Integer idVaga, @RequestBody @Valid VagaDtoRecebido vagaDtoRecebido){
-        vagaService.updateVaga(idVaga, vagaDtoRecebido);
+    public void updateVaga(@PathVariable Integer idVaga, @RequestBody @Valid VagaDtoRecebido vagaDtoRecebido, @RequestHeader("Authorization") String token){
+        vagaService.updateVaga(idVaga, vagaDtoRecebido, token);
     }
 
-    @DeleteMapping ("{idUser}/{idVaga}")
+    @DeleteMapping ("/{idVaga}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteVaga(@PathVariable Integer idUser,@PathVariable Integer idVaga){
-        vagaService.deleteVaga(idUser, idVaga);
+    public void deleteVaga(@RequestHeader("Authorization") String token,@PathVariable Integer idVaga){
+        vagaService.deleteVaga(token, idVaga);
     }
+
+
 }

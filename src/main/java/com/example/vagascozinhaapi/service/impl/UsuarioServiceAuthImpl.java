@@ -1,6 +1,7 @@
 package com.example.vagascozinhaapi.service.impl;
 
 import com.example.vagascozinhaapi.Exception.SenhaInvalidaException;
+import com.example.vagascozinhaapi.Exception.TokenInvalidoException;
 import com.example.vagascozinhaapi.entidade.Usuario;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,12 @@ public class UsuarioServiceAuthImpl implements UserDetailsService {
             return user;
         }
         throw new SenhaInvalidaException();
+    }
+
+    public Usuario searchUserbyToken(String token){
+        if (token.contains("Bearer")) {
+            token = token.split(" ")[1];
+        }
+        return usuarioRepository.findByToken(token).orElseThrow(TokenInvalidoException::new);
     }
 }

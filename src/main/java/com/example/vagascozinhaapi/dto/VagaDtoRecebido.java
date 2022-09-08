@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Builder
 public class VagaDtoRecebido {
+
     private Integer userId;
     @NotEmpty(message = "{campo.cargo.obrigatorio}")
     private String cargo;

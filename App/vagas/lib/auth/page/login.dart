@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/signUp.dart';
 import 'package:vagas/auth/widget/alert.dart';
+import 'package:vagas/home/page/homepage.dart';
+import 'package:vagas/model/userAuthModel.dart';
 
 class loginScreen extends StatefulWidget {
   const loginScreen({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class _loginScreen extends State<loginScreen> {
   String? email;
   String? password;
   String? errorText;
+  UserAuth? userAuth;
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
@@ -82,7 +85,7 @@ class _loginScreen extends State<loginScreen> {
 
   Future<http.Response> login(String email, String password) async {
     String token;
-    var url = Uri.parse('http://192.168.0.32:8080/api/users/login');
+    var url = Uri.parse('http://10.61.104.110:8081/api/users/auth');
 
     Map data = {
       "email": email,
@@ -92,17 +95,22 @@ class _loginScreen extends State<loginScreen> {
     var body = json.encode(data);
 
     var response = await http.post(url,
-        headers: {"Content-Type": "application/json"}, body: body);
-
-    print("${response.statusCode}");
-    print("${response.body}");
-
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          'Accept': '*/*'
+        },
+        body: body);
+    userAuth = UserAuth.fromJson(jsonDecode(response.body));
     if (response.statusCode == 200) {
-      alertDialog(response.body);
-      print("ok!");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(usuario: userAuth!),
+        ),
+      );
     } else {
-      alertDialog(response.body);
-      print("error");
+      alertDialog("Dados Incorretos!");
     }
     return response;
   }

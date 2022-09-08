@@ -80,7 +80,7 @@ class _signupScreen extends State<signupScreen> {
 
   Future<http.Response> signIn(String email, String password) async {
     String token;
-    var url = Uri.parse('http://192.168.0.32:8080/api/users/salvar');
+    var url = Uri.parse('http://10.61.104.110:8081/api/users/salvar');
 
     Map data = {
       "email": email,

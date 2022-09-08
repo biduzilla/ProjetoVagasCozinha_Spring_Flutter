@@ -13,7 +13,6 @@ import java.util.List;
 @Builder
 public class CurriculumDto {
     private Integer idCv;
-
     @NotEmpty(message = "{campo.nome.obrigatorio}")
     private String nome;
     @NotEmpty(message = "{campo.email.obrigatorio}")
