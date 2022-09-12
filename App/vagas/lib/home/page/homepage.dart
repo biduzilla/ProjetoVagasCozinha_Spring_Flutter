@@ -35,9 +35,33 @@ class _homePageScreenState extends State<homePageScreen> {
     dataPostada: "01/01/2022",
   );
 
+  Vaga vagaTeste2 = Vaga(
+    cargo: "cachorro de oficina",
+    descricao: "cuidar da oficina",
+    local: "bandera",
+    horario: "tarde",
+    requisitos: ["correr", "pular"],
+    remuneracao: 123.12,
+    dataPostada: "01/01/2022",
+  );
+  Vaga vagaTeste3 = Vaga(
+    cargo: "cachorro de oficina",
+    descricao: "cuidar da oficina",
+    local: "bandera",
+    horario: "tarde",
+    requisitos: ["correr", "pular"],
+    remuneracao: 123.12,
+    dataPostada: "01/01/2022",
+  );
+
   void initState() {
     super.initState();
     setState(() {
+      vagas.add(vagaTeste);
+      vagas.add(vagaTeste2);
+      vagas.add(vagaTeste3);
+      vagas.add(vagaTeste);
+      vagas.add(vagaTeste);
       vagas.add(vagaTeste);
     });
   }

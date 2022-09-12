@@ -301,12 +301,12 @@ public class VagaServiceImpl implements VagaService {
 
         VagaDtoId vagaDtoId = getAllVagasId();
 
-        if (vagaDtoId.getVagaId().size() > 10) {
+        if (vagaDtoId.getVagaId().size() > 20) {
             vagaDtoId.setVagaId(vagaDtoId
                     .getVagaId()
                     .subList(vagaDtoId
                             .getVagaId()
-                            .size() - 10, vagaDtoId.getVagaId()
+                            .size() - 20, vagaDtoId.getVagaId()
                             .size()));
         }
         return vagaDtoId;
