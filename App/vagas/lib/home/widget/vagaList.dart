@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:vagas/home/widget/vaga.dart';
+import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
-import 'package:vagas/model/vaga.dart';
+import 'package:vagas/model/vagaModel.dart';
 
 class vagaList extends StatelessWidget {
   const vagaList({Key? key, required this.vaga, required this.usuario})
@@ -16,7 +16,10 @@ class vagaList extends StatelessWidget {
       onTap: (() => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => vagaScreen(usuario: usuario),
+              builder: (context) => vagaScreen(
+                usuario: usuario,
+                vaga: vaga,
+              ),
             ),
           )),
       child: Padding(
@@ -75,8 +78,8 @@ class vagaList extends StatelessWidget {
                     child: Text(
                       vaga.local,
                       style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -85,8 +88,8 @@ class vagaList extends StatelessWidget {
                     child: Text(
                       vaga.dataPostada,
                       style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        fontSize: 11,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 14,
                       ),
                     ),
                   ),

@@ -4,7 +4,7 @@ import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
 import 'package:vagas/home/widget/vagaList.dart';
 import 'package:vagas/model/userAuthModel.dart';
-import 'package:vagas/model/vaga.dart';
+import 'package:vagas/model/vagaModel.dart';
 import 'dart:convert';
 
 import '../../model/userModel.dart';

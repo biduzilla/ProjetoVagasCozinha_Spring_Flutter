@@ -41,7 +41,7 @@ class footerWidget extends StatelessWidget {
                     ),
                   )),
               icon: Icon(
-                Icons.school_rounded,
+                Icons.assignment_ind_rounded,
                 color: Colors.white,
                 size: 40,
               ),
@@ -55,7 +55,7 @@ class footerWidget extends StatelessWidget {
                     ),
                   )),
               icon: Icon(
-                Icons.restaurant_rounded,
+                Icons.store_rounded,
                 color: Colors.white,
                 size: 40,
               ),

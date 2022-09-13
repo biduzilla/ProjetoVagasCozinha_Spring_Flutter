@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:vagas/auth/page/login.dart';
 
 class signupScreen extends StatefulWidget {
   const signupScreen({Key? key}) : super(key: key);
@@ -98,10 +99,10 @@ class _signupScreen extends State<signupScreen> {
     if (response.statusCode == 201) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => signupScreen()),
+        MaterialPageRoute(builder: (context) => loginScreen()),
       );
     } else {
-      alertDialog("Error ao criar conta!");
+      alertDialog("Usuário Já Cadastrado");
       print("error");
     }
     return response;
