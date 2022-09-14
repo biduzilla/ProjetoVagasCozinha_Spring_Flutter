@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:vagas/home/widget/footer.dart';
+import 'package:vagas/home/widget/footerInscrever.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
@@ -43,7 +44,7 @@ class vagaScreen extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.grey.shade200,
               ),
               child: ListView(
                 children: [
@@ -51,89 +52,145 @@ class vagaScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
-                      Text(vaga.cargo.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black)),
-                      SizedBox(height: 20),
+                      Text(
+                        vaga.cargo.toUpperCase(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 100,
+                      ),
                       Container(
                           width: double.infinity,
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Icon(Icons.restaurant, size: 150)
-                          // child: Image.network(
-                          //   recipe.image,
-                          //   fit: BoxFit.fitWidth,
-                          // ),
-                          ),
+                          child: Icon(Icons.restaurant, size: 150)),
                       SizedBox(
-                        height: 20,
+                        height: MediaQuery.of(context).size.height / 50,
                       ),
-                      Text(
-                        vaga.dataPostada,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        vaga.local,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 15,
-                      ),
-                      Text(
-                        vaga.descricao.toCapitalized(),
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Requisitos",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (var i = 0; i < vaga.requisitos.length; i++) ...[
-                            Text(
-                              "- " + vaga.requisitos[i],
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 20,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                          ],
-                        ],
-                      ),
-                      SizedBox(height: 40),
                       Row(
                         children: [
                           Text(
-                            "Horário: ${vaga.horario}",
+                            vaga.local,
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w400),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.green,
+                            ),
                           ),
                           Spacer(),
                           Text(
-                            "\$${vaga.remuneracao}",
+                            vaga.dataPostada,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 30,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(30),
+                          ),
+                          color: Colors.green,
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text(
+                              vaga.descricao.toCapitalized(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(30),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Requisitos",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  for (var i = 0;
+                                      i < vaga.requisitos.length;
+                                      i++) ...[
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "- " + vaga.requisitos[i],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 20,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 50,
+                      ),
+                      Row(
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Horário: ',
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: vaga.horario,
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            "\$ ${vaga.remuneracao}",
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
@@ -148,34 +205,7 @@ class vagaScreen extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(
-              MediaQuery.of(context).size.height / 30,
-            ),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "Inscrever",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          footerWidget(usuario: usuario),
+          FooterInscrever(),
         ],
       ),
     );

@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
         token:
             "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2MjczODUyMX0.RkH17TI7-p44qigMMtPvZJB5iCQc9mCw2K_XFycjnONhh3R18rVxxZ2x-DcEYpq6CQTwIuIhHr0kSmu4oVLGIQ");
     return MaterialApp(
-      home: loginScreen(),
-      // home: vagaScreen(
-      //   usuario: userAuth,
-      //   vaga: vagaTeste,
-      // ),
+      // home: loginScreen(),
+      home: vagaScreen(
+        usuario: userAuth,
+        vaga: vagaTeste,
+      ),
     );
   }
 }
