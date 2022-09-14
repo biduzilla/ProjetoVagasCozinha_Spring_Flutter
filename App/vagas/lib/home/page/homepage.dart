@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:vagas/auth/page/login.dart';
+import 'package:vagas/auth/widget/alert.dart';
 import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
 import 'package:vagas/home/widget/vagaList.dart';
+import 'package:vagas/model/VagaListIdModel.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 import 'dart:convert';
@@ -21,48 +24,116 @@ class homePageScreen extends StatefulWidget {
 class _homePageScreenState extends State<homePageScreen> {
   final UserAuth? usuario;
   Vaga? vaga;
+  int _selectedIndex = 0;
   List<Vaga> vagas = [];
+  VagaListIdModel? vagaListIdModel;
   TextEditingController cargoController = TextEditingController();
   String? cargo;
 
-  Vaga vagaTeste = Vaga(
-    cargo: "cachorro de oficina",
-    descricao: "cuidar da oficina",
-    local: "bandera",
-    horario: "tarde",
-    requisitos: ["correr", "pular"],
-    remuneracao: 123.12,
-    dataPostada: "01/01/2022",
-  );
+  Future alertDialog(String text) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actions: <Widget>[
+            TextButton(
+              child: Text("OK",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.green)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => loginScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
+          title: Text("Alerta!",
+              style: TextStyle(fontSize: 28, color: Colors.green)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6.0))),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 30),
+              Container(
+                height: MediaQuery.of(context).size.height / 15,
+                child: Text(
+                  //'Please rate with star',
+                  text,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
-  Vaga vagaTeste2 = Vaga(
-    cargo: "cachorro de oficina",
-    descricao: "cuidar da oficina",
-    local: "bandera",
-    horario: "tarde",
-    requisitos: ["correr", "pular"],
-    remuneracao: 123.12,
-    dataPostada: "01/01/2022",
-  );
-  Vaga vagaTeste3 = Vaga(
-    cargo: "cachorro de oficina",
-    descricao: "cuidar da oficina",
-    local: "bandera",
-    horario: "tarde",
-    requisitos: ["correr", "pular"],
-    remuneracao: 123.12,
-    dataPostada: "01/01/2022",
-  );
+  Future<void> getListLastVagas(String token) async {
+    var url = Uri.parse('http://10.61.104.110:8081/api/vagas/lastVagas');
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + token,
+    });
+
+    try {
+      if (response.statusCode == 403) {
+        alertDialog("Entre novamento na sua conta!");
+      } else {
+        vagaListIdModel = VagaListIdModel.fromJson(jsonDecode(response.body));
+        setState(() {
+          for (int idVaga in vagaListIdModel!.vagaId) {
+            getVaga(token, idVaga);
+          }
+        });
+      }
+    } on Exception catch (_) {
+      print("Error Requisição getListLastVagas");
+    }
+  }
+
+  Future<void> getVaga(String token, int idVaga) async {
+    var url = Uri.parse('http://10.61.104.110:8081/api/vagas/${idVaga}');
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + token,
+    });
+
+    print("getVaga" + response.body);
+
+    if (response.statusCode == 403) {
+      alertDialog("Entre novamento na sua conta!");
+    } else {
+      setState(() {
+        vaga = Vaga.fromJson(jsonDecode(response.body));
+        vagas.add(vaga!);
+      });
+    }
+  }
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(usuario: usuario!),
+        ),
+      );
+    }
+  }
 
   void initState() {
     super.initState();
     setState(() {
-      vagas.add(vagaTeste);
-      vagas.add(vagaTeste2);
-      vagas.add(vagaTeste3);
-      vagas.add(vagaTeste);
-      vagas.add(vagaTeste);
-      vagas.add(vagaTeste);
+      getListLastVagas(usuario!.token);
     });
   }
 
@@ -124,7 +195,6 @@ class _homePageScreenState extends State<homePageScreen> {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
-        print(vagas.length);
       },
       child: Scaffold(
         backgroundColor: Colors.green,
@@ -218,8 +288,46 @@ class _homePageScreenState extends State<homePageScreen> {
                 ),
               ),
             ),
-            footerWidget(usuario: usuario)
           ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.green,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.amber[800],
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.assignment,
+                color: Colors.white,
+              ),
+              label: 'Currículo',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.store,
+                color: Colors.white,
+              ),
+              label: 'Vagas',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+              label: 'Meus Dados',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          unselectedItemColor: Colors.white,
+          unselectedLabelStyle: TextStyle(color: Colors.white, fontSize: 14),
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
         ),
       ),
     );

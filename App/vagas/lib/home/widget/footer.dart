@@ -1,81 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/model/userAuthModel.dart';
 
-class footerWidget extends StatelessWidget {
-  const footerWidget({Key? key, this.usuario}) : super(key: key);
+class FooterWidget extends StatefulWidget {
+  const FooterWidget({Key? key, this.usuario}) : super(key: key);
   final UserAuth? usuario;
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 28.0, bottom: 28),
-      child: Container(
-        color: Colors.green,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.07,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            IconButton(
-              onPressed: (() => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => homePageScreen(usuario: usuario!),
-                    ),
-                  )),
-              icon: Icon(
-                Icons.home_rounded,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.15),
-            IconButton(
-              onPressed: (() => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => homePageScreen(usuario: usuario!),
-                    ),
-                  )),
-              icon: Icon(
-                Icons.assignment_ind_rounded,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.15),
-            IconButton(
-              onPressed: (() => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => homePageScreen(usuario: usuario!),
-                    ),
-                  )),
-              icon: Icon(
-                Icons.store_rounded,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.15),
-            IconButton(
-              onPressed: (() => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => homePageScreen(usuario: usuario!),
-                    ),
-                  )),
-              icon: Icon(
-                Icons.settings_rounded,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-          ],
+  State<FooterWidget> createState() => _FooterWidgetState(usuario);
+}
+
+class _FooterWidgetState extends State<FooterWidget> {
+  final UserAuth? usuario;
+  int _selectedIndex = 0;
+
+  _FooterWidgetState(this.usuario);
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(usuario: usuario!),
         ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.green,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.amber[800],
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.business,
+              color: Colors.white,
+            ),
+            label: 'Currículo',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.school,
+              color: Colors.white,
+            ),
+            label: 'Vagas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            label: 'Meus Dados',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        unselectedItemColor: Colors.white,
+        unselectedLabelStyle: TextStyle(color: Colors.white, fontSize: 14),
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
   }

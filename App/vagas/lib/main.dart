@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Vaga vagaTeste = Vaga(
+      vagaId: 2,
       cargo: "cachorro de oficina",
       descricao: "cuidar da oficina",
       local: "bandera",
@@ -27,14 +28,20 @@ class MyApp extends StatelessWidget {
       dataPostada: "01/01/2022",
     );
     UserAuth userAuth = UserAuth(
-        email: "toddy@toddy",
-        token:
-            "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2MjczODUyMX0.RkH17TI7-p44qigMMtPvZJB5iCQc9mCw2K_XFycjnONhh3R18rVxxZ2x-DcEYpq6CQTwIuIhHr0kSmu4oVLGIQ");
+      email: "toddy@toddy",
+      token:
+          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2MzE4MjgyN30.pVjg3TvNsiVIq4_6zawkdeqC9sfbNipDG9RkxOqwAAcCBX0X25YtJGRzNd9mOqcy2LElj4pbVBaFmfPeiSAYOQ",
+    );
     return MaterialApp(
       // home: loginScreen(),
-      home: vagaScreen(
+
+      // home: vagaScreen(
+      //   usuario: userAuth,
+      //   vaga: vagaTeste,
+      // ),
+
+      home: homePageScreen(
         usuario: userAuth,
-        vaga: vagaTeste,
       ),
     );
   }

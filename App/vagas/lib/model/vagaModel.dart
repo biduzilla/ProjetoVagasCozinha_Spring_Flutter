@@ -1,5 +1,6 @@
 class Vaga {
   Vaga({
+    required this.vagaId,
     required this.cargo,
     required this.descricao,
     required this.local,
@@ -8,7 +9,7 @@ class Vaga {
     required this.remuneracao,
     required this.dataPostada,
   });
-
+  int vagaId;
   String cargo;
   String descricao;
   String local;
@@ -19,6 +20,7 @@ class Vaga {
 
   Map<String, dynamic> toJson() {
     return {
+      'vagaId': vagaId,
       'cargo': cargo,
       'descricao': descricao,
       'local': local,
@@ -31,6 +33,7 @@ class Vaga {
 
   factory Vaga.fromJson(Map<String, dynamic> json) {
     return Vaga(
+      vagaId: json['vagaId'],
       cargo: json['cargo'],
       descricao: json['descricao'],
       local: json['local'],
