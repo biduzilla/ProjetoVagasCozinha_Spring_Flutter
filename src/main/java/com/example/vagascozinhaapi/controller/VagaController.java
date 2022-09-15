@@ -57,7 +57,7 @@ public class VagaController {
 
     @GetMapping("procurar")
     @ResponseStatus(HttpStatus.OK)
-    public List<VagaDtoEnviado> searchVaga(@RequestHeader("Authorization") String token, Vaga filtro){
+    public VagaDtoId searchVaga(@RequestHeader("Authorization") String token, Vaga filtro){
         return vagaService.searchVaga(token,filtro);
     }
 

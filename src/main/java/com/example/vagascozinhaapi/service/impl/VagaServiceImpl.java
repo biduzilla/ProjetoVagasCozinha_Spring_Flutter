@@ -249,7 +249,7 @@ public class VagaServiceImpl implements VagaService {
     }
 
     @Override
-    public List<VagaDtoEnviado> searchVaga(String token, Vaga filtro) {
+    public VagaDtoId searchVaga(String token, Vaga filtro) {
         Usuario user = usuarioServiceAuth.searchUserbyToken(token);
 
         ExampleMatcher matcher = ExampleMatcher
@@ -260,28 +260,19 @@ public class VagaServiceImpl implements VagaService {
 
         Example<Vaga> example = Example.of(filtro, matcher);
 
-        List<Vaga> lista = vagasRepository.findAll(example);
-        if (lista.isEmpty()){
+        VagaDtoId vagaDtoId = new VagaDtoId();
+        List<Integer> listVagas = vagasRepository.findAll(example)
+                .stream()
+                .map(
+                        Vaga::getId
+                ).collect(Collectors.toList());
+        vagaDtoId.setVagaId(listVagas);
+
+        if (listVagas.isEmpty()){
             throw new VagaNaoEncontrada();
         }
 
-        return lista
-                .stream()
-                .map(
-                        vaga -> {
-                            VagaDtoEnviado vagaDto = new VagaDtoEnviado();
-                            vagaDto.setUserId(user.getId());
-                            vagaDto.setVagaId(vaga.getId());
-                            vagaDto.setCargo(vaga.getCargo());
-                            vagaDto.setDescricao(vaga.getCargo());
-                            vagaDto.setLocal(vaga.getLocal());
-                            vagaDto.setHorario(vaga.getHorario());
-                            vagaDto.setRequisitos(vaga.getRequisitos());
-                            vagaDto.setRemuneracao(vaga.getRemuneracao());
-                            vagaDto.setDataPostada(vaga.getDataPostada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                            return vagaDto;
-                        }
-                ).collect(Collectors.toList());
+        return vagaDtoId;
     }
 
     public VagaDtoId getAllVagasId() {

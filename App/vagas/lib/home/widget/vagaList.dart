@@ -49,7 +49,7 @@ class vagaList extends StatelessWidget {
                     child: Icon(
                       Icons.restaurant_menu,
                       size: 80,
-                      color: Color(0xffff6442),
+                      color: Colors.amber[800],
                     ),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,

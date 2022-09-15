@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
+import 'package:vagas/cv/cv.dart';
 import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
 import 'package:vagas/home/widget/vagaList.dart';
@@ -30,30 +31,37 @@ class _homePageScreenState extends State<homePageScreen> {
   TextEditingController cargoController = TextEditingController();
   String? cargo;
 
-  Future alertDialog(String text) {
+  Future alertDialog(String text, int code) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           actions: <Widget>[
             TextButton(
-              child: Text("OK",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.green)),
+              child: Text(
+                "OK",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                ),
+              ),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => loginScreen(),
-                  ),
-                );
+                if (code == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => loginScreen(),
+                    ),
+                  );
+                } else {
+                  Navigator.pop(context);
+                }
               },
             ),
           ],
           title: Text("Alerta!",
-              style: TextStyle(fontSize: 28, color: Colors.green)),
+              style: TextStyle(fontSize: 28, color: Colors.black)),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6.0))),
           content: Column(
@@ -86,13 +94,13 @@ class _homePageScreenState extends State<homePageScreen> {
     });
 
     try {
-      if (response.statusCode == 403) {
-        alertDialog("Entre novamento na sua conta!");
+      if (response.statusCode == 403 || response.statusCode == 401) {
+        alertDialog("Entre novamento na sua conta!", 1);
       } else {
         vagaListIdModel = VagaListIdModel.fromJson(jsonDecode(response.body));
         setState(() {
           for (int idVaga in vagaListIdModel!.vagaId) {
-            getVaga(token, idVaga);
+            getVaga(idVaga);
           }
         });
       }
@@ -101,16 +109,39 @@ class _homePageScreenState extends State<homePageScreen> {
     }
   }
 
-  Future<void> getVaga(String token, int idVaga) async {
+  Future<void> searchCargo(String cargo) async {
+    var url = Uri.parse(
+        'http://10.61.104.110:8081/api/vagas/procurar?cargo=${cargo}');
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + usuario!.token,
+    });
+
+    if (response.statusCode == 404) {
+      alertDialog("Vaga não Encontrada!", 0);
+    } else if (response.statusCode == 200) {
+      vagaListIdModel = VagaListIdModel.fromJson(jsonDecode(response.body));
+      setState(
+        () {
+          for (int idVaga in vagaListIdModel!.vagaId) {
+            getVaga(idVaga);
+          }
+        },
+      );
+    } else if (response.statusCode == 403 || response.statusCode == 401) {
+      alertDialog("Entre novamento na sua conta!", 1);
+    }
+  }
+
+  Future<void> getVaga(int idVaga) async {
     var url = Uri.parse('http://10.61.104.110:8081/api/vagas/${idVaga}');
     var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ' + token,
+      'Authorization': 'Bearer ' + usuario!.token,
     });
 
     print("getVaga" + response.body);
 
     if (response.statusCode == 403) {
-      alertDialog("Entre novamento na sua conta!");
+      alertDialog("Entre novamento na sua conta!", 1);
     } else {
       setState(() {
         vaga = Vaga.fromJson(jsonDecode(response.body));
@@ -125,6 +156,13 @@ class _homePageScreenState extends State<homePageScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => homePageScreen(usuario: usuario!),
+        ),
+      );
+    } else if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CvPageScreen(usuario: usuario!),
         ),
       );
     }
@@ -146,15 +184,24 @@ class _homePageScreenState extends State<homePageScreen> {
           fontWeight: FontWeight.w500,
           fontSize: 20,
         ),
+        onChanged: (text) {
+          setState(() {
+            vagas.clear();
+            vagaListIdModel!.vagaId.clear();
+          });
+        },
         cursorColor: Colors.green,
         controller: cargoController,
         autofocus: false,
         decoration: InputDecoration(
           suffixIcon: IconButton(
             onPressed: () {
-              cargo = cargoController.text;
-              cargoController.clear();
-              print(cargo);
+              setState(() {
+                print(vagas.length);
+                cargo = cargoController.text;
+                searchCargo(cargo!);
+                cargoController.clear();
+              });
             },
             icon: Icon(
               Icons.search,
@@ -265,7 +312,7 @@ class _homePageScreenState extends State<homePageScreen> {
                     Expanded(
                       child: ListView(
                         children: [
-                          if (vagas.isEmpty) NoVagas(),
+                          // if (vagas.isEmpty) NoVagas(),
                           Column(
                             children: [
                               for (Vaga vagaDaLista in vagas)

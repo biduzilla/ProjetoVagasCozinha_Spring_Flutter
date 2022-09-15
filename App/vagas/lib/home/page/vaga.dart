@@ -207,6 +207,7 @@ class vagaScreen extends StatelessWidget {
           ),
           FooterInscrever(
             vaga: vaga,
+            userAuth: usuario!,
           ),
         ],
       ),

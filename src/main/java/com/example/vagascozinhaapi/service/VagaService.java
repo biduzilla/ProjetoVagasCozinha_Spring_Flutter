@@ -15,7 +15,7 @@ public interface VagaService {
     void deleteVaga(String token, Integer idVaga);
     VagaDtoEnviado aceitarVaga(Integer idVaga, String token);
     VagaDtoEnviado getVagaByIdEmpresa(String token, Integer idVaga);
-    List<VagaDtoEnviado> searchVaga(String token, Vaga filtro);
+    VagaDtoId searchVaga(String token, Vaga filtro);
     VagaDtoId lastTenVagas(String token);
     Curriculum validCv(Usuario user);
 }
