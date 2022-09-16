@@ -24,17 +24,21 @@ class CvPageScreen extends StatefulWidget {
 
 class _CvPageScreenState extends State<CvPageScreen> {
   final UserAuth? usuario;
+  final _formKey = GlobalKey<FormState>();
 
   TextEditingController nomeController = TextEditingController();
   TextEditingController emailContatoCVController = TextEditingController();
   TextEditingController telefoneController = TextEditingController();
   TextEditingController sobreController = TextEditingController();
   TextEditingController semestreController = TextEditingController();
+  List<TextEditingController> experienciasControllers = [];
+  List<TextEditingController> equalificacoesControllers = [];
   List<String> experiencias = [];
   List<String> qualificacoes = [];
   int experienciasAdd = 0;
   int qualificacoesAdd = 0;
   int index = 0;
+
   Widget TextFormFild(String text, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24),
@@ -81,6 +85,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
           color: Colors.green,
           fontSize: 20,
         ),
+        controller: experienciasControllers[index],
         cursorColor: Colors.green,
         onChanged: (value) {
           experiencias.add(value);
@@ -222,104 +227,108 @@ class _CvPageScreenState extends State<CvPageScreen> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(16),
-                            child: Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(
-                                    20,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
+                                ],
+                                borderRadius: BorderRadius.circular(
+                                  20,
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    TextFormFild("Nome", nomeController),
-                                    TextFormFild(
-                                        "Email", emailContatoCVController),
-                                    TextFormFild(
-                                        "Telefone", telefoneController),
-                                    TextFormFild("Sobre", sobreController),
-                                    TextFormFild(
-                                        "Semestre", semestreController),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12.0, vertical: 24),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius: BorderRadius.circular(
-                                            20,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "Experiências",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 20,
-                                                    ),
-                                                  ),
-                                                  Spacer(),
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        experienciasAdd++;
-                                                      });
-                                                      print(experiencias);
-                                                      print(experienciasAdd);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.add_circle,
-                                                      color: Colors.white,
-                                                      size: 35,
-                                                    ),
-                                                  ),
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        if (experienciasAdd <
-                                                            0) {
-                                                          experienciasAdd--;
-                                                          experiencias
-                                                              .removeLast();
-                                                        }
-                                                      });
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.remove_circle,
-                                                      color: Colors.white,
-                                                      size: 35,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              for (int i = 1;
-                                                  i <= experienciasAdd;
-                                                  i++)
-                                                experienciaForm(i - 0)
-                                            ],
-                                          ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextFormFild("Nome", nomeController),
+                                  TextFormFild(
+                                      "Email", emailContatoCVController),
+                                  TextFormFild("Telefone", telefoneController),
+                                  TextFormFild("Sobre", sobreController),
+                                  TextFormFild("Semestre", semestreController),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 24),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.circular(
+                                          20,
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Experiências",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    experienciasControllers.add(
+                                                        TextEditingController());
+                                                    setState(() {
+                                                      experienciasAdd++;
+                                                    });
+                                                    print("Add");
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.add_circle,
+                                                    color: Colors.white,
+                                                    size: 35,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      if (experienciasAdd < 0) {
+                                                        experienciasAdd--;
+                                                      }
+                                                      for (TextEditingController controller
+                                                          in experienciasControllers) {
+                                                        experiencias.add(
+                                                            controller.text);
+                                                      }
+                                                      print(experiencias);
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.remove_circle,
+                                                    color: Colors.white,
+                                                    size: 35,
+                                                  ),
+                                                ),
+                                                ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    return experienciaForm(
+                                                        index);
+                                                  },
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ),
@@ -379,5 +388,11 @@ class _CvPageScreenState extends State<CvPageScreen> {
         ),
       ),
     );
+  }
+
+  void addNewTextField(int) {
+    experienciasControllers.add(TextEditingController());
+    experienciasAdd++;
+    experienciaForm(index);
   }
 }

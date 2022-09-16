@@ -24,6 +24,39 @@ class _testeScreenState extends State<testeScreen> {
   final _formKey = GlobalKey<FormState>();
   List<TextEditingController> textFieldControllers = [];
   int numberOfTextFields = 0;
+  List<String> textos = [];
+
+  Widget _experienciaForm(int index) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: TextFormField(
+        style: TextStyle(
+          color: Colors.green,
+          fontSize: 20,
+        ),
+        controller: textFieldControllers[index],
+        cursorColor: Colors.green,
+        maxLines: null,
+        autofocus: false,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.green,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,38 +73,24 @@ class _testeScreenState extends State<testeScreen> {
             child: ListView.builder(
               itemCount: numberOfTextFields,
               itemBuilder: (BuildContext context, int index) {
-                return TextFormField(
-                  validator: (String? value) {
-                    double? sal = double.tryParse(value!);
-                    if (sal == null) {
-                      return 'enter or delete row';
-                    }
-                    return null;
-                  },
-                  controller: textFieldControllers[index],
-                );
+                return _experienciaForm(index);
               },
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: TextButton(
-          //     onPressed: () {
-          //       if (_formKey.currentState!.validate()) {
-          //         showDialog(
-          //             context: context,
-          //             builder: (BuildContext context) {
-          //               return Center();
-          //             });
-          //       }
-          //     },
-          //     child: Container(
-          //       padding: EdgeInsets.all(10.0),
-          //       color: Colors.redAccent,
-          //       child: Text('Tap to sum'),
-          //     ),
-          //   ),
-          // ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                for (TextEditingController controller in textFieldControllers) {
+                  textos.add(controller.text);
+                }
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.all(10.0),
+              color: Colors.redAccent,
+              child: Text('Show'),
+            ),
+          ),
         ],
       ),
     );
@@ -80,13 +99,8 @@ class _testeScreenState extends State<testeScreen> {
   void addNewTextField() {
     textFieldControllers.add(TextEditingController());
     numberOfTextFields++;
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    textFieldControllers
-        .forEach((textFieldController) => textFieldController.dispose());
-    super.dispose();
+    setState(() {
+      print(textos);
+    });
   }
 }

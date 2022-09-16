@@ -4,7 +4,7 @@ import 'package:vagas/cv/cv.dart';
 import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/vagaModel.dart';
-import 'package:vagas/text.dart';
+import 'package:vagas/test.dart';
 
 import 'auth/page/login.dart';
 import 'home/page/homepage.dart';
@@ -48,8 +48,9 @@ class MyApp extends StatelessWidget {
 
         home: CvPageScreen(
       usuario: userAuth,
-    ));
-    //   home: testeScreen(),
-    // );
+    )
+        // );
+        // home: testeScreen(),
+        );
   }
 }
