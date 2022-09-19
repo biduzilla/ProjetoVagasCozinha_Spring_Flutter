@@ -32,12 +32,13 @@ class _CvPageScreenState extends State<CvPageScreen> {
   TextEditingController sobreController = TextEditingController();
   TextEditingController semestreController = TextEditingController();
   List<TextEditingController> experienciasControllers = [];
-  List<TextEditingController> equalificacoesControllers = [];
+  List<TextEditingController> qualificacoesControllers = [];
   List<String> experiencias = [];
   List<String> qualificacoes = [];
   int experienciasAdd = 0;
   int qualificacoesAdd = 0;
   int index = 0;
+  var temp = "";
 
   Widget TextFormFild(String text, TextEditingController controller) {
     return Padding(
@@ -78,6 +79,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
   }
 
   Widget experienciaForm(int index) {
+    experienciasControllers.add(TextEditingController());
     return Padding(
       padding: const EdgeInsets.all(12),
       child: TextFormField(
@@ -87,9 +89,39 @@ class _CvPageScreenState extends State<CvPageScreen> {
         ),
         controller: experienciasControllers[index],
         cursorColor: Colors.green,
-        onChanged: (value) {
-          experiencias.add(value);
-        },
+        maxLines: null,
+        autofocus: false,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.green,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget qualificacaoForm(int index) {
+    experienciasControllers.add(TextEditingController());
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: TextFormField(
+        style: TextStyle(
+          color: Colors.green,
+          fontSize: 20,
+        ),
+        controller: qualificacoesControllers[index],
+        cursorColor: Colors.green,
         maxLines: null,
         autofocus: false,
         decoration: InputDecoration(
@@ -253,14 +285,13 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                   TextFormFild("Sobre", sobreController),
                                   TextFormFild("Semestre", semestreController),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0, vertical: 24),
+                                    padding: const EdgeInsets.only(
+                                        left: 12.0, right: 12, top: 24),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.green,
-                                        borderRadius: BorderRadius.circular(
-                                          20,
-                                        ),
+                                        borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20.0)),
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(12.0),
@@ -279,12 +310,14 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                                 Spacer(),
                                                 IconButton(
                                                   onPressed: () {
-                                                    experienciasControllers.add(
-                                                        TextEditingController());
                                                     setState(() {
                                                       experienciasAdd++;
                                                     });
-                                                    print("Add");
+
+                                                    print(
+                                                        "Total Controllers: ${experienciasControllers.length}");
+                                                    print(
+                                                        "xp number: ${experienciasAdd}");
                                                   },
                                                   icon: Icon(
                                                     Icons.add_circle,
@@ -295,15 +328,119 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                                 IconButton(
                                                   onPressed: () {
                                                     setState(() {
-                                                      if (experienciasAdd < 0) {
-                                                        experienciasAdd--;
-                                                      }
-                                                      for (TextEditingController controller
-                                                          in experienciasControllers) {
-                                                        experiencias.add(
-                                                            controller.text);
-                                                      }
-                                                      print(experiencias);
+                                                      findDuplicate(
+                                                          experienciasControllers[
+                                                                  experienciasAdd]
+                                                              .text);
+
+                                                      experienciasControllers[
+                                                              experienciasAdd]
+                                                          .clear();
+
+                                                      experienciasAdd--;
+                                                      experienciasControllers
+                                                          .removeLast();
+                                                    });
+
+                                                    print(experiencias);
+                                                    print(
+                                                        "xp number: ${experienciasAdd}");
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.remove_circle,
+                                                    color: Colors.white,
+                                                    size: 35,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    for (TextEditingController controller
+                                                        in experienciasControllers) {
+                                                      experiencias
+                                                          .add(controller.text);
+                                                    }
+
+                                                    experiencias = experiencias
+                                                        .toSet()
+                                                        .toList();
+                                                    removeVoid();
+                                                    print(
+                                                        "Total Controllers: ${experienciasControllers.length}");
+                                                    print(experiencias);
+                                                    print(
+                                                        "xp number: ${experienciasAdd}");
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.donut_large,
+                                                    color: Colors.white,
+                                                    size: 35,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            for (int i = 0;
+                                                i < experienciasAdd;
+                                                i++)
+                                              experienciaForm(i)
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 12.0,
+                                      right: 12,
+                                      bottom: 12,
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.vertical(
+                                            bottom: Radius.circular(30.0)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Experiências",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      qualificacoesAdd++;
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.add_circle,
+                                                    color: Colors.white,
+                                                    size: 35,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      findDuplicate(
+                                                          qualificacoesControllers[
+                                                                  qualificacoesAdd]
+                                                              .text);
+
+                                                      qualificacoesControllers[
+                                                              qualificacoesAdd]
+                                                          .clear();
+
+                                                      qualificacoesAdd--;
+                                                      qualificacoesControllers
+                                                          .removeLast();
                                                     });
                                                   },
                                                   icon: Icon(
@@ -312,17 +449,32 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                                     size: 35,
                                                   ),
                                                 ),
-                                                ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return experienciaForm(
-                                                        index);
+                                                IconButton(
+                                                  onPressed: () {
+                                                    for (TextEditingController controller
+                                                        in qualificacoesControllers) {
+                                                      qualificacoes
+                                                          .add(controller.text);
+                                                    }
+
+                                                    qualificacoes =
+                                                        qualificacoes
+                                                            .toSet()
+                                                            .toList();
+                                                    removeVoid();
                                                   },
-                                                )
+                                                  icon: Icon(
+                                                    Icons.donut_large,
+                                                    color: Colors.white,
+                                                    size: 35,
+                                                  ),
+                                                ),
                                               ],
                                             ),
+                                            for (int i = 0;
+                                                i < qualificacoesAdd;
+                                                i++)
+                                              qualificacaoForm(i)
                                           ],
                                         ),
                                       ),
@@ -390,9 +542,45 @@ class _CvPageScreenState extends State<CvPageScreen> {
     );
   }
 
-  void addNewTextField(int) {
-    experienciasControllers.add(TextEditingController());
-    experienciasAdd++;
-    experienciaForm(index);
+  void findDuplicate(String duplicado) {
+    for (String text in experiencias) {
+      if (duplicado == text) {
+        print("Achou");
+        setState(() {
+          experiencias.remove(duplicado);
+        });
+      }
+    }
+  }
+
+  void removeVoid() {
+    print("xpAdd: ${experienciasAdd}\nxpSize: ${experiencias.length}");
+    while (experienciasAdd != experiencias.length) {
+      print("Removendo Ultimo");
+      setState(() {
+        experiencias.removeLast();
+      });
+    }
+
+    for (String text in experiencias) {
+      if (text == null) {
+        print("Removendo Vazio");
+        setState(() {
+          experiencias.remove(null);
+        });
+      }
+      if (text == "") {
+        print("Removendo Vazio");
+        setState(() {
+          experiencias.remove("");
+        });
+      }
+      if (text == " ") {
+        print("Removendo Vazio");
+        setState(() {
+          experiencias.remove(" ");
+        });
+      }
+    }
   }
 }

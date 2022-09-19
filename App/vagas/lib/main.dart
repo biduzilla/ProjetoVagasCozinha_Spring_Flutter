@@ -50,7 +50,6 @@ class MyApp extends StatelessWidget {
       usuario: userAuth,
     )
         // );
-        // home: testeScreen(),
         );
   }
 }
