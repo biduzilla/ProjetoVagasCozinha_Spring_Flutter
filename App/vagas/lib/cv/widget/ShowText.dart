@@ -24,8 +24,9 @@ class ShowTextWidget extends StatelessWidget {
       child: Row(
         children: [
           Container(
+            width: MediaQuery.of(context).size.width / 1.45,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.green.shade100,
               borderRadius: BorderRadius.circular(
                 10,
               ),
@@ -36,7 +37,7 @@ class ShowTextWidget extends StatelessWidget {
                 text,
                 style: TextStyle(
                   color: Colors.green,
-                  fontSize: 25,
+                  fontSize: 20,
                 ),
               ),
             ),
