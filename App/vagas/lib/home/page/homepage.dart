@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
-import 'package:vagas/cv/cv.dart';
+import 'package:vagas/cv/page/cv.dart';
 import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
 import 'package:vagas/home/widget/vagaList.dart';
@@ -94,7 +94,9 @@ class _homePageScreenState extends State<homePageScreen> {
     });
 
     try {
-      if (response.statusCode == 403 || response.statusCode == 401) {
+      if (response.statusCode == 403 ||
+          response.statusCode == 401 ||
+          response.statusCode != 200) {
         alertDialog("Entre novamento na sua conta!", 1);
       } else {
         vagaListIdModel = VagaListIdModel.fromJson(jsonDecode(response.body));

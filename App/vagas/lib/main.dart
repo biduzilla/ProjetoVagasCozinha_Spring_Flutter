@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vagas/auth/page/signUp.dart';
-import 'package:vagas/cv/cv.dart';
+import 'package:vagas/cv/page/cv.dart';
 import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/vagaModel.dart';
@@ -45,11 +45,8 @@ class MyApp extends StatelessWidget {
         // home: homePageScreen(
         //   usuario: userAuth,
         // ),
-
         home: CvPageScreen(
       usuario: userAuth,
-    )
-        // );
-        );
+    ));
   }
 }

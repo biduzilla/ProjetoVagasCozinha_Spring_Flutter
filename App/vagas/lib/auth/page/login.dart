@@ -20,8 +20,8 @@ class _loginScreen extends State<loginScreen> {
   String? password;
   String? errorText;
   UserAuth? userAuth;
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   Widget _buildEmailTF() {
     return Padding(
