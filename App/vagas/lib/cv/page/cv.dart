@@ -8,6 +8,7 @@ import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
 import 'package:vagas/home/widget/vagaList.dart';
+import 'package:vagas/model/CvModel.dart';
 import 'package:vagas/model/VagaListIdModel.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/vagaModel.dart';
@@ -27,6 +28,7 @@ class CvPageScreen extends StatefulWidget {
 class _CvPageScreenState extends State<CvPageScreen> {
   final UserAuth? usuario;
   List<String> experiencias = [];
+  List<String> qualificacoes = [];
   bool flag = false;
   String? genericText;
   int indexString = 0;
@@ -117,6 +119,10 @@ class _CvPageScreenState extends State<CvPageScreen> {
         ),
       );
     }
+  }
+
+  void getExp(List<String> lstExperiencias) {
+    experiencias = lstExperiencias;
   }
 
   _CvPageScreenState(this.usuario);
@@ -218,14 +224,33 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                       child: Column(
                                         children: [
                                           MultipleTextForm(
-                                            title1: "Experiências",
-                                            title2: "Qualificações",
+                                            title: "Experiências",
+                                            hint: "Minhas Experiências",
+                                          ),
+                                          MultipleTextForm(
+                                            title: "Qualificações",
+                                            hint: "Minhas Qualificações",
                                           ),
                                         ],
                                       ),
                                       // child:
                                     ),
                                   ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      CvModel cv = CvModel(
+                                        nome: nome!,
+                                        emailContatoCV: email!,
+                                        telefone: telefone!,
+                                        sobre: sobre!,
+                                        semestre: semestre!,
+                                        experiencias: experiencias,
+                                        qualificacoes: qualificacoes,
+                                      );
+                                      print(cv);
+                                    },
+                                    child: Text("Salvar Currículo"),
+                                  )
                                 ],
                               ),
                             ),
@@ -286,23 +311,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
         ),
       ),
     );
-  }
-
-  void returnControllerExperiencia(String text, int index) {
-    String temp = "";
-    if (indexString == index - 1) {
-      genericText = text;
-      print(genericText);
-    } else if (indexString < index - 1) {
-      temp = genericText!;
-      indexString = index - 1;
-      experiencias.add(genericText!);
-    } else {
-      indexString = index - 1;
-      experiencias.remove(temp);
-    }
-
-    print(experiencias);
   }
 
   void returnController(String text, int index) {

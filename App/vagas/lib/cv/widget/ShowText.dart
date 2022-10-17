@@ -6,15 +6,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 
 class ShowTextWidget extends StatelessWidget {
-  ShowTextWidget(
-      {Key? key,
-      required this.text,
-      required this.index,
-      required this.removeListText})
+  ShowTextWidget({Key? key, required this.text, required this.removeListText})
       : super(key: key);
 
   final String text;
-  final int index;
+
   final Function(String) removeListText;
 
   @override

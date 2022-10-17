@@ -5,32 +5,27 @@ import 'package:vagas/cv/widget/inputForm.dart';
 class MultipleTextForm extends StatefulWidget {
   MultipleTextForm({
     Key? key,
-    required this.title1,
-    required this.title2,
+    required this.title,
+    required this.hint,
   }) : super(key: key);
 
-  final String title1;
-  final String title2;
+  final String title;
+  final String hint;
 
   @override
-  State<MultipleTextForm> createState() =>
-      _MultipleTextFormState(title1, title2);
+  State<MultipleTextForm> createState() => _MultipleTextFormState(title, hint);
 }
 
 class _MultipleTextFormState extends State<MultipleTextForm> {
-  _MultipleTextFormState(this.title1, this.title2);
+  _MultipleTextFormState(this.title, this.hint);
 
   List<String> textList = [];
-  final String title1;
-  final String title2;
-
-  int index = 0;
+  final String title;
+  final String hint;
 
   void addListText(String text) {
     setState(() {
       textList.add(text);
-      print("${index}");
-      index++;
     });
   }
 
@@ -39,11 +34,6 @@ class _MultipleTextFormState extends State<MultipleTextForm> {
     setState(() {
       textList.remove(text);
     });
-
-    // setState(() {
-    //   print("Removendo texto ${textList[index]} no indext ${index}");
-    //   textList.remove(text);
-    // });
   }
 
   @override
@@ -59,7 +49,7 @@ class _MultipleTextFormState extends State<MultipleTextForm> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    title1,
+                    title,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -68,7 +58,7 @@ class _MultipleTextFormState extends State<MultipleTextForm> {
                   ),
                 ),
                 InputFormWidget(
-                  hint: "Minhas Experiencias",
+                  hint: hint,
                   addListText: addListText,
                 ),
               ],
@@ -78,7 +68,6 @@ class _MultipleTextFormState extends State<MultipleTextForm> {
             for (String value in textList)
               ShowTextWidget(
                 text: value,
-                index: index,
                 removeListText: removeListText,
               ),
         ],
