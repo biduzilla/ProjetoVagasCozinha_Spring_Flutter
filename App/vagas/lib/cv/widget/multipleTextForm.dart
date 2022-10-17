@@ -25,10 +25,14 @@ class _MultipleTextFormState extends State<MultipleTextForm> {
   }
 
   void removeListText(String text) {
+    print(text);
     setState(() {
-      print("Removendo texto ${textList[index]} no indext ${index}");
       textList.remove(text);
     });
+    // setState(() {
+    //   print("Removendo texto ${textList[index]} no indext ${index}");
+    //   textList.remove(text);
+    // });
   }
 
   @override
@@ -68,17 +72,12 @@ class _MultipleTextFormState extends State<MultipleTextForm> {
             ),
           ),
           if (textList.isNotEmpty)
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: textList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ShowTextWidget(
-                  text: textList[index],
-                  index: index,
-                  removeListText: removeListText,
-                );
-              },
-            ),
+            for (String value in textList)
+              ShowTextWidget(
+                text: value,
+                index: index,
+                removeListText: removeListText,
+              ),
         ],
       ),
     );

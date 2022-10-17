@@ -51,6 +51,7 @@ class ShowTextWidget extends StatelessWidget {
                 size: 35,
               ),
               onPressed: () {
+                print("Remover");
                 removeListText(text);
               },
             ),
