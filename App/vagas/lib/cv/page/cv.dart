@@ -35,6 +35,15 @@ class _CvPageScreenState extends State<CvPageScreen> {
   String? telefone;
   String? sobre;
   String? semestre;
+  final ScrollController _controller = ScrollController();
+
+  void scrollDown() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: Duration(seconds: 2),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
 
   Future alertDialog(String text, int code) {
     return showDialog(
@@ -148,6 +157,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
                   children: [
                     Expanded(
                       child: ListView(
+                        reverse: true,
                         children: [
                           Padding(
                             padding: EdgeInsets.all(16),
@@ -196,18 +206,20 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                     returnController: returnController,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 12.0, right: 12, top: 24),
+                                    padding: const EdgeInsets.only(top: 24),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.green,
                                         borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(20.0)),
+                                          top: Radius.circular(20.0),
+                                          bottom: Radius.circular(20.0),
+                                        ),
                                       ),
                                       child: Column(
                                         children: [
                                           MultipleTextForm(
-                                            title: "Experiências",
+                                            title1: "Experiências",
+                                            title2: "Qualificações",
                                           ),
                                         ],
                                       ),
