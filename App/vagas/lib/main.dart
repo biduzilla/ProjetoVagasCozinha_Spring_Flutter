@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vagas/auth/page/signUp.dart';
-import 'package:vagas/cv/page/cv.dart';
+import 'package:vagas/cv/page/CvMostrar.dart';
+import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/vagaModel.dart';
@@ -32,21 +33,26 @@ class MyApp extends StatelessWidget {
     UserAuth userAuth = UserAuth(
       email: "toddy@toddy",
       token:
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjEyMTEyM30.knGg-bZQo7rkUwWP8LlOwiRSJb6CCO8peWQ7yOr-epnb-PASU9IQPHDTorvuEVi4-R6KrZBQREjQqNOtdmfxFA",
+          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjEyNTczNn0.c2gMtbZgwpWAFQYx9ULjXBeLMRTaEztj20NugKzobtv9WuCyxPtUf994f_tniotw7mt_HrryI_J2fbBNfrkPWQ",
     );
     return MaterialApp(
-        // home: loginScreen(),
+      // home: loginScreen(),
 
-        // home: vagaScreen(
-        //   usuario: userAuth,
-        //   vaga: vagaTeste,
-        // ),
+      // home: vagaScreen(
+      //   usuario: userAuth,
+      //   vaga: vagaTeste,
+      // ),
 
-        // home: homePageScreen(
-        //   usuario: userAuth,
-        // ),
-        home: CvPageScreen(
-      usuario: userAuth,
-    ));
+      // home: homePageScreen(
+      //   usuario: userAuth,
+      // ),
+      // home: CvPageScreen(
+      //   usuario: userAuth,
+      // ),
+
+      home: CvMostrarScreen(
+        usuario: userAuth,
+      ),
+    );
   }
 }

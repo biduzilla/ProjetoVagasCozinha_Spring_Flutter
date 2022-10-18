@@ -14,8 +14,8 @@ class CvModel {
   String telefone;
   String sobre;
   String semestre;
-  List<String> experiencias;
-  List<String> qualificacoes;
+  List<dynamic> experiencias;
+  List<dynamic> qualificacoes;
 
   Map<String, dynamic> toJson() {
     return {

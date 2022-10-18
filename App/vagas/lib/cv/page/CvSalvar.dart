@@ -149,7 +149,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
   }
 
   Future<void> salvarCv() async {
-    String token;
     var url = Uri.parse('http://10.61.104.110:8081/api/curriculum/salvarCv');
     Map data = {
       "nome": email,

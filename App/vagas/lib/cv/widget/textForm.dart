@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vagas/cv/page/cv.dart';
+import 'package:vagas/cv/page/CvSalvar.dart';
 
 class TextFormWidget extends StatelessWidget {
   TextFormWidget({
