@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     UserAuth userAuth = UserAuth(
       email: "toddy@toddy",
       token:
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2MzE4NzU2N30.jyf0oeL-sCGRxsa_LaGqMF-jIXm52uMDTiA_m0Uge8tbIFEgEBXwv-RenjseSSsjH8oNwjR7zDMcanc15lyRGg",
+          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjEyMTEyM30.knGg-bZQo7rkUwWP8LlOwiRSJb6CCO8peWQ7yOr-epnb-PASU9IQPHDTorvuEVi4-R6KrZBQREjQqNOtdmfxFA",
     );
     return MaterialApp(
         // home: loginScreen(),

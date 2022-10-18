@@ -140,20 +140,47 @@ class _CvPageScreenState extends State<CvPageScreen> {
     }
   }
 
-  void saveCv() {
+  void montarCv() {
     if (nome == null || email == null || sobre == null || semestre == null) {
       alertDialog("Preencha os dados!", 0);
     } else {
-      CvModel cv = CvModel(
-        emailContatoCV: email!,
-        experiencias: experiencias,
-        nome: nome!,
-        qualificacoes: qualificacoes,
-        semestre: semestre!,
-        sobre: sobre!,
-        telefone: telefone!,
+      salvarCv();
+    }
+  }
+
+  Future<void> salvarCv() async {
+    String token;
+    var url = Uri.parse('http://10.61.104.110:8081/api/curriculum/salvarCv');
+    Map data = {
+      "nome": email,
+      "emailContatoCV": email,
+      "telefone": telefone,
+      "sobre": sobre,
+      "semestre": semestre,
+      "experiencias": experiencias,
+      "qualificacoes": qualificacoes,
+    };
+
+    var body = json.encode(data);
+    print(body);
+
+    var response = await http.post(url,
+        headers: {
+          'Authorization': 'Bearer ' + usuario!.token,
+          'Content-Type': 'application/json',
+        },
+        body: body);
+
+    if (response.statusCode == 201) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(usuario: usuario!),
+        ),
       );
-      print(cv);
+    } else {
+      print(response.body);
+      alertDialog("Codigo Error:" + response.statusCode.toString(), 0);
     }
   }
 
@@ -275,7 +302,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                     ),
                                   ),
                                   SalvarWidget(
-                                    saveCv: saveCv,
+                                    montarCv: montarCv,
                                   ),
                                 ],
                               ),

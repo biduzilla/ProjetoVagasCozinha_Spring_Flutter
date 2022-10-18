@@ -7,10 +7,10 @@ import 'package:vagas/model/CvModel.dart';
 class SalvarWidget extends StatelessWidget {
   SalvarWidget({
     Key? key,
-    required this.saveCv,
+    required this.montarCv,
   }) : super(key: key);
 
-  final Function() saveCv;
+  final Function() montarCv;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class SalvarWidget extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              saveCv();
+              montarCv();
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
