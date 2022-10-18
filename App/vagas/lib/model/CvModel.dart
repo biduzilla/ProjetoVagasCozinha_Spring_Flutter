@@ -40,4 +40,10 @@ class CvModel {
       qualificacoes: json['qualificacoes'],
     );
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'Cv{nome: $nome\nemail: $emailContatoCV\ntelefone: $telefone\nsemestre: $semestre\nexperiencias: $experiencias\nqualificacoes: $qualificacoes}';
+  }
 }

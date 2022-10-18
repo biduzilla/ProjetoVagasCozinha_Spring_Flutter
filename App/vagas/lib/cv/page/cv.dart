@@ -124,6 +124,39 @@ class _CvPageScreenState extends State<CvPageScreen> {
     }
   }
 
+  void getTextList(List<String> lst, int code) {
+    if (code == 0) {
+      experiencias = lst;
+    } else {
+      qualificacoes = lst;
+    }
+  }
+
+  void removeTextList(String txt, int code) {
+    if (code == 0) {
+      experiencias.remove(txt);
+    } else {
+      qualificacoes.remove(txt);
+    }
+  }
+
+  void saveCv() {
+    if (nome == null || email == null || sobre == null || semestre == null) {
+      alertDialog("Preencha os dados!", 0);
+    } else {
+      CvModel cv = CvModel(
+        emailContatoCV: email!,
+        experiencias: experiencias,
+        nome: nome!,
+        qualificacoes: qualificacoes,
+        semestre: semestre!,
+        sobre: sobre!,
+        telefone: telefone!,
+      );
+      print(cv);
+    }
+  }
+
   _CvPageScreenState(this.usuario);
   @override
   Widget build(BuildContext context) {
@@ -223,19 +256,27 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                       child: Column(
                                         children: [
                                           MultipleTextForm(
+                                            code: 0,
                                             title: "Experiências",
                                             hint: "Minhas Experiências",
+                                            getTextList: getTextList,
+                                            removeTextList: removeTextList,
                                           ),
                                           MultipleTextForm(
+                                            code: 1,
                                             title: "Qualificações",
                                             hint: "Minhas Qualificações",
+                                            getTextList: getTextList,
+                                            removeTextList: removeTextList,
                                           ),
                                         ],
                                       ),
                                       // child:
                                     ),
                                   ),
-                                  SalvarWidget(),
+                                  SalvarWidget(
+                                    saveCv: saveCv,
+                                  ),
                                 ],
                               ),
                             ),

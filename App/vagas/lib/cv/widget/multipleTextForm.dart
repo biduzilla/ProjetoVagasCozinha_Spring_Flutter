@@ -7,37 +7,49 @@ class MultipleTextForm extends StatefulWidget {
     Key? key,
     required this.title,
     required this.hint,
+    required this.getTextList,
+    required this.code,
+    required this.removeTextList,
   }) : super(key: key);
 
   final String title;
   final String hint;
+  final int code;
+  final Function(List<String>, int) getTextList;
+  final Function(String, int) removeTextList;
 
   @override
-  State<MultipleTextForm> createState() => _MultipleTextFormState(title, hint);
+  State<MultipleTextForm> createState() => _MultipleTextFormState(
+        title,
+        hint,
+        getTextList,
+        code,
+        removeTextList,
+      );
 }
 
 class _MultipleTextFormState extends State<MultipleTextForm> {
-  _MultipleTextFormState(this.title, this.hint);
+  _MultipleTextFormState(
+      this.title, this.hint, this.getTextList, this.code, this.removeTextList);
 
   List<String> textList = [];
   final String title;
   final String hint;
+  final int code;
+  final Function(List<String>, int) getTextList;
+  final Function(String, int) removeTextList;
 
   void addListText(String text) {
     setState(() {
       textList.add(text);
     });
+    getTextList(textList, code);
   }
 
   void removeListText(String text) {
-    print(text);
     setState(() {
       textList.remove(text);
     });
-  }
-
-  List<String> returnList() {
-    return textList;
   }
 
   @override
