@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
 import 'package:vagas/cv/widget/multipleTextForm.dart';
+import 'package:vagas/cv/widget/salvar.dart';
 import 'package:vagas/cv/widget/textForm.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/home/widget/footer.dart';
@@ -121,10 +124,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
     }
   }
 
-  void getExp(List<String> lstExperiencias) {
-    experiencias = lstExperiencias;
-  }
-
   _CvPageScreenState(this.usuario);
   @override
   Widget build(BuildContext context) {
@@ -163,7 +162,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
                   children: [
                     Expanded(
                       child: ListView(
-                        reverse: true,
+                        reverse: false,
                         children: [
                           Padding(
                             padding: EdgeInsets.all(16),
@@ -236,21 +235,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                       // child:
                                     ),
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      CvModel cv = CvModel(
-                                        nome: nome!,
-                                        emailContatoCV: email!,
-                                        telefone: telefone!,
-                                        sobre: sobre!,
-                                        semestre: semestre!,
-                                        experiencias: experiencias,
-                                        qualificacoes: qualificacoes,
-                                      );
-                                      print(cv);
-                                    },
-                                    child: Text("Salvar Currículo"),
-                                  )
+                                  SalvarWidget(),
                                 ],
                               ),
                             ),

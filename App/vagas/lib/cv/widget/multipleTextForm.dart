@@ -36,6 +36,10 @@ class _MultipleTextFormState extends State<MultipleTextForm> {
     });
   }
 
+  List<String> returnList() {
+    return textList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
