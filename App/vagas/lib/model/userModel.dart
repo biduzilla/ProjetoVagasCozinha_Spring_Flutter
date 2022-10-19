@@ -6,17 +6,23 @@ class User {
     required this.idUser,
     required this.email,
     required this.cv,
+    required this.token,
+    required this.vagasAceitas,
   });
 
   int idUser;
   String email;
   String cv;
+  String token;
+  List<dynamic> vagasAceitas;
 
   Map<String, dynamic> toJson() {
     return {
       'idUser': idUser,
       'email': email,
       'cv': cv,
+      'token': token,
+      'vagasAceitas': vagasAceitas,
     };
   }
 
@@ -25,6 +31,8 @@ class User {
       idUser: json['idUser'],
       email: json['email'],
       cv: json['cv'],
+      token: json['token'],
+      vagasAceitas: json['vagasAceitas'],
     );
   }
 }

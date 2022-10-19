@@ -103,6 +103,8 @@ class _CvMostrarScreenState extends State<CvMostrarScreen> {
       });
     } else if (response.statusCode == 403) {
       alertDialog("Expirada a Sessão", 1);
+    } else if (response.statusCode == 401) {
+      alertDialog("Expirada a Sessão", 1);
     } else {
       alertDialog("Erro Carregamento Cv", 0);
       print(response.body);
@@ -139,7 +141,13 @@ class _CvMostrarScreenState extends State<CvMostrarScreen> {
               width: MediaQuery.of(context).size.width * 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [if (flag) CardDadosWidget(cv: cv!)],
+                children: [
+                  if (flag)
+                    CardDadosWidget(
+                      cv: cv!,
+                      usuario: usuario,
+                    )
+                ],
               ),
               decoration: BoxDecoration(
                 color: Colors.grey.shade200,

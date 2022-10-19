@@ -4,13 +4,15 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:vagas/model/CvModel.dart';
 
-class SalvarWidget extends StatelessWidget {
-  SalvarWidget({
+class ButtonWidget extends StatelessWidget {
+  ButtonWidget({
     Key? key,
-    required this.montarCv,
+    required this.press,
+    required this.text,
   }) : super(key: key);
 
-  final Function() montarCv;
+  final Function() press;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +34,12 @@ class SalvarWidget extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              montarCv();
+              press();
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Salvar",
+                text,
                 style: TextStyle(
                   fontSize: 26,
                 ),

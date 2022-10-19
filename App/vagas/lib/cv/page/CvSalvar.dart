@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
 import 'package:vagas/cv/widget/multipleTextForm.dart';
-import 'package:vagas/cv/widget/salvar.dart';
+import 'package:vagas/cv/widget/ButtonWidget.dart';
 import 'package:vagas/cv/widget/textForm.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/home/widget/footer.dart';
@@ -21,14 +21,23 @@ import '../../../model/userModel.dart';
 
 class CvPageScreen extends StatefulWidget {
   final UserAuth usuario;
+  final int code;
 
-  const CvPageScreen({Key? key, required this.usuario}) : super(key: key);
+  const CvPageScreen({
+    Key? key,
+    required this.usuario,
+    required this.code,
+  }) : super(key: key);
 
   @override
-  State<CvPageScreen> createState() => _CvPageScreenState(usuario);
+  State<CvPageScreen> createState() => _CvPageScreenState(
+        usuario,
+        code,
+      );
 }
 
 class _CvPageScreenState extends State<CvPageScreen> {
+  final int code;
   final UserAuth? usuario;
   List<String> experiencias = [];
   List<String> qualificacoes = [];
@@ -118,7 +127,10 @@ class _CvPageScreenState extends State<CvPageScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CvPageScreen(usuario: usuario!),
+          builder: (context) => CvPageScreen(
+            usuario: usuario!,
+            code: 0,
+          ),
         ),
       );
     }
@@ -143,8 +155,10 @@ class _CvPageScreenState extends State<CvPageScreen> {
   void montarCv() {
     if (nome == null || email == null || sobre == null || semestre == null) {
       alertDialog("Preencha os dados!", 0);
-    } else {
+    } else if (code == 0) {
       salvarCv();
+    } else if (code == 1) {
+      atualizarCv();
     }
   }
 
@@ -183,7 +197,42 @@ class _CvPageScreenState extends State<CvPageScreen> {
     }
   }
 
-  _CvPageScreenState(this.usuario);
+  Future<void> atualizarCv() async {
+    var url = Uri.parse('http://10.61.104.110:8081/api/curriculum/updateCv');
+    Map data = {
+      "nome": email,
+      "emailContatoCV": email,
+      "telefone": telefone,
+      "sobre": sobre,
+      "semestre": semestre,
+      "experiencias": experiencias,
+      "qualificacoes": qualificacoes,
+    };
+
+    var body = json.encode(data);
+    print(body);
+
+    var response = await http.put(url,
+        headers: {
+          'Authorization': 'Bearer ' + usuario!.token,
+          'Content-Type': 'application/json',
+        },
+        body: body);
+
+    if (response.statusCode == 201) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(usuario: usuario!),
+        ),
+      );
+    } else {
+      print(response.body);
+      alertDialog("Codigo Error:" + response.statusCode.toString(), 0);
+    }
+  }
+
+  _CvPageScreenState(this.usuario, this.code);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -300,8 +349,9 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                       // child:
                                     ),
                                   ),
-                                  SalvarWidget(
-                                    montarCv: montarCv,
+                                  ButtonWidget(
+                                    press: montarCv,
+                                    text: '',
                                   ),
                                 ],
                               ),
