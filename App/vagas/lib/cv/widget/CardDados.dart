@@ -7,6 +7,7 @@ import 'package:vagas/cv/widget/InfoCardDados.dart';
 import 'package:vagas/model/CvModel.dart';
 import 'package:flutter/material.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 
 class CardDadosWidget extends StatefulWidget {
   CardDadosWidget({
@@ -16,7 +17,7 @@ class CardDadosWidget extends StatefulWidget {
   }) : super(key: key);
 
   final CvModel cv;
-  final UserAuth usuario;
+  final User usuario;
   @override
   State<CardDadosWidget> createState() => _CardDadosWidgetState(
         cv,
@@ -26,7 +27,7 @@ class CardDadosWidget extends StatefulWidget {
 
 class _CardDadosWidgetState extends State<CardDadosWidget> {
   final CvModel cv;
-  final UserAuth usuario;
+  final User usuario;
 
   _CardDadosWidgetState(
     this.cv,
@@ -129,7 +130,6 @@ class _CardDadosWidgetState extends State<CardDadosWidget> {
                                   MaterialPageRoute(
                                     builder: (context) => CvPageScreen(
                                       usuario: usuario,
-                                      code: 1,
                                     ),
                                   ),
                                 );

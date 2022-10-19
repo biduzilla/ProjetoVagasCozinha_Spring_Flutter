@@ -4,17 +4,18 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 
 class FooterWidget extends StatefulWidget {
   const FooterWidget({Key? key, this.usuario}) : super(key: key);
-  final UserAuth? usuario;
+  final User? usuario;
 
   @override
   State<FooterWidget> createState() => _FooterWidgetState(usuario);
 }
 
 class _FooterWidgetState extends State<FooterWidget> {
-  final UserAuth? usuario;
+  final User? usuario;
   int _selectedIndex = 0;
 
   _FooterWidgetState(this.usuario);
@@ -24,7 +25,12 @@ class _FooterWidgetState extends State<FooterWidget> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => homePageScreen(usuario: usuario!),
+          builder: (context) => homePageScreen(
+            usuario: UserAuth(
+              email: usuario!.email,
+              token: usuario!.token,
+            ),
+          ),
         ),
       );
     }

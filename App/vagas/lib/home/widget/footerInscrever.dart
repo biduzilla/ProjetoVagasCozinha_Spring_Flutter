@@ -10,13 +10,14 @@ import 'package:vagas/auth/widget/alert.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/model/ErrorModel.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
 class FooterInscrever extends StatefulWidget {
   FooterInscrever({Key? key, required this.vaga, required this.userAuth})
       : super(key: key);
   final Vaga vaga;
-  final UserAuth userAuth;
+  final User userAuth;
   @override
   State<FooterInscrever> createState() => _FooterInscrever(vaga, userAuth);
 }
@@ -24,7 +25,7 @@ class FooterInscrever extends StatefulWidget {
 class _FooterInscrever extends State<FooterInscrever> {
   final Vaga? vaga;
   ErrorModel? error;
-  final UserAuth? userAuth;
+  final User? userAuth;
 
   _FooterInscrever(this.vaga, this.userAuth);
 
@@ -55,7 +56,12 @@ class _FooterInscrever extends State<FooterInscrever> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => homePageScreen(usuario: userAuth!),
+                      builder: (context) => homePageScreen(
+                        usuario: UserAuth(
+                          email: userAuth!.email,
+                          token: userAuth!.token,
+                        ),
+                      ),
                     ),
                   );
                 }

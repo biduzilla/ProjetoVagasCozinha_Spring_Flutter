@@ -20,25 +20,21 @@ import 'dart:convert';
 import '../../../model/userModel.dart';
 
 class CvPageScreen extends StatefulWidget {
-  final UserAuth usuario;
-  final int code;
+  final User usuario;
 
   const CvPageScreen({
     Key? key,
     required this.usuario,
-    required this.code,
   }) : super(key: key);
 
   @override
   State<CvPageScreen> createState() => _CvPageScreenState(
         usuario,
-        code,
       );
 }
 
 class _CvPageScreenState extends State<CvPageScreen> {
-  final int code;
-  final UserAuth? usuario;
+  final User? usuario;
   List<String> experiencias = [];
   List<String> qualificacoes = [];
   bool flag = false;
@@ -120,7 +116,12 @@ class _CvPageScreenState extends State<CvPageScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => homePageScreen(usuario: usuario!),
+          builder: (context) => homePageScreen(
+            usuario: UserAuth(
+              email: usuario!.email,
+              token: usuario!.token,
+            ),
+          ),
         ),
       );
     } else if (index == 1) {
@@ -129,7 +130,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
         MaterialPageRoute(
           builder: (context) => CvPageScreen(
             usuario: usuario!,
-            code: 0,
           ),
         ),
       );
@@ -155,9 +155,9 @@ class _CvPageScreenState extends State<CvPageScreen> {
   void montarCv() {
     if (nome == null || email == null || sobre == null || semestre == null) {
       alertDialog("Preencha os dados!", 0);
-    } else if (code == 0) {
+    } else if (usuario!.cv == "CADASTRADO") {
       salvarCv();
-    } else if (code == 1) {
+    } else if (usuario!.cv == "NAO_CADASTRADO") {
       atualizarCv();
     }
   }
@@ -188,7 +188,12 @@ class _CvPageScreenState extends State<CvPageScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => homePageScreen(usuario: usuario!),
+          builder: (context) => homePageScreen(
+            usuario: UserAuth(
+              email: usuario!.email,
+              token: usuario!.token,
+            ),
+          ),
         ),
       );
     } else {
@@ -223,7 +228,12 @@ class _CvPageScreenState extends State<CvPageScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => homePageScreen(usuario: usuario!),
+          builder: (context) => homePageScreen(
+            usuario: UserAuth(
+              email: usuario!.email,
+              token: usuario!.token,
+            ),
+          ),
         ),
       );
     } else {
@@ -232,7 +242,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
     }
   }
 
-  _CvPageScreenState(this.usuario, this.code);
+  _CvPageScreenState(this.usuario);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

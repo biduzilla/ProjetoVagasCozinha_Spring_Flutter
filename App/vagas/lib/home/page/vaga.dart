@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/footerInscrever.dart';
-import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
 extension StringCasingExtension on String {
@@ -17,7 +15,7 @@ extension StringCasingExtension on String {
 class vagaScreen extends StatelessWidget {
   const vagaScreen({Key? key, this.usuario, required this.vaga})
       : super(key: key);
-  final UserAuth? usuario;
+  final User? usuario;
   final Vaga vaga;
 
   Widget build(BuildContext context) {

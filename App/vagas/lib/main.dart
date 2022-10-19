@@ -4,6 +4,7 @@ import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 import 'package:vagas/test.dart';
 
@@ -33,8 +34,15 @@ class MyApp extends StatelessWidget {
     UserAuth userAuth = UserAuth(
       email: "toddy@toddy",
       token:
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjE5NTM3OX0.ko2hd4ZYMWDO3cj8W1taMQRbCfo2tLmf6VEVHdnIqHyH-wex5lhrxSZn5xdJlYCe6iXlT5hyBaxu29MjezftQQ",
+          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjIwMzExMn0.Nn6hRggDbcM0iqeHTL7Kgv37OjDy-Ow1CDfbrhl3AmOcJcbTFzgYJtv4pMqo1Q9Pg8pfCzZ5tvryvubCFKOQkg",
     );
+    User user = User(
+        cv: 'CADASTRADO',
+        email: 'toddy@toddy',
+        token:
+            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjIwMzExMn0.Nn6hRggDbcM0iqeHTL7Kgv37OjDy-Ow1CDfbrhl3AmOcJcbTFzgYJtv4pMqo1Q9Pg8pfCzZ5tvryvubCFKOQkg',
+        vagasAceitas: [2, 2]);
+
     return MaterialApp(
       // home: loginScreen(),
 
@@ -51,7 +59,7 @@ class MyApp extends StatelessWidget {
       // ),
 
       home: CvMostrarScreen(
-        usuario: userAuth,
+        usuario: user,
       ),
     );
   }

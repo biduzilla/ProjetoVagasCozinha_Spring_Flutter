@@ -10,16 +10,17 @@ import 'package:vagas/cv/widget/CardDados.dart';
 import 'package:vagas/cv/widget/footer.dart';
 import 'package:vagas/model/CvModel.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 
 class CvMostrarScreen extends StatefulWidget {
   CvMostrarScreen({Key? key, required this.usuario}) : super(key: key);
-  final UserAuth usuario;
+  final User usuario;
   @override
   State<CvMostrarScreen> createState() => _CvMostrarScreenState(usuario);
 }
 
 class _CvMostrarScreenState extends State<CvMostrarScreen> {
-  final UserAuth usuario;
+  final User usuario;
   CvModel? cv;
   bool flag = false;
 

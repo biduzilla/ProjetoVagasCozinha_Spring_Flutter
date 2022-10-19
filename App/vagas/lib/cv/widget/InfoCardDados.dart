@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/cv/widget/ButtonWidget.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 
 class InfoCardDadosWidget extends StatelessWidget {
   InfoCardDadosWidget({
@@ -15,7 +16,7 @@ class InfoCardDadosWidget extends StatelessWidget {
     this.lstDados,
   }) : super(key: key);
 
-  final UserAuth usuario;
+  final User usuario;
   final String info;
   final String? dados;
   final List<dynamic>? lstDados;

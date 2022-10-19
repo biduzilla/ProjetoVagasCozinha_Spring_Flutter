@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
 class vagaList extends StatelessWidget {
@@ -8,7 +9,7 @@ class vagaList extends StatelessWidget {
       : super(key: key);
 
   final Vaga vaga;
-  final UserAuth usuario;
+  final User usuario;
 
   @override
   Widget build(BuildContext context) {

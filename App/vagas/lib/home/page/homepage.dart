@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
+import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
@@ -23,7 +24,8 @@ class homePageScreen extends StatefulWidget {
 }
 
 class _homePageScreenState extends State<homePageScreen> {
-  final UserAuth? usuario;
+  final UserAuth usuario;
+  User? user;
   Vaga? vaga;
   int _selectedIndex = 0;
   List<Vaga> vagas = [];
@@ -87,10 +89,10 @@ class _homePageScreenState extends State<homePageScreen> {
     );
   }
 
-  Future<void> getListLastVagas(String token) async {
+  Future<void> getListLastVagas() async {
     var url = Uri.parse('http://10.61.104.110:8081/api/vagas/lastVagas');
     var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ' + token,
+      'Authorization': 'Bearer ' + usuario.token,
     });
 
     try {
@@ -111,11 +113,29 @@ class _homePageScreenState extends State<homePageScreen> {
     }
   }
 
+  Future<void> getUserDados() async {
+    String token;
+    var url = Uri.parse('http://10.61.104.110:8081/api/users/getDados');
+
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + usuario.token,
+    });
+
+    if (response.statusCode == 200) {
+      user = User.fromJson(jsonDecode(response.body));
+      user!.token = usuario.token;
+      getListLastVagas();
+    } else {
+      alertDialog("Dados Incorretos!", 1);
+      print(response.body);
+    }
+  }
+
   Future<void> searchCargo(String cargo) async {
     var url = Uri.parse(
         'http://10.61.104.110:8081/api/vagas/procurar?cargo=${cargo}');
     var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ' + usuario!.token,
+      'Authorization': 'Bearer ' + usuario.token,
     });
 
     if (response.statusCode == 404) {
@@ -137,7 +157,7 @@ class _homePageScreenState extends State<homePageScreen> {
   Future<void> getVaga(int idVaga) async {
     var url = Uri.parse('http://10.61.104.110:8081/api/vagas/${idVaga}');
     var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ' + usuario!.token,
+      'Authorization': 'Bearer ' + usuario.token,
     });
 
     print("getVaga" + response.body);
@@ -157,23 +177,35 @@ class _homePageScreenState extends State<homePageScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => homePageScreen(usuario: usuario!),
+          builder: (context) => homePageScreen(usuario: usuario),
         ),
       );
-    } else if (index == 1) {
+    } else if (index == 1 || user!.cv != "CADASTRADO") {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CvPageScreen(usuario: usuario!),
+          builder: (context) => CvPageScreen(
+            usuario: user!,
+          ),
+        ),
+      );
+    } else if (index == 1 || user!.cv == "CADASTRADO") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CvMostrarScreen(
+            usuario: user!,
+          ),
         ),
       );
     }
   }
 
   void initState() {
+    print(vagas.length);
     super.initState();
     setState(() {
-      getListLastVagas(usuario!.token);
+      getUserDados();
     });
   }
 
@@ -239,6 +271,7 @@ class _homePageScreenState extends State<homePageScreen> {
   }
 
   _homePageScreenState(this.usuario);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -262,7 +295,7 @@ class _homePageScreenState extends State<homePageScreen> {
                     size: 28,
                   ),
                   Text(
-                    usuario!.email,
+                    usuario.email,
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -317,11 +350,12 @@ class _homePageScreenState extends State<homePageScreen> {
                           // if (vagas.isEmpty) NoVagas(),
                           Column(
                             children: [
-                              for (Vaga vagaDaLista in vagas)
-                                vagaList(
-                                  vaga: vagaDaLista,
-                                  usuario: usuario!,
-                                )
+                              if (vagas != null)
+                                for (Vaga vagaDaLista in vagas)
+                                  vagaList(
+                                    vaga: vagaDaLista,
+                                    usuario: user!,
+                                  )
                             ],
                           ),
                         ],
