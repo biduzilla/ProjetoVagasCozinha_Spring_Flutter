@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/model/userAuthModel.dart';
@@ -83,11 +84,22 @@ class _FooterWidgetState extends State<FooterWidget> {
           ),
         ),
       );
-    } else if (index == 1) {
+    } else if (index == 1 && usuario.cv != "CADASTRADO") {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CvPageScreen(usuario: usuario),
+          builder: (context) => CvPageScreen(
+            usuario: usuario,
+          ),
+        ),
+      );
+    } else if (index == 1 && usuario.cv == "CADASTRADO") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CvMostrarScreen(
+            usuario: usuario,
+          ),
         ),
       );
     }

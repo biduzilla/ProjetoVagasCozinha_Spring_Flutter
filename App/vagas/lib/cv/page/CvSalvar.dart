@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
+import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/widget/multipleTextForm.dart';
 import 'package:vagas/cv/widget/ButtonWidget.dart';
 import 'package:vagas/cv/widget/textForm.dart';
@@ -124,11 +125,20 @@ class _CvPageScreenState extends State<CvPageScreen> {
           ),
         ),
       );
-    } else if (index == 1) {
+    } else if (index == 1 && usuario!.cv != "CADASTRADO") {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => CvPageScreen(
+            usuario: usuario!,
+          ),
+        ),
+      );
+    } else if (index == 1 && usuario!.cv == "CADASTRADO") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CvMostrarScreen(
             usuario: usuario!,
           ),
         ),
@@ -155,10 +165,22 @@ class _CvPageScreenState extends State<CvPageScreen> {
   void montarCv() {
     if (nome == null || email == null || sobre == null || semestre == null) {
       alertDialog("Preencha os dados!", 0);
-    } else if (usuario!.cv == "CADASTRADO") {
-      salvarCv();
     } else if (usuario!.cv == "NAO_CADASTRADO") {
+      salvarCv();
+    } else if (usuario!.cv == "CADASTRADO") {
       atualizarCv();
+      alertDialog("Boleto Atualizado", 0);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(
+            usuario: UserAuth(
+              email: usuario!.email,
+              token: usuario!.token,
+            ),
+          ),
+        ),
+      );
     }
   }
 
@@ -205,7 +227,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
   Future<void> atualizarCv() async {
     var url = Uri.parse('http://10.61.104.110:8081/api/curriculum/updateCv');
     Map data = {
-      "nome": email,
+      "nome": nome,
       "emailContatoCV": email,
       "telefone": telefone,
       "sobre": sobre,
@@ -361,7 +383,9 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                   ),
                                   ButtonWidget(
                                     press: montarCv,
-                                    text: '',
+                                    text: usuario!.cv != "CADASTRADO"
+                                        ? 'Salvar Currículo'
+                                        : 'Atualizar Currículo',
                                   ),
                                 ],
                               ),

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         cv: 'CADASTRADO',
         email: 'toddy@toddy',
         token:
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjIwMzExMn0.Nn6hRggDbcM0iqeHTL7Kgv37OjDy-Ow1CDfbrhl3AmOcJcbTFzgYJtv4pMqo1Q9Pg8pfCzZ5tvryvubCFKOQkg',
+            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjIwNTM3M30.B-o3fgCBODY98ViXGAs6APyuOcWWzeKWSoB2Ozg9KCSPRi_RFNW1Cm7hyO3JT49E3o0dhAsF2liioX2yOED3PQ',
         vagasAceitas: [2, 2]);
 
     return MaterialApp(
