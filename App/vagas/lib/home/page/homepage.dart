@@ -180,7 +180,7 @@ class _homePageScreenState extends State<homePageScreen> {
           builder: (context) => homePageScreen(usuario: usuario),
         ),
       );
-    } else if (index == 1 || user!.cv != "CADASTRADO") {
+    } else if (index == 1 && user!.cv != "CADASTRADO") {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -189,7 +189,7 @@ class _homePageScreenState extends State<homePageScreen> {
           ),
         ),
       );
-    } else if (index == 1 || user!.cv == "CADASTRADO") {
+    } else if (index == 1 && user!.cv == "CADASTRADO") {
       Navigator.push(
         context,
         MaterialPageRoute(
