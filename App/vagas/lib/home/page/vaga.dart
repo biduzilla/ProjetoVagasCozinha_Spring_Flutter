@@ -55,7 +55,7 @@ class vagaScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 36,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           color: Colors.green,
                         ),
                       ),
@@ -78,7 +78,7 @@ class vagaScreen extends StatelessWidget {
                             vaga.local,
                             style: TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: Colors.green,
                             ),
                           ),
@@ -87,7 +87,7 @@ class vagaScreen extends StatelessWidget {
                             vaga.dataPostada,
                             style: TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               color: Colors.green,
                             ),
                           ),
@@ -99,7 +99,8 @@ class vagaScreen extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(30),
+                            top: Radius.circular(10),
+                            bottom: Radius.circular(5),
                           ),
                           color: Colors.green,
                         ),
@@ -111,51 +112,100 @@ class vagaScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade100,
+                            // borderRadius: BorderRadius.all(
+                            //   Radius.circular(10),
+                            // ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Requisitos",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    for (var i = 0;
+                                        i < vaga.requisitos.length;
+                                        i++) ...[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "- " + vaga.requisitos[i],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 20,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       Container(
-                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.green,
                           borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(30),
+                            bottom: Radius.circular(10),
+                            top: Radius.circular(5),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
                             children: [
-                              Text(
-                                "Requisitos",
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green,
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  for (var i = 0;
-                                      i < vaga.requisitos.length;
-                                      i++) ...[
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "- " + vaga.requisitos[i],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 20,
-                                          color: Colors.green,
-                                        ),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Horário: ',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 23,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: vaga.horario,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
                                       ),
                                     ),
                                   ],
-                                ],
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "\$ ${vaga.remuneracao}",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ],
                           ),
@@ -163,39 +213,6 @@ class vagaScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 50,
-                      ),
-                      Row(
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Horário: ',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: vaga.horario,
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 25,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Spacer(),
-                          Text(
-                            "\$ ${vaga.remuneracao}",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   )

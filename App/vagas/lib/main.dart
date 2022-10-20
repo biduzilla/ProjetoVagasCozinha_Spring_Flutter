@@ -50,16 +50,16 @@ class MyApp extends StatelessWidget {
       //   vaga: vagaTeste,
       // ),
 
-      // home: homePageScreen(
-      //   usuario: userAuth,
-      // ),
+      home: homePageScreen(
+        usuario: user,
+      ),
       // home: CvPageScreen(
       //   usuario: userAuth,
       // ),
 
-      home: CvMostrarScreen(
-        usuario: user,
-      ),
+      // home: CvMostrarScreen(
+      //   usuario: user,
+      // ),
 
       //
     );
