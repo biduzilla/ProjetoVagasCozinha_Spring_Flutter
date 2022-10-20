@@ -14,10 +14,10 @@ import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
 class FooterInscrever extends StatefulWidget {
-  FooterInscrever({Key? key, required this.vaga, required this.userAuth})
+  FooterInscrever({Key? key, required this.vaga, this.userAuth})
       : super(key: key);
   final Vaga vaga;
-  final User userAuth;
+  final User? userAuth;
   @override
   State<FooterInscrever> createState() => _FooterInscrever(vaga, userAuth);
 }
@@ -52,15 +52,12 @@ class _FooterInscrever extends State<FooterInscrever> {
                       builder: (context) => loginScreen(),
                     ),
                   );
-                } else {
+                } else if (code == 0) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => homePageScreen(
-                        usuario: UserAuth(
-                          email: userAuth!.email,
-                          token: userAuth!.token,
-                        ),
+                        usuario: userAuth!,
                       ),
                     ),
                   );
@@ -107,9 +104,9 @@ class _FooterInscrever extends State<FooterInscrever> {
     print('http://10.61.104.110:8081/api/aceitar/${vaga!.vagaId}');
     if (response.statusCode == 400) {
       error = ErrorModel.fromJson(jsonDecode(response.body));
-      alertDialog("Você já está participando desta vaga!", 1);
+      alertDialog("Você já está participando desta vaga!", 0);
     } else if (response.statusCode == 403 || response.statusCode == 401) {
-      alertDialog("Entre novamento na sua conta!", 0);
+      alertDialog("Entre novamento na sua conta!", 1);
     } else {
       alertDialog("Currículo Enviado!", 0);
     }

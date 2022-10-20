@@ -19,14 +19,20 @@ class FooterWidget extends StatefulWidget {
   final int page;
 
   @override
-  State<FooterWidget> createState() => _FooterWidgetState(usuario, page);
+  State<FooterWidget> createState() => _FooterWidgetState(
+        usuario,
+        page,
+      );
 }
 
 class _FooterWidgetState extends State<FooterWidget> {
   final User usuario;
   final int page;
 
-  _FooterWidgetState(this.usuario, this.page);
+  _FooterWidgetState(
+    this.usuario,
+    this.page,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +69,7 @@ class _FooterWidgetState extends State<FooterWidget> {
           label: 'Meus Dados',
         ),
       ],
-      currentIndex: 1,
+      currentIndex: page,
       unselectedItemColor: Colors.white,
       unselectedLabelStyle: TextStyle(color: Colors.white, fontSize: 14),
       selectedItemColor: Colors.amber[800],
@@ -77,10 +83,7 @@ class _FooterWidgetState extends State<FooterWidget> {
         context,
         MaterialPageRoute(
           builder: (context) => homePageScreen(
-            usuario: UserAuth(
-              email: usuario.email,
-              token: usuario.token,
-            ),
+            usuario: usuario,
           ),
         ),
       );

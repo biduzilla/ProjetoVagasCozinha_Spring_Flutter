@@ -7,6 +7,7 @@ import 'package:vagas/auth/page/signUp.dart';
 import 'package:vagas/auth/widget/alert.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/model/userAuthModel.dart';
+import 'package:vagas/model/userModel.dart';
 
 class loginScreen extends StatefulWidget {
   const loginScreen({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class loginScreen extends StatefulWidget {
 }
 
 class _loginScreen extends State<loginScreen> {
+  User? user;
   String? email;
   String? password;
   String? errorText;
@@ -83,6 +85,28 @@ class _loginScreen extends State<loginScreen> {
     );
   }
 
+  Future<void> getUserDados() async {
+    String token;
+    var url = Uri.parse('http://10.61.104.110:8081/api/users/getDados');
+
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + userAuth!.token,
+    });
+
+    if (response.statusCode == 200) {
+      user = User.fromJson(jsonDecode(response.body));
+      user!.token = userAuth!.token;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(
+            usuario: user!,
+          ),
+        ),
+      );
+    }
+  }
+
   Future<http.Response> login(String email, String password) async {
     String token;
     var url = Uri.parse('http://10.61.104.110:8081/api/users/auth');
@@ -101,15 +125,14 @@ class _loginScreen extends State<loginScreen> {
           'Accept': '*/*'
         },
         body: body);
-    userAuth = UserAuth.fromJson(jsonDecode(response.body));
+
+    print(response.body);
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => homePageScreen(usuario: userAuth!),
-        ),
-      );
-    } else {
+      userAuth = UserAuth.fromJson(jsonDecode(response.body));
+      getUserDados();
+    } else if (response.statusCode == 400) {
       alertDialog("Dados Incorretos!");
     }
     return response;
@@ -143,7 +166,6 @@ class _loginScreen extends State<loginScreen> {
               Container(
                 height: MediaQuery.of(context).size.height / 15,
                 child: Text(
-                  //'Please rate with star',
                   text,
                   style: TextStyle(
                     fontSize: 18,

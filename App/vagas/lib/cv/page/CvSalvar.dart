@@ -5,11 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
 import 'package:vagas/cv/page/CvMostrar.dart';
+import 'package:vagas/cv/widget/footer.dart';
 import 'package:vagas/cv/widget/multipleTextForm.dart';
 import 'package:vagas/cv/widget/ButtonWidget.dart';
 import 'package:vagas/cv/widget/textForm.dart';
 import 'package:vagas/home/page/homepage.dart';
-import 'package:vagas/home/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
 import 'package:vagas/home/widget/vagaList.dart';
 import 'package:vagas/model/CvModel.dart';
@@ -46,15 +46,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
   String? telefone;
   String? sobre;
   String? semestre;
-  final ScrollController _controller = ScrollController();
-
-  void scrollDown() {
-    _controller.animateTo(
-      _controller.position.maxScrollExtent,
-      duration: Duration(seconds: 2),
-      curve: Curves.fastOutSlowIn,
-    );
-  }
 
   Future alertDialog(String text, int code) {
     return showDialog(
@@ -77,6 +68,15 @@ class _CvPageScreenState extends State<CvPageScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => loginScreen(),
+                    ),
+                  );
+                } else if (code == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => homePageScreen(
+                        usuario: usuario!,
+                      ),
                     ),
                   );
                 } else {
@@ -112,40 +112,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
     );
   }
 
-  void _onItemTapped(int index) {
-    if (index == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => homePageScreen(
-            usuario: UserAuth(
-              email: usuario!.email,
-              token: usuario!.token,
-            ),
-          ),
-        ),
-      );
-    } else if (index == 1 && usuario!.cv != "CADASTRADO") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CvPageScreen(
-            usuario: usuario!,
-          ),
-        ),
-      );
-    } else if (index == 1 && usuario!.cv == "CADASTRADO") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CvMostrarScreen(
-            usuario: usuario!,
-          ),
-        ),
-      );
-    }
-  }
-
   void getTextList(List<String> lst, int code) {
     if (code == 0) {
       experiencias = lst;
@@ -169,18 +135,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
       salvarCv();
     } else if (usuario!.cv == "CADASTRADO") {
       atualizarCv();
-      alertDialog("Boleto Atualizado", 0);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => homePageScreen(
-            usuario: UserAuth(
-              email: usuario!.email,
-              token: usuario!.token,
-            ),
-          ),
-        ),
-      );
+      alertDialog("Curriculo Atualizado", 0);
     }
   }
 
@@ -211,10 +166,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => homePageScreen(
-            usuario: UserAuth(
-              email: usuario!.email,
-              token: usuario!.token,
-            ),
+            usuario: usuario!,
           ),
         ),
       );
@@ -246,19 +198,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
         },
         body: body);
 
-    if (response.statusCode == 201) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => homePageScreen(
-            usuario: UserAuth(
-              email: usuario!.email,
-              token: usuario!.token,
-            ),
-          ),
-        ),
-      );
-    } else {
+    if (response.statusCode != 204) {
       print(response.body);
       alertDialog("Codigo Error:" + response.statusCode.toString(), 0);
     }
@@ -406,45 +346,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.green,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.assignment,
-                color: Colors.amber[800],
-              ),
-              label: 'Currículo',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.store,
-                color: Colors.white,
-              ),
-              label: 'Vagas',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-              label: 'Meus Dados',
-            ),
-          ],
-          currentIndex: 1,
-          unselectedItemColor: Colors.white,
-          unselectedLabelStyle: TextStyle(color: Colors.white, fontSize: 14),
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+        bottomNavigationBar: FooterWidget(usuario: usuario!, page: 1),
       ),
     );
   }

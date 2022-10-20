@@ -4,28 +4,31 @@ import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/auth/widget/alert.dart';
 import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
-import 'package:vagas/home/widget/footer.dart';
+import 'package:vagas/cv/widget/footer.dart';
 import 'package:vagas/home/widget/noVagas.dart';
 import 'package:vagas/home/widget/vagaList.dart';
 import 'package:vagas/model/VagaListIdModel.dart';
-import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 import 'dart:convert';
 
 import '../../model/userModel.dart';
 
 class homePageScreen extends StatefulWidget {
-  final UserAuth usuario;
+  final User usuario;
 
-  const homePageScreen({Key? key, required this.usuario}) : super(key: key);
+  const homePageScreen({
+    Key? key,
+    required this.usuario,
+  }) : super(key: key);
 
   @override
-  State<homePageScreen> createState() => _homePageScreenState(usuario);
+  State<homePageScreen> createState() => _homePageScreenState(
+        usuario,
+      );
 }
 
 class _homePageScreenState extends State<homePageScreen> {
-  final UserAuth usuario;
-  User? user;
+  final User usuario;
   Vaga? vaga;
   int _selectedIndex = 0;
   List<Vaga> vagas = [];
@@ -113,24 +116,6 @@ class _homePageScreenState extends State<homePageScreen> {
     }
   }
 
-  Future<void> getUserDados() async {
-    String token;
-    var url = Uri.parse('http://10.61.104.110:8081/api/users/getDados');
-
-    var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ' + usuario.token,
-    });
-
-    if (response.statusCode == 200) {
-      user = User.fromJson(jsonDecode(response.body));
-      user!.token = usuario.token;
-      getListLastVagas();
-    } else {
-      alertDialog("Dados Incorretos!", 1);
-      print(response.body);
-    }
-  }
-
   Future<void> searchCargo(String cargo) async {
     var url = Uri.parse(
         'http://10.61.104.110:8081/api/vagas/procurar?cargo=${cargo}');
@@ -172,40 +157,10 @@ class _homePageScreenState extends State<homePageScreen> {
     }
   }
 
-  void _onItemTapped(int index) {
-    if (index == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => homePageScreen(usuario: usuario),
-        ),
-      );
-    } else if (index == 1 && user!.cv != "CADASTRADO") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CvPageScreen(
-            usuario: user!,
-          ),
-        ),
-      );
-    } else if (index == 1 && user!.cv == "CADASTRADO") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CvMostrarScreen(
-            usuario: user!,
-          ),
-        ),
-      );
-    }
-  }
-
   void initState() {
-    print(vagas.length);
     super.initState();
     setState(() {
-      getUserDados();
+      getListLastVagas();
     });
   }
 
@@ -270,7 +225,9 @@ class _homePageScreenState extends State<homePageScreen> {
     );
   }
 
-  _homePageScreenState(this.usuario);
+  _homePageScreenState(
+    this.usuario,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -354,7 +311,7 @@ class _homePageScreenState extends State<homePageScreen> {
                                 for (Vaga vagaDaLista in vagas)
                                   vagaList(
                                     vaga: vagaDaLista,
-                                    usuario: user!,
+                                    usuario: usuario,
                                   )
                             ],
                           ),
@@ -373,45 +330,7 @@ class _homePageScreenState extends State<homePageScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.green,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.amber[800],
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.assignment,
-                color: Colors.white,
-              ),
-              label: 'Currículo',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.store,
-                color: Colors.white,
-              ),
-              label: 'Vagas',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-              label: 'Meus Dados',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          unselectedItemColor: Colors.white,
-          unselectedLabelStyle: TextStyle(color: Colors.white, fontSize: 14),
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+        bottomNavigationBar: FooterWidget(usuario: usuario, page: 0),
       ),
     );
   }

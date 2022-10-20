@@ -6,7 +6,6 @@ import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
-import 'package:vagas/test.dart';
 
 import 'auth/page/login.dart';
 import 'home/page/homepage.dart';
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
         cv: 'CADASTRADO',
         email: 'toddy@toddy',
         token:
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjIwNTM3M30.B-o3fgCBODY98ViXGAs6APyuOcWWzeKWSoB2Ozg9KCSPRi_RFNW1Cm7hyO3JT49E3o0dhAsF2liioX2yOED3PQ',
+            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjI4NDg0Nn0.jqNb4dAzz9ljMMYuFP28XRJdW_BWzjRuYXDrIQF4FI-Nz7WCK5zfYo26ylnJIN98zs8mNGix72YPIkLqBNkRRA',
         vagasAceitas: [2, 2]);
 
     return MaterialApp(
@@ -61,6 +60,8 @@ class MyApp extends StatelessWidget {
       home: CvMostrarScreen(
         usuario: user,
       ),
+
+      //
     );
   }
 }
