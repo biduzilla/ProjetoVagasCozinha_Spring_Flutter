@@ -94,11 +94,13 @@ class _CvMostrarScreenState extends State<CvMostrarScreen> {
 
     var response = await http.get(url, headers: {
       'Authorization': 'Bearer ' + usuario.token,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json; charset=UTF-8",
     });
 
     if (response.statusCode == 200) {
-      cv = CvModel.fromJson(jsonDecode(response.body));
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      cv = CvModel.fromJson(jsonDecode(source));
+      print(source);
       setState(() {
         flag = true;
       });
