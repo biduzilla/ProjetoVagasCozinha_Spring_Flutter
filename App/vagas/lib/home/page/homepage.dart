@@ -151,7 +151,8 @@ class _homePageScreenState extends State<homePageScreen> {
       alertDialog("Entre novamento na sua conta!", 1);
     } else {
       setState(() {
-        vaga = Vaga.fromJson(jsonDecode(response.body));
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        vaga = Vaga.fromJson(jsonDecode(source));
         vagas.add(vaga!);
       });
     }

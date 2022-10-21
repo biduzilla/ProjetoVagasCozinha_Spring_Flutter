@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:vagas/home/page/vaga.dart';
-import 'package:vagas/model/userAuthModel.dart';
-import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
-class vagaList extends StatelessWidget {
-  const vagaList({Key? key, required this.vaga, required this.usuario})
-      : super(key: key);
-
+class VagaBlockWidget extends StatelessWidget {
+  const VagaBlockWidget({Key? key, required this.vaga}) : super(key: key);
   final Vaga vaga;
-  final User usuario;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (() => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => vagaScreen(
-                home: true,
-                usuario: usuario,
-                vaga: vaga,
-              ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => vagaScreen(
+              home: false,
+              vaga: vaga,
             ),
-          )),
+          ),
+        );
+      },
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
@@ -36,7 +34,7 @@ class vagaList extends StatelessWidget {
                 offset: Offset(0, 3), // changes position of shadow
               ),
             ],
-            color: Colors.white,
+            color: Colors.green,
             borderRadius: BorderRadius.circular(20),
           ),
           width: MediaQuery.of(context).size.width,
@@ -69,7 +67,7 @@ class vagaList extends StatelessWidget {
                     child: Text(
                       vaga.cargo,
                       style: TextStyle(
-                        color: Colors.green,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -80,8 +78,9 @@ class vagaList extends StatelessWidget {
                     child: Text(
                       vaga.local,
                       style: TextStyle(
-                        fontWeight: FontWeight.w300,
+                        fontWeight: FontWeight.w400,
                         fontSize: 14,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -90,8 +89,9 @@ class vagaList extends StatelessWidget {
                     child: Text(
                       vaga.dataPostada,
                       style: TextStyle(
-                        fontWeight: FontWeight.w300,
+                        fontWeight: FontWeight.w400,
                         fontSize: 14,
+                        color: Colors.white,
                       ),
                     ),
                   ),

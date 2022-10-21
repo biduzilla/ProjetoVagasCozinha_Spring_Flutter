@@ -13,9 +13,11 @@ extension StringCasingExtension on String {
 }
 
 class vagaScreen extends StatelessWidget {
-  const vagaScreen({Key? key, this.usuario, required this.vaga})
+  const vagaScreen(
+      {Key? key, this.usuario, required this.vaga, required this.home})
       : super(key: key);
   final User? usuario;
+  final bool home;
   final Vaga vaga;
 
   Widget build(BuildContext context) {
@@ -220,10 +222,11 @@ class vagaScreen extends StatelessWidget {
               ),
             ),
           ),
-          FooterInscrever(
-            vaga: vaga,
-            userAuth: usuario!,
-          ),
+          if (home)
+            FooterInscrever(
+              vaga: vaga,
+              userAuth: usuario!,
+            ),
         ],
       ),
     );

@@ -6,6 +6,7 @@ import 'package:vagas/home/page/vaga.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
+import 'package:vagas/vaga/page/vaga.dart';
 
 import 'auth/page/login.dart';
 import 'home/page/homepage.dart';
@@ -39,20 +40,25 @@ class MyApp extends StatelessWidget {
         cv: 'CADASTRADO',
         email: 'toddy@toddy',
         token:
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjI4NzExNX0.pXze2bbU4zhaX2TAgm40IyzPWLVIuC94LZhopVfzgJUSuYcRWZ-2xOpBamt08c-LZFNihKO7g_PqYW3kU2mjXA',
+            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjM4MjQ2N30.MCFWN1-UXl9Jdem0pA9D_Fh4PA8fDKeUg6Nk_EUW7zWDBD7UTRC_fiTM18e8P--v1mXBnJ_R1ieA_2_rO8ow_A',
         vagasAceitas: [2, 2]);
 
     return MaterialApp(
+      //
       // home: loginScreen(),
+
+      home: VagaScreen(
+        usuario: user,
+      ),
 
       // home: vagaScreen(
       //   usuario: userAuth,
       //   vaga: vagaTeste,
       // ),
 
-      home: homePageScreen(
-        usuario: user,
-      ),
+      // home: homePageScreen(
+      //   usuario: user,
+      // ),
       // home: CvPageScreen(
       //   usuario: userAuth,
       // ),

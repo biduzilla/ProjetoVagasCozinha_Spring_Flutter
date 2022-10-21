@@ -3,35 +3,26 @@ import 'dart:convert';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vagas/auth/page/login.dart';
-import 'package:vagas/cv/widget/CardDados.dart';
 import 'package:vagas/cv/widget/footer.dart';
-import 'package:vagas/model/CvModel.dart';
-import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
+import 'package:vagas/model/vagaModel.dart';
+import 'package:vagas/vaga/widget/expandedContainer.dart';
+import 'package:http/http.dart' as http;
 
-class CvMostrarScreen extends StatefulWidget {
-  CvMostrarScreen({Key? key, required this.usuario}) : super(key: key);
+class VagaScreen extends StatefulWidget {
+  const VagaScreen({Key? key, required this.usuario}) : super(key: key);
   final User usuario;
+
   @override
-  State<CvMostrarScreen> createState() => _CvMostrarScreenState(usuario);
+  State<VagaScreen> createState() => _VagaScreenState(usuario);
 }
 
-class _CvMostrarScreenState extends State<CvMostrarScreen> {
+class _VagaScreenState extends State<VagaScreen> {
   final User usuario;
-  CvModel? cv;
-  bool flag = false;
-
-  _CvMostrarScreenState(this.usuario);
-
-  void initState() {
-    super.initState();
-    setState(() {
-      getCv();
-    });
-  }
+  Vaga? vaga;
+  List<Vaga> vagas = [];
 
   Future alertDialog(String text, int code) {
     return showDialog(
@@ -88,31 +79,37 @@ class _CvMostrarScreenState extends State<CvMostrarScreen> {
     );
   }
 
-  Future<void> getCv() async {
-    var url = Uri.parse('http://10.61.104.110:8081/api/curriculum/getCv');
-
+  Future<void> getVaga(int idVaga) async {
+    var url = Uri.parse('http://10.61.104.110:8081/api/vagas/${idVaga}');
     var response = await http.get(url, headers: {
       'Authorization': 'Bearer ' + usuario.token,
-      "Content-Type": "application/json; charset=UTF-8",
     });
 
-    if (response.statusCode == 200) {
-      String source = Utf8Decoder().convert(response.bodyBytes);
-      cv = CvModel.fromJson(jsonDecode(source));
-      print(source);
-      setState(() {
-        flag = true;
-      });
-    } else if (response.statusCode == 403) {
-      alertDialog("Expirada a Sessão", 1);
-    } else if (response.statusCode == 401) {
-      alertDialog("Expirada a Sessão", 1);
+    print("getVaga: " + response.body);
+
+    if (response.statusCode == 403) {
+      alertDialog("Entre novamento na sua conta!", 1);
     } else {
-      alertDialog("Erro Carregamento Cv", 0);
-      print(response.body);
+      setState(() {
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        vaga = Vaga.fromJson(jsonDecode(source));
+        setState(() {
+          vagas.add(vaga!);
+        });
+      });
     }
   }
 
+  void initState() {
+    super.initState();
+    setState(() {
+      for (int id in usuario.vagasAceitas) {
+        getVaga(id);
+      }
+    });
+  }
+
+  _VagaScreenState(this.usuario);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,30 +135,10 @@ class _CvMostrarScreenState extends State<CvMostrarScreen> {
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (flag)
-                    CardDadosWidget(
-                      cv: cv!,
-                      usuario: usuario,
-                    )
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(30),
-                ),
-              ),
-            ),
-          ),
+          if (vagas.isNotEmpty) ExpandandedContainerWidget(vagas: vagas),
         ],
       ),
-      bottomNavigationBar: FooterWidget(usuario: usuario, page: 1),
+      bottomNavigationBar: FooterWidget(usuario: usuario, page: 2),
     );
   }
 }
