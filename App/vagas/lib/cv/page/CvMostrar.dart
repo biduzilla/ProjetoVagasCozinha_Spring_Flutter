@@ -99,7 +99,6 @@ class _CvMostrarScreenState extends State<CvMostrarScreen> {
     if (response.statusCode == 200) {
       String source = Utf8Decoder().convert(response.bodyBytes);
       cv = CvModel.fromJson(jsonDecode(source));
-      print(source);
       setState(() {
         flag = true;
       });
@@ -109,7 +108,6 @@ class _CvMostrarScreenState extends State<CvMostrarScreen> {
       alertDialog("Expirada a Sessão", 1);
     } else {
       alertDialog("Erro Carregamento Cv", 0);
-      print(response.body);
     }
   }
 

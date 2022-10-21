@@ -3,21 +3,24 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
+import 'package:vagas/home/widget/vagaList.dart';
+import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
-import 'package:vagas/vaga/widget/vagaBlock.dart';
 
 class CardWidget extends StatefulWidget {
-  CardWidget({Key? key, this.vagas}) : super(key: key);
+  CardWidget({Key? key, this.vagas, required this.usuario}) : super(key: key);
   final List<Vaga>? vagas;
+  final User usuario;
 
   @override
-  State<CardWidget> createState() => _CardWidgetState(vagas);
+  State<CardWidget> createState() => _CardWidgetState(vagas, usuario);
 }
 
 class _CardWidgetState extends State<CardWidget> {
   final List<Vaga>? vagas;
+  final User usuario;
 
-  _CardWidgetState(this.vagas);
+  _CardWidgetState(this.vagas, this.usuario);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +76,12 @@ class _CardWidgetState extends State<CardWidget> {
                               ),
                             ),
                           ),
-                          for (Vaga vaga in vagas!) VagaBlockWidget(vaga: vaga),
+                          for (Vaga vaga in vagas!)
+                            vagaList(
+                              vaga: vaga,
+                              home: false,
+                              usuario: usuario,
+                            ),
                         ],
                       ),
                     ),

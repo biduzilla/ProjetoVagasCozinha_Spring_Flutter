@@ -7,6 +7,7 @@ import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
+import 'package:vagas/vaga/page/vaga.dart';
 
 class FooterWidget extends StatefulWidget {
   FooterWidget({
@@ -78,33 +79,48 @@ class _FooterWidgetState extends State<FooterWidget> {
   }
 
   void _onItemTapped(int index) {
-    if (index == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => homePageScreen(
-            usuario: usuario,
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => homePageScreen(
+              usuario: usuario,
+            ),
           ),
-        ),
-      );
-    } else if (index == 1 && usuario.cv != "CADASTRADO") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CvPageScreen(
-            usuario: usuario,
+        );
+        break;
+      case 1:
+        if (index == 1 && usuario.cv != "CADASTRADO") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CvPageScreen(
+                usuario: usuario,
+              ),
+            ),
+          );
+          break;
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CvMostrarScreen(
+                usuario: usuario,
+              ),
+            ),
+          );
+          break;
+        }
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VagaScreen(
+              usuario: usuario,
+            ),
           ),
-        ),
-      );
-    } else if (index == 1 && usuario.cv == "CADASTRADO") {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CvMostrarScreen(
-            usuario: usuario,
-          ),
-        ),
-      );
+        );
     }
   }
 }

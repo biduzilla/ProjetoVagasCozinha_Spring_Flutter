@@ -112,7 +112,7 @@ class _homePageScreenState extends State<homePageScreen> {
         });
       }
     } on Exception catch (_) {
-      print("Error Requisição getListLastVagas");
+      alertDialog("Error Requisição getListLastVagas", 1);
     }
   }
 
@@ -144,8 +144,6 @@ class _homePageScreenState extends State<homePageScreen> {
     var response = await http.get(url, headers: {
       'Authorization': 'Bearer ' + usuario.token,
     });
-
-    print("getVaga" + response.body);
 
     if (response.statusCode == 403) {
       alertDialog("Entre novamento na sua conta!", 1);
@@ -313,6 +311,7 @@ class _homePageScreenState extends State<homePageScreen> {
                                   vagaList(
                                     vaga: vagaDaLista,
                                     usuario: usuario,
+                                    home: true,
                                   )
                             ],
                           ),

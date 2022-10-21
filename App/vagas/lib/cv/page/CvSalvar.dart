@@ -171,7 +171,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
         ),
       );
     } else {
-      print(response.body);
       alertDialog("Codigo Error:" + response.statusCode.toString(), 0);
     }
   }
@@ -199,7 +198,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
         body: body);
 
     if (response.statusCode != 204) {
-      print(response.body);
       alertDialog("Codigo Error:" + response.statusCode.toString(), 0);
     }
   }

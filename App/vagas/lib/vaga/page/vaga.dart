@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:vagas/auth/page/login.dart';
+import 'package:vagas/cv/widget/ButtonWidget.dart';
 import 'package:vagas/cv/widget/footer.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
@@ -85,8 +86,6 @@ class _VagaScreenState extends State<VagaScreen> {
       'Authorization': 'Bearer ' + usuario.token,
     });
 
-    print("getVaga: " + response.body);
-
     if (response.statusCode == 403) {
       alertDialog("Entre novamento na sua conta!", 1);
     } else {
@@ -135,7 +134,11 @@ class _VagaScreenState extends State<VagaScreen> {
               ],
             ),
           ),
-          if (vagas.isNotEmpty) ExpandandedContainerWidget(vagas: vagas),
+          if (vagas.isNotEmpty)
+            ExpandandedContainerWidget(
+              vagas: vagas,
+              usuario: usuario,
+            ),
         ],
       ),
       bottomNavigationBar: FooterWidget(usuario: usuario, page: 2),
