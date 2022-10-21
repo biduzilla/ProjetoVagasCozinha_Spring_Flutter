@@ -22,6 +22,7 @@ class _loginScreen extends State<loginScreen> {
   String? password;
   String? errorText;
   UserAuth? userAuth;
+  bool passwordVisivel = true;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -47,6 +48,7 @@ class _loginScreen extends State<loginScreen> {
             labelStyle: TextStyle(
               fontSize: 18,
               color: Colors.green,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -63,9 +65,24 @@ class _loginScreen extends State<loginScreen> {
           style: TextStyle(color: Colors.green),
           cursorColor: Colors.green,
           controller: passwordController,
-          obscureText: true,
+          obscureText: passwordVisivel,
           autofocus: false,
           decoration: InputDecoration(
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  if (passwordVisivel) {
+                    passwordVisivel = false;
+                  } else {
+                    passwordVisivel = true;
+                  }
+                });
+              },
+              icon: Icon(
+                passwordVisivel ? Icons.visibility_off : Icons.visibility,
+                color: Colors.green,
+              ),
+            ),
             errorText: errorText,
             errorStyle: TextStyle(color: Colors.red),
             enabledBorder: UnderlineInputBorder(
@@ -78,6 +95,7 @@ class _loginScreen extends State<loginScreen> {
             labelStyle: TextStyle(
               fontSize: 18,
               color: Colors.green,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

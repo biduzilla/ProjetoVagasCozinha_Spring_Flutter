@@ -45,11 +45,11 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       //
-      // home: loginScreen(),
+      home: loginScreen(),
 
-      home: VagaScreen(
-        usuario: user,
-      ),
+      // home: VagaScreen(
+      //   usuario: user,
+      // ),
 
       // home: vagaScreen(
       //   usuario: userAuth,
