@@ -39,7 +39,9 @@ class _ExpandandedContainerWidgetState
               usuario: usuario,
             ),
             ButtonWidget(
-              press: (() {}),
+              press: (() {
+                print("Acesso: " + usuario.admin.toString());
+              }),
               text: "Área da Empresa",
             )
           ],

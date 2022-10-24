@@ -140,7 +140,8 @@ class _homePageScreenState extends State<homePageScreen> {
   }
 
   Future<void> getVaga(int idVaga) async {
-    var url = Uri.parse('http://10.61.104.110:8081/api/vagas/${idVaga}');
+    var url =
+        Uri.parse('http://10.61.104.110:8081/api/vagas/verVaga/${idVaga}');
     var response = await http.get(url, headers: {
       'Authorization': 'Bearer ' + usuario.token,
     });
@@ -186,6 +187,7 @@ class _homePageScreenState extends State<homePageScreen> {
             onPressed: () {
               setState(() {
                 print(vagas.length);
+                vagas.clear();
                 cargo = cargoController.text;
                 searchCargo(cargo!);
                 cargoController.clear();

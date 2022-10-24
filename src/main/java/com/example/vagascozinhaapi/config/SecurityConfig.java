@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole("USER")
                 .antMatchers("/api/vagas/verMinhasVagas/**")
                 .hasRole("ADMIN")
-                .antMatchers("/api/vagas/lastVagas")
+                .antMatchers("/api/vagas/lastVagas/**")
                 .hasRole("USER")
                 .antMatchers("/api/vagas/procurar")
                 .hasRole("USER")

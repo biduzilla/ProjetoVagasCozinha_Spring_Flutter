@@ -81,7 +81,8 @@ class _VagaScreenState extends State<VagaScreen> {
   }
 
   Future<void> getVaga(int idVaga) async {
-    var url = Uri.parse('http://10.61.104.110:8081/api/vagas/${idVaga}');
+    var url =
+        Uri.parse('http://10.61.104.110:8081/api/vagas/verVaga/${idVaga}');
     var response = await http.get(url, headers: {
       'Authorization': 'Bearer ' + usuario.token,
     });
