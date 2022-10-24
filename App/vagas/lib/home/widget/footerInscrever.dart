@@ -14,20 +14,31 @@ import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
 class FooterInscrever extends StatefulWidget {
-  FooterInscrever({Key? key, required this.vaga, this.userAuth})
+  FooterInscrever(
+      {Key? key,
+      required this.vaga,
+      this.userAuth,
+      required this.empresa,
+      required this.txt})
       : super(key: key);
   final Vaga vaga;
   final User? userAuth;
+  final bool empresa;
+  final String txt;
+
   @override
-  State<FooterInscrever> createState() => _FooterInscrever(vaga, userAuth);
+  State<FooterInscrever> createState() =>
+      _FooterInscrever(vaga, userAuth, empresa, txt);
 }
 
 class _FooterInscrever extends State<FooterInscrever> {
   final Vaga? vaga;
   ErrorModel? error;
   final User? userAuth;
+  final bool empresa;
+  final String txt;
 
-  _FooterInscrever(this.vaga, this.userAuth);
+  _FooterInscrever(this.vaga, this.userAuth, this.empresa, this.txt);
 
   Future alertDialog(String text, int code) {
     return showDialog(
@@ -118,14 +129,18 @@ class _FooterInscrever extends State<FooterInscrever> {
       decoration: BoxDecoration(
         color: Colors.green,
       ),
-      child: Padding(
-        padding: EdgeInsets.all(
-          MediaQuery.of(context).size.height / 50,
-        ),
+      height: MediaQuery.of(context).size.height / 10.5,
+      child: Center(
         child: Center(
           child: ElevatedButton(
             onPressed: () {
-              aceitarVaga();
+              if (!empresa) {
+                aceitarVaga();
+              } else if (empresa && txt == "Editar Vaga") {
+                print("Editar Vaga");
+              } else {
+                print("Excluir Vaga");
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
@@ -135,10 +150,10 @@ class _FooterInscrever extends State<FooterInscrever> {
             child: Padding(
               padding: EdgeInsets.all(MediaQuery.of(context).size.height / 100),
               child: Text(
-                "Inscrever",
+                txt,
                 style: TextStyle(
                   color: Colors.green,
-                  fontSize: 24,
+                  fontSize: empresa ? 20 : 24,
                 ),
               ),
             ),

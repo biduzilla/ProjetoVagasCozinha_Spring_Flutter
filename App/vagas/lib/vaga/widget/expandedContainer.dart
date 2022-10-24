@@ -196,7 +196,7 @@ class _ExpandandedContainerWidgetState
                         ),
                         Text(
                           !empresaVagas && !empresa
-                              ? "Você ainda não se cadastrou em nenhuma vaga"
+                              ? "Você ainda não se inscreveu em nenhuma vaga"
                               : "Você ainda não cadastrou nenhuma vaga",
                           style: TextStyle(
                             color: Colors.green,
@@ -211,13 +211,13 @@ class _ExpandandedContainerWidgetState
               ),
             ButtonWidget(
               press: (() {
-                if (empresa) {
+                if (usuario.admin) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               VagaScreen(usuario: usuario, empresa: true)));
-                } else {
+                } else if (!empresa) {
                   alertDialog("Acesso Negado", 0);
                 }
               }),

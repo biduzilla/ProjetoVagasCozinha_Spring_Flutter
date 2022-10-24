@@ -93,6 +93,7 @@ class _CardWidgetState extends State<CardWidget> {
                                 vaga: vaga,
                                 home: false,
                                 usuario: usuario,
+                                empresa: empresa,
                               ),
                         ],
                       ),

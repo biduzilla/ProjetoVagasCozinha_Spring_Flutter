@@ -14,10 +14,16 @@ extension StringCasingExtension on String {
 
 class VagaDetailsScreen extends StatelessWidget {
   const VagaDetailsScreen(
-      {Key? key, this.usuario, required this.vaga, required this.home})
+      {Key? key,
+      this.usuario,
+      required this.vaga,
+      required this.home,
+      required this.empresa})
       : super(key: key);
+
   final User? usuario;
   final bool home;
+  final bool empresa;
   final Vaga vaga;
 
   Widget build(BuildContext context) {
@@ -226,6 +232,33 @@ class VagaDetailsScreen extends StatelessWidget {
             FooterInscrever(
               vaga: vaga,
               userAuth: usuario!,
+              empresa: empresa,
+              txt: !empresa ? "Inscrever" : "Editar Vaga",
+            ),
+          if (!home && empresa)
+            Container(
+              color: Colors.green,
+              child: Row(
+                children: [
+                  Spacer(),
+                  FooterInscrever(
+                    vaga: vaga,
+                    userAuth: usuario!,
+                    empresa: empresa,
+                    txt: !empresa ? "Inscrever" : "Editar Vaga",
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  FooterInscrever(
+                    vaga: vaga,
+                    userAuth: usuario!,
+                    empresa: empresa,
+                    txt: !empresa ? "Inscrever" : "Excluir Vaga",
+                  ),
+                  Spacer(),
+                ],
+              ),
             ),
         ],
       ),

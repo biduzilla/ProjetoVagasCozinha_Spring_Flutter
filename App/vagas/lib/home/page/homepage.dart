@@ -314,6 +314,7 @@ class _homePageScreenState extends State<homePageScreen> {
                                     vaga: vagaDaLista,
                                     usuario: usuario,
                                     home: true,
+                                    empresa: false,
                                   )
                             ],
                           ),

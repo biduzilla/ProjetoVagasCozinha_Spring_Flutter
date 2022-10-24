@@ -6,12 +6,17 @@ import 'package:vagas/model/vagaModel.dart';
 
 class vagaList extends StatelessWidget {
   const vagaList(
-      {Key? key, required this.vaga, required this.usuario, required this.home})
+      {Key? key,
+      required this.vaga,
+      required this.usuario,
+      required this.home,
+      required this.empresa})
       : super(key: key);
 
   final Vaga vaga;
   final User usuario;
   final bool home;
+  final bool empresa;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +28,7 @@ class vagaList extends StatelessWidget {
                 home: home,
                 usuario: usuario,
                 vaga: vaga,
+                empresa: empresa,
               ),
             ),
           )),
