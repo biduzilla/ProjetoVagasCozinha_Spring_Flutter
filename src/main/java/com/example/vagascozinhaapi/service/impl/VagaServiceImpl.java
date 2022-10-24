@@ -61,6 +61,10 @@ public class VagaServiceImpl implements VagaService {
                 .map(Vaga::getId)
                 .collect(Collectors.toList());
 
+        if (listVagas.isEmpty()){
+            throw new VagaNaoEncontrada();
+        }
+
         return VagaDtoId.builder()
                 .vagaId(listVagas)
                 .build();
