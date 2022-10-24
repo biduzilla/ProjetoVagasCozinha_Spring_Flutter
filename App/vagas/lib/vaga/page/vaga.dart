@@ -23,93 +23,6 @@ class VagaScreen extends StatefulWidget {
 class _VagaScreenState extends State<VagaScreen> {
   final User usuario;
   Vaga? vaga;
-  List<Vaga> vagas = [];
-
-  Future alertDialog(String text, int code) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                "OK",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: () {
-                if (code == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => loginScreen(),
-                    ),
-                  );
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-            ),
-          ],
-          title: Text("Alerta!",
-              style: TextStyle(fontSize: 28, color: Colors.black)),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(6.0))),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const SizedBox(height: 30),
-              Container(
-                height: MediaQuery.of(context).size.height / 15,
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> getVaga(int idVaga) async {
-    var url =
-        Uri.parse('http://10.61.104.110:8081/api/vagas/verVaga/${idVaga}');
-    var response = await http.get(url, headers: {
-      'Authorization': 'Bearer ' + usuario.token,
-    });
-
-    if (response.statusCode == 403) {
-      alertDialog("Entre novamento na sua conta!", 1);
-    } else {
-      setState(() {
-        String source = Utf8Decoder().convert(response.bodyBytes);
-        vaga = Vaga.fromJson(jsonDecode(source));
-        setState(() {
-          vagas.add(vaga!);
-        });
-      });
-    }
-  }
-
-  void initState() {
-    super.initState();
-    setState(() {
-      if (usuario.vagasAceitas.isNotEmpty) {
-        for (int id in usuario.vagasAceitas) {
-          getVaga(id);
-        }
-      }
-    });
-  }
 
   _VagaScreenState(this.usuario);
   @override
@@ -137,15 +50,13 @@ class _VagaScreenState extends State<VagaScreen> {
               ],
             ),
           ),
-          if (vagas.isNotEmpty)
-            ExpandandedContainerWidget(
-              vagas: vagas,
-              usuario: usuario,
-            ),
-          if (vagas.isEmpty)
-            ExpandandedContainerWidget(
-              usuario: usuario,
-            ),
+          ExpandandedContainerWidget(
+            usuario: usuario,
+          ),
+          // if (vagas.isEmpty)
+          //   ExpandandedContainerWidget(
+          //     usuario: usuario,
+          //   ),
         ],
       ),
       bottomNavigationBar: FooterWidget(usuario: usuario, page: 2),

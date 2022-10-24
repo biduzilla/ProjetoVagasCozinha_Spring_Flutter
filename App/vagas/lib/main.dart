@@ -34,13 +34,13 @@ class MyApp extends StatelessWidget {
     UserAuth userAuth = UserAuth(
       email: "toddy@toddy",
       token:
-          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjIwMzExMn0.Nn6hRggDbcM0iqeHTL7Kgv37OjDy-Ow1CDfbrhl3AmOcJcbTFzgYJtv4pMqo1Q9Pg8pfCzZ5tvryvubCFKOQkg",
+          "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aWNvQHRpY28iLCJleHAiOjE2NjY2MzY0MDJ9.D7lbMkA7c_463m6Ee5I7fKqoJg9wfTA43pq5fEbx8GWXH1GD6xAtX1oaEjtluIEO4tqmB5uuRTXw42Rw2GvrBw",
     );
     User user = User(
       cv: 'CADASTRADO',
       email: 'toddy@toddy',
       token:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjM4MjQ2N30.MCFWN1-UXl9Jdem0pA9D_Fh4PA8fDKeUg6Nk_EUW7zWDBD7UTRC_fiTM18e8P--v1mXBnJ_R1ieA_2_rO8ow_A',
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aWNvQHRpY28iLCJleHAiOjE2NjY2MzY0MjV9.0MIEOn6qh-1OJ3KnGj0wi_ppwhxglBlLyYMAelUCvkTQSv2wbhnR2RzNJXdMpdiyd3qDlu0WcbW3VoQ4qnkqcw',
       vagasAceitas: [2, 2],
       admin: true,
     );
