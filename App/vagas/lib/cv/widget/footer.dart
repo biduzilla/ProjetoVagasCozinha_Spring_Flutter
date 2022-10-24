@@ -118,6 +118,7 @@ class _FooterWidgetState extends State<FooterWidget> {
           MaterialPageRoute(
             builder: (context) => VagaScreen(
               usuario: usuario,
+              empresa: false,
             ),
           ),
         );

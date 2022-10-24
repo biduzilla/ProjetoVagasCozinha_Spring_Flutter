@@ -40,22 +40,23 @@ class MyApp extends StatelessWidget {
       cv: 'CADASTRADO',
       email: 'toddy@toddy',
       token:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0aWNvQHRpY28iLCJleHAiOjE2NjY2MzY0MjV9.0MIEOn6qh-1OJ3KnGj0wi_ppwhxglBlLyYMAelUCvkTQSv2wbhnR2RzNJXdMpdiyd3qDlu0WcbW3VoQ4qnkqcw',
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjY0MTQ3NH0.aE9Dj__MBLay9uP5BVqxTUernfYp7G9hxWZYsn2d9UUr46HXkg4LEug0nOWPqN5NV9KAjzHxiWffrXc_B601Dw',
       vagasAceitas: [2, 2],
       admin: true,
     );
 
     return MaterialApp(
       //
-      home: loginScreen(),
+      // home: loginScreen(),
 
       // home: VagaScreen(
       //   usuario: user,
       // ),
 
-      // home: VagaScreen(
-      //   usuario: user,
-      // ),
+      home: VagaScreen(
+        usuario: user,
+        empresa: false,
+      ),
 
       // home: homePageScreen(
       //   usuario: user,
@@ -65,6 +66,10 @@ class MyApp extends StatelessWidget {
       // ),
 
       // home: CvMostrarScreen(
+      //   usuario: user,
+      // ),
+
+      // home: AreaEmpresaScreen(
       //   usuario: user,
       // ),
 

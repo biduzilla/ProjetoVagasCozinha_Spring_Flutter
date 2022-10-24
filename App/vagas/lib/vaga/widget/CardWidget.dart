@@ -8,19 +8,27 @@ import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
 class CardWidget extends StatefulWidget {
-  CardWidget({Key? key, this.vagas, required this.usuario}) : super(key: key);
+  CardWidget(
+      {Key? key, this.vagas, required this.usuario, required this.empresa})
+      : super(key: key);
   final List<Vaga>? vagas;
   final User usuario;
+  final bool empresa;
 
   @override
-  State<CardWidget> createState() => _CardWidgetState(vagas, usuario);
+  State<CardWidget> createState() => _CardWidgetState(vagas, usuario, empresa);
 }
 
 class _CardWidgetState extends State<CardWidget> {
   final List<Vaga>? vagas;
   final User usuario;
+  final bool empresa;
 
-  _CardWidgetState(this.vagas, this.usuario);
+  _CardWidgetState(
+    this.vagas,
+    this.usuario,
+    this.empresa,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +75,10 @@ class _CardWidgetState extends State<CardWidget> {
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  "Vagas Inscritas",
+                                  !empresa
+                                      ? "Vagas Inscritas"
+                                      : "Minhas Vagas Cadastradas",
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 28,
                                       color: Colors.white,

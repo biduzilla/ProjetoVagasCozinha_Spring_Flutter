@@ -7,34 +7,81 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/cv/widget/ButtonWidget.dart';
+import 'package:vagas/model/VagaListIdModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
+import 'package:vagas/vaga/page/vaga.dart';
 import 'package:vagas/vaga/widget/CardWidget.dart';
 
 class ExpandandedContainerWidget extends StatefulWidget {
-  ExpandandedContainerWidget({Key? key, required this.usuario})
+  ExpandandedContainerWidget(
+      {Key? key, required this.usuario, required this.empresa})
       : super(key: key);
-
+  final bool empresa;
   final User usuario;
 
   @override
   State<ExpandandedContainerWidget> createState() =>
-      _ExpandandedContainerWidgetState(usuario);
+      _ExpandandedContainerWidgetState(usuario, empresa);
 }
 
 class _ExpandandedContainerWidgetState
     extends State<ExpandandedContainerWidget> {
+  final bool empresa;
   List<Vaga> vagas = [];
   final User usuario;
   Vaga? vaga;
+  VagaListIdModel? vagasList;
+  bool empresaVagas = false;
 
   void initState() {
     super.initState();
-    print(vagas.isEmpty);
-    if (usuario.vagasAceitas.isNotEmpty) {
+    if (!empresa) {
       for (int id in usuario.vagasAceitas) {
         getVaga(id);
       }
+    }
+    if (empresa) {
+      getListVagasDaEmpresa();
+    }
+  }
+
+  Future<void> getListVagasDaEmpresa() async {
+    var url = Uri.parse("http://10.61.104.110:8081/api/vagas/minhasVagas");
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + usuario.token,
+    });
+
+    if (response.statusCode == 200) {
+      setState(() {
+        vagasList = VagaListIdModel.fromJson(jsonDecode(response.body));
+        empresaVagas = true;
+      });
+      for (int idVaga in vagasList!.vagaId) {
+        getMinhaVaga(idVaga);
+      }
+    } else if (response.statusCode == 404) {
+      empresaVagas = false;
+    } else {
+      alertDialog("Entre novamento na sua conta!", 1);
+    }
+  }
+
+  Future<void> getMinhaVaga(int idVaga) async {
+    var url = Uri.parse(
+        'http://10.61.104.110:8081/api/vagas/verMinhasVagas/${idVaga}');
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + usuario.token,
+    });
+
+    if (response.statusCode == 200) {
+      String source = Utf8Decoder().convert(response.bodyBytes);
+      vaga = Vaga.fromJson(jsonDecode(source));
+      setState(() {
+        vagas.add(vaga!);
+      });
+    } else {
+      alertDialog("Entre novamento na sua conta!", 1);
     }
   }
 
@@ -111,7 +158,10 @@ class _ExpandandedContainerWidgetState
     );
   }
 
-  _ExpandandedContainerWidgetState(this.usuario);
+  _ExpandandedContainerWidgetState(
+    this.usuario,
+    this.empresa,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +175,8 @@ class _ExpandandedContainerWidgetState
               CardWidget(
                 vagas: vagas,
                 usuario: usuario,
+                empresa: empresa,
               ),
-            // if (vagas == null)
-            //   CardWidget(
-            //     usuario: usuario,
-            //   ),
-
             if (vagas.isEmpty)
               Center(
                 child: Padding(
@@ -149,7 +195,9 @@ class _ExpandandedContainerWidgetState
                           height: 30,
                         ),
                         Text(
-                          "Você ainda não se cadastrou em nenhuma vaga",
+                          !empresaVagas && !empresa
+                              ? "Você ainda não se cadastrou em nenhuma vaga"
+                              : "Você ainda não cadastrou nenhuma vaga",
                           style: TextStyle(
                             color: Colors.green,
                             fontSize: 26,
@@ -161,12 +209,19 @@ class _ExpandandedContainerWidgetState
                   ),
                 ),
               ),
-
             ButtonWidget(
               press: (() {
-                print("Acesso: " + usuario.admin.toString());
+                if (empresa) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              VagaScreen(usuario: usuario, empresa: true)));
+                } else {
+                  alertDialog("Acesso Negado", 0);
+                }
               }),
-              text: "Área da Empresa",
+              text: !empresa ? "Área da Empresa" : "Cadastrar Vaga",
             )
           ],
         ),

@@ -13,18 +13,20 @@ import 'package:vagas/vaga/widget/expandedContainer.dart';
 import 'package:http/http.dart' as http;
 
 class VagaScreen extends StatefulWidget {
-  const VagaScreen({Key? key, required this.usuario}) : super(key: key);
+  const VagaScreen({Key? key, required this.usuario, required this.empresa})
+      : super(key: key);
   final User usuario;
+  final bool empresa;
 
   @override
-  State<VagaScreen> createState() => _VagaScreenState(usuario);
+  State<VagaScreen> createState() => _VasaScreenState(usuario, empresa);
 }
 
-class _VagaScreenState extends State<VagaScreen> {
+class _VasaScreenState extends State<VagaScreen> {
   final User usuario;
-  Vaga? vaga;
+  final bool empresa;
 
-  _VagaScreenState(this.usuario);
+  _VasaScreenState(this.usuario, this.empresa);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,12 +53,9 @@ class _VagaScreenState extends State<VagaScreen> {
             ),
           ),
           ExpandandedContainerWidget(
+            empresa: empresa,
             usuario: usuario,
           ),
-          // if (vagas.isEmpty)
-          //   ExpandandedContainerWidget(
-          //     usuario: usuario,
-          //   ),
         ],
       ),
       bottomNavigationBar: FooterWidget(usuario: usuario, page: 2),
