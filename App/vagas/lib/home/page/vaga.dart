@@ -12,8 +12,8 @@ extension StringCasingExtension on String {
       .join(' ');
 }
 
-class vagaScreen extends StatelessWidget {
-  const vagaScreen(
+class VagaDetailsScreen extends StatelessWidget {
+  const VagaDetailsScreen(
       {Key? key, this.usuario, required this.vaga, required this.home})
       : super(key: key);
   final User? usuario;

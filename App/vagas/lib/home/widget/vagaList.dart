@@ -19,7 +19,7 @@ class vagaList extends StatelessWidget {
       onTap: (() => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => vagaScreen(
+              builder: (context) => VagaDetailsScreen(
                 home: home,
                 usuario: usuario,
                 vaga: vaga,

@@ -144,9 +144,6 @@ class _loginScreen extends State<loginScreen> {
         },
         body: body);
 
-    print(response.body);
-    print(response.statusCode);
-
     if (response.statusCode == 200) {
       userAuth = UserAuth.fromJson(jsonDecode(response.body));
       getUserDados();

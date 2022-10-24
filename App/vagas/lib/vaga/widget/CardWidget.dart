@@ -69,9 +69,9 @@ class _CardWidgetState extends State<CardWidget> {
                                 child: Text(
                                   "Vagas Inscritas",
                                   style: TextStyle(
-                                    fontSize: 28,
-                                    color: Colors.white,
-                                  ),
+                                      fontSize: 28,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
                             ),

@@ -16,4 +16,5 @@ public class UserDto {
     private String cv;
     private String token;
     private List<Integer> vagasAceitas;
+    private boolean admin;
 }

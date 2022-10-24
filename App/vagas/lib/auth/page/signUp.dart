@@ -93,9 +93,6 @@ class _signupScreen extends State<signupScreen> {
     var response = await http.post(url,
         headers: {"Content-Type": "application/json"}, body: body);
 
-    print("${response.statusCode}");
-    print("${response.body}");
-
     if (response.statusCode == 201) {
       Navigator.push(
         context,

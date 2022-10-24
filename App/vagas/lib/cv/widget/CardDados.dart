@@ -83,6 +83,7 @@ class _CardDadosWidgetState extends State<CardDadosWidget> {
                                   style: TextStyle(
                                     fontSize: 28,
                                     color: Colors.white,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),

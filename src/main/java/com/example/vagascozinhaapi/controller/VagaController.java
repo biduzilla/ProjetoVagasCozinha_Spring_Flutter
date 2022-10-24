@@ -37,7 +37,7 @@ public class VagaController {
         return vagaService.getListVagaById(token);
     }
 
-    @GetMapping("/{idVaga}")
+    @GetMapping("verVaga/{idVaga}")
     @ResponseStatus(HttpStatus.OK)
     public VagaDtoEnviado getVagaById(@RequestHeader("Authorization") String token, @PathVariable Integer idVaga){
         return vagaService.getVagaById(token,idVaga);
@@ -67,7 +67,7 @@ public class VagaController {
         vagaService.updateVaga(idVaga, vagaDtoRecebido, token);
     }
 
-    @DeleteMapping ("/{idVaga}")
+    @DeleteMapping ("deletarVaga/{idVaga}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteVaga(@RequestHeader("Authorization") String token,@PathVariable Integer idVaga){
         vagaService.deleteVaga(token, idVaga);

@@ -119,6 +119,7 @@ public class UserServiceImpl implements UserService {
                 .email(usuario.getEmail())
                 .cv(usuario.getCv().name())
                 .vagasAceitas(usuario.getCandidaturas())
+                .admin(usuario.isAdmin())
                 .build();
     }
 }
