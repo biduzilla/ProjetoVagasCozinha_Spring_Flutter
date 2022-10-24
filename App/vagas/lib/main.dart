@@ -37,11 +37,13 @@ class MyApp extends StatelessWidget {
           "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjIwMzExMn0.Nn6hRggDbcM0iqeHTL7Kgv37OjDy-Ow1CDfbrhl3AmOcJcbTFzgYJtv4pMqo1Q9Pg8pfCzZ5tvryvubCFKOQkg",
     );
     User user = User(
-        cv: 'CADASTRADO',
-        email: 'toddy@toddy',
-        token:
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjM4MjQ2N30.MCFWN1-UXl9Jdem0pA9D_Fh4PA8fDKeUg6Nk_EUW7zWDBD7UTRC_fiTM18e8P--v1mXBnJ_R1ieA_2_rO8ow_A',
-        vagasAceitas: [2, 2]);
+      cv: 'CADASTRADO',
+      email: 'toddy@toddy',
+      token:
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjM4MjQ2N30.MCFWN1-UXl9Jdem0pA9D_Fh4PA8fDKeUg6Nk_EUW7zWDBD7UTRC_fiTM18e8P--v1mXBnJ_R1ieA_2_rO8ow_A',
+      vagasAceitas: [2, 2],
+      admin: true,
+    );
 
     return MaterialApp(
       //
