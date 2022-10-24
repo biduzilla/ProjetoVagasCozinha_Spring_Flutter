@@ -76,12 +76,13 @@ class _CardWidgetState extends State<CardWidget> {
                               ),
                             ),
                           ),
-                          for (Vaga vaga in vagas!)
-                            vagaList(
-                              vaga: vaga,
-                              home: false,
-                              usuario: usuario,
-                            ),
+                          if (vagas != null)
+                            for (Vaga vaga in vagas!)
+                              vagaList(
+                                vaga: vaga,
+                                home: false,
+                                usuario: usuario,
+                              ),
                         ],
                       ),
                     ),

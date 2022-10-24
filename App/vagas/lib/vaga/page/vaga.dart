@@ -103,8 +103,10 @@ class _VagaScreenState extends State<VagaScreen> {
   void initState() {
     super.initState();
     setState(() {
-      for (int id in usuario.vagasAceitas) {
-        getVaga(id);
+      if (usuario.vagasAceitas.isNotEmpty) {
+        for (int id in usuario.vagasAceitas) {
+          getVaga(id);
+        }
       }
     });
   }
@@ -138,6 +140,10 @@ class _VagaScreenState extends State<VagaScreen> {
           if (vagas.isNotEmpty)
             ExpandandedContainerWidget(
               vagas: vagas,
+              usuario: usuario,
+            ),
+          if (vagas.isEmpty)
+            ExpandandedContainerWidget(
               usuario: usuario,
             ),
         ],

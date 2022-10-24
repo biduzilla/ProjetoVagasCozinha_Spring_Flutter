@@ -34,10 +34,47 @@ class _ExpandandedContainerWidgetState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CardWidget(
-              vagas: vagas,
-              usuario: usuario,
-            ),
+            if (vagas != null)
+              CardWidget(
+                vagas: vagas,
+                usuario: usuario,
+              ),
+            // if (vagas == null)
+            //   CardWidget(
+            //     usuario: usuario,
+            //   ),
+
+            if (vagas == null)
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.sentiment_neutral_rounded,
+                          color: Colors.green,
+                          size: 80,
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          "Você ainda não se cadastrou em nenhuma vaga",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 26,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
             ButtonWidget(
               press: (() {
                 print("Acesso: " + usuario.admin.toString());
