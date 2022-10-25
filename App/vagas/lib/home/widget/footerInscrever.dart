@@ -89,6 +89,7 @@ class _FooterInscrever extends State<FooterInscrever> {
                 child: Text(
                   //'Please rate with star',
                   text,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -118,6 +119,8 @@ class _FooterInscrever extends State<FooterInscrever> {
       alertDialog("Você já está participando desta vaga!", 0);
     } else if (response.statusCode == 403 || response.statusCode == 401) {
       alertDialog("Entre novamento na sua conta!", 1);
+    } else if (response.statusCode == 404) {
+      alertDialog("Cadastre um currículo primeiro!", 0);
     } else {
       alertDialog("Currículo Enviado!", 0);
     }

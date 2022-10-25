@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 
@@ -7,18 +9,21 @@ class TextFormWidget extends StatelessWidget {
     required this.text,
     required this.index,
     required this.returnController,
+    required this.num,
   }) : super(key: key);
 
   TextEditingController controller = TextEditingController();
   final String text;
   final int index;
   final Function(String, int) returnController;
+  final bool num;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 24),
       child: TextFormField(
+        keyboardType: !num ? TextInputType.number : TextInputType.none,
         style: TextStyle(
           color: Colors.green,
           fontSize: 20,

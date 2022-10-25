@@ -1,51 +1,49 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:vagas/auth/page/login.dart';
-import 'package:vagas/auth/widget/alert.dart';
-import 'package:vagas/cv/page/CvMostrar.dart';
-import 'package:vagas/cv/widget/footer.dart';
-import 'package:vagas/cv/widget/multipleTextForm.dart';
-import 'package:vagas/cv/widget/ButtonWidget.dart';
-import 'package:vagas/cv/widget/textForm.dart';
-import 'package:vagas/home/page/homepage.dart';
-import 'package:vagas/home/widget/noVagas.dart';
-import 'package:vagas/home/widget/vagaList.dart';
-import 'package:vagas/model/CvModel.dart';
-import 'package:vagas/model/VagaListIdModel.dart';
-import 'package:vagas/model/userAuthModel.dart';
-import 'package:vagas/model/vagaModel.dart';
 import 'dart:convert';
 
-import '../../../model/userModel.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:vagas/auth/page/login.dart';
+import 'package:vagas/cv/widget/ButtonWidget.dart';
+import 'package:vagas/cv/widget/footer.dart';
+import 'package:vagas/cv/widget/multipleTextForm.dart';
+import 'package:vagas/cv/widget/textForm.dart';
+import 'package:vagas/home/page/homepage.dart';
+import 'package:vagas/model/userModel.dart';
 
-class CvPageScreen extends StatefulWidget {
+class VagaBuildScreen extends StatefulWidget {
+  const VagaBuildScreen(
+      {Key? key, required this.usuario, required this.isSalvarVaga})
+      : super(key: key);
   final User usuario;
-
-  const CvPageScreen({
-    Key? key,
-    required this.usuario,
-  }) : super(key: key);
-
+  final bool isSalvarVaga;
   @override
-  State<CvPageScreen> createState() => _CvPageScreenState(
-        usuario,
-      );
+  State<VagaBuildScreen> createState() =>
+      _VagaBuildScreenState(usuario, isSalvarVaga);
 }
 
-class _CvPageScreenState extends State<CvPageScreen> {
-  final User? usuario;
-  List<String> experiencias = [];
-  List<String> qualificacoes = [];
-  bool flag = false;
-  String? genericText;
-  int indexString = 0;
-  String? nome;
-  String? email;
-  String? telefone;
-  String? sobre;
-  String? semestre;
+class _VagaBuildScreenState extends State<VagaBuildScreen> {
+  final User usuario;
+  final bool isSalvarVaga;
+
+  String? cargo;
+  String? descricao;
+  String? local;
+  String? horario;
+  double? remuneracao;
+  List<String>? requisitos;
+
+  _VagaBuildScreenState(this.usuario, this.isSalvarVaga);
+
+  void getTextList(List<String> lst, int code) {
+    requisitos = lst;
+  }
+
+  void removeTextList(String txt, int code) {
+    requisitos!.remove(txt);
+  }
 
   Future alertDialog(String text, int code) {
     return showDialog(
@@ -75,7 +73,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => homePageScreen(
-                        usuario: usuario!,
+                        usuario: usuario,
                       ),
                     ),
                   );
@@ -112,96 +110,66 @@ class _CvPageScreenState extends State<CvPageScreen> {
     );
   }
 
-  void getTextList(List<String> lst, int code) {
-    if (code == 0) {
-      experiencias = lst;
-    } else {
-      qualificacoes = lst;
+  void returnController(var text, int index) {
+    switch (index) {
+      case 1:
+        cargo = text;
+        break;
+      case 2:
+        descricao = text;
+        break;
+      case 3:
+        local = text;
+        break;
+      case 4:
+        horario = text;
+        break;
+      case 5:
+        remuneracao = text;
+        break;
+      default:
     }
   }
 
-  void removeTextList(String txt, int code) {
-    if (code == 0) {
-      experiencias.remove(txt);
-    } else {
-      qualificacoes.remove(txt);
-    }
-  }
-
-  void montarCv() {
-    if (nome == null || email == null || sobre == null || semestre == null) {
-      alertDialog("Preencha os dados!", 0);
-    } else if (usuario!.cv == "NAO_CADASTRADO") {
-      salvarCv();
-    } else if (usuario!.cv == "CADASTRADO") {
-      atualizarCv();
-      alertDialog("Curriculo Atualizado", 0);
-    }
-  }
-
-  Future<void> salvarCv() async {
-    var url = Uri.parse('http://10.61.104.110:8081/api/curriculum/salvarCv');
+  Future<void> cadastrarVaga() async {
+    var url = Uri.parse('http://10.61.104.110:8081/api/vagas/cadastrar');
     Map data = {
-      "nome": email,
-      "emailContatoCV": email,
-      "telefone": telefone,
-      "sobre": sobre,
-      "semestre": semestre,
-      "experiencias": experiencias,
-      "qualificacoes": qualificacoes,
-    };
-
-    var body = json.encode(data);
-    print(body);
-
-    var response = await http.post(url,
-        headers: {
-          'Authorization': 'Bearer ' + usuario!.token,
-          'Content-Type': 'application/json',
-        },
-        body: body);
-
-    if (response.statusCode == 201) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => homePageScreen(
-            usuario: usuario!,
-          ),
-        ),
-      );
-    } else {
-      alertDialog("Codigo Error:" + response.statusCode.toString(), 0);
-    }
-  }
-
-  Future<void> atualizarCv() async {
-    var url = Uri.parse('http://10.61.104.110:8081/api/curriculum/updateCv');
-    Map data = {
-      "nome": nome,
-      "emailContatoCV": email,
-      "telefone": telefone,
-      "sobre": sobre,
-      "semestre": semestre,
-      "experiencias": experiencias,
-      "qualificacoes": qualificacoes,
+      "cargo": cargo,
+      "descricao": descricao,
+      "local": local,
+      "horario": horario,
+      "requisitos": requisitos,
+      "remuneracao": remuneracao,
     };
 
     var body = json.encode(data);
 
     var response = await http.put(url,
         headers: {
-          'Authorization': 'Bearer ' + usuario!.token,
+          'Authorization': 'Bearer ' + usuario.token,
           'Content-Type': 'application/json',
         },
         body: body);
 
-    if (response.statusCode != 204) {
-      alertDialog("Codigo Error:" + response.statusCode.toString(), 0);
+    if (response.statusCode != 201 && response.statusCode != 403) {
+      alertDialog("Error ao cadastrar vaga", 0);
+      print(response.body);
     }
   }
 
-  _CvPageScreenState(this.usuario);
+  void montarVaga() {
+    if (cargo == null ||
+        descricao == null ||
+        local == null ||
+        horario == null ||
+        remuneracao == null) {
+      alertDialog("Preencha os dados!", 0);
+    } else {
+      cadastrarVaga();
+      alertDialog("Vaga Cadastrada", 0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -225,7 +193,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
                     size: 28,
                   ),
                   Text(
-                    usuario!.email,
+                    usuario.email,
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -263,31 +231,31 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   TextFormWidget(
-                                    text: "Nome",
+                                    text: "Cargo",
                                     index: 1,
                                     returnController: returnController,
                                     num: false,
                                   ),
                                   TextFormWidget(
-                                    text: "Email",
+                                    text: "Descrição",
                                     index: 2,
                                     returnController: returnController,
                                     num: false,
                                   ),
                                   TextFormWidget(
-                                    text: "Telefone",
+                                    text: "Local",
                                     index: 3,
                                     returnController: returnController,
                                     num: false,
                                   ),
                                   TextFormWidget(
-                                    text: "Sobre",
+                                    text: "Horario",
                                     index: 4,
                                     returnController: returnController,
                                     num: false,
                                   ),
                                   TextFormWidget(
-                                    text: "Semestre",
+                                    text: "Remuneração",
                                     index: 5,
                                     returnController: returnController,
                                     num: true,
@@ -306,15 +274,8 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                         children: [
                                           MultipleTextForm(
                                             code: 0,
-                                            title: "Experiências",
-                                            hint: "Minhas Experiências",
-                                            getTextList: getTextList,
-                                            removeTextList: removeTextList,
-                                          ),
-                                          MultipleTextForm(
-                                            code: 1,
-                                            title: "Qualificações",
-                                            hint: "Minhas Qualificações",
+                                            title: "Requisitos",
+                                            hint: "Requisitos para vaga",
                                             getTextList: getTextList,
                                             removeTextList: removeTextList,
                                           ),
@@ -324,10 +285,10 @@ class _CvPageScreenState extends State<CvPageScreen> {
                                     ),
                                   ),
                                   ButtonWidget(
-                                    press: montarCv,
-                                    text: usuario!.cv != "CADASTRADO"
-                                        ? 'Salvar Currículo'
-                                        : 'Atualizar Currículo',
+                                    press: montarVaga,
+                                    text: isSalvarVaga
+                                        ? 'Cadastrar Vaga'
+                                        : 'Atualizar Vaga',
                                   ),
                                 ],
                               ),
@@ -348,29 +309,8 @@ class _CvPageScreenState extends State<CvPageScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: FooterWidget(usuario: usuario!, page: 1),
+        bottomNavigationBar: FooterWidget(usuario: usuario, page: 2),
       ),
     );
-  }
-
-  void returnController(String text, int index) {
-    switch (index) {
-      case 1:
-        nome = text;
-        break;
-      case 2:
-        email = text;
-        break;
-      case 3:
-        telefone = text;
-        break;
-      case 4:
-        sobre = text;
-        break;
-      case 5:
-        semestre = text;
-        break;
-      default:
-    }
   }
 }

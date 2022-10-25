@@ -7,6 +7,7 @@ import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 import 'package:vagas/vaga/page/vaga.dart';
+import 'package:vagas/vaga/page/vagaBuild.dart';
 
 import 'auth/page/login.dart';
 import 'home/page/homepage.dart';
@@ -40,40 +41,45 @@ class MyApp extends StatelessWidget {
       cv: 'CADASTRADO',
       email: 'toddy@toddy',
       token:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjY0NTI1N30.LRk-HhdkxCDRXJGVXw2II9Y6TrpkZKXCTiWIGLLXytwveuKoHLIErn9400qYgY2IaZ1ovrr79VIXsRUDyf8dbw',
-      vagasAceitas: [2, 2],
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjcxNjQ3NH0.qrPxB9OAaeLpuB9UkgFQ-GbHL1dVM53-3T7yWc-9OgLsvo-uiEzsuZogs1Py_r0BwK66dDwbb_UBerNxrSSyVg',
+      vagasAceitas: [2, 2, 3],
       admin: true,
     );
 
     return MaterialApp(
-      //
-      // home: loginScreen(),
+        //
+        // home: loginScreen(),
 
-      // home: VagaScreen(
-      //   usuario: user,
-      // ),
+        // home: VagaScreen(
+        //   usuario: user,
+        // ),
 
-      home: VagaScreen(
-        usuario: user,
-        empresa: true,
-      ),
+        // home: VagaScreen(
+        //   usuario: user,
+        //   empresa: true,
+        // ),
 
-      // home: homePageScreen(
-      //   usuario: user,
-      // ),
-      // home: CvPageScreen(
-      //   usuario: userAuth,
-      // ),
+        // home: homePageScreen(
+        //   usuario: user,
+        // ),
+        // home: CvPageScreen(
+        //   usuario: userAuth,
+        // ),
 
-      // home: CvMostrarScreen(
-      //   usuario: user,
-      // ),
+        // home: CvMostrarScreen(
+        //   usuario: user,
+        // ),
 
-      // home: AreaEmpresaScreen(
-      //   usuario: user,
-      // ),
+        // home: AreaEmpresaScreen(
+        //   usuario: user,
+        // ),
 
-      //
-    );
+        home: VagaBuildScreen(
+      isSalvarVaga: true,
+      usuario: user,
+    )
+
+        //
+        );
   }
 }

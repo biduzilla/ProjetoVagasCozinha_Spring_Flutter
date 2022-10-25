@@ -212,11 +212,15 @@ class _ExpandandedContainerWidgetState
             ButtonWidget(
               press: (() {
                 if (usuario.admin) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              VagaScreen(usuario: usuario, empresa: true)));
+                  if (!empresa) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                VagaScreen(usuario: usuario, empresa: true)));
+                  } else {
+                    print("Cadastrar Vaga");
+                  }
                 } else if (!empresa) {
                   alertDialog("Acesso Negado", 0);
                 }
