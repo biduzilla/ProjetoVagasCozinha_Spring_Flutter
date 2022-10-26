@@ -73,5 +73,10 @@ public class VagaController {
         vagaService.deleteVaga(token, idVaga);
     }
 
+    @GetMapping("allVagas")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Vaga> getAllVagas(){
+        return vagaService.getAllVagas();
+    }
 
 }

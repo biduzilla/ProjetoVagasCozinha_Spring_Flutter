@@ -2,11 +2,11 @@
 create table tab_curriculum
 (
     id             integer primary key auto_increment,
-    emailcontatocv varchar(255),
+    emailcontatocv varchar(100),
     nome           varchar(255),
-    semestre       varchar(255),
-    sobre          varchar(255),
-    telefone       varchar(255),
+    semestre       varchar(20),
+    sobre          varchar(800),
+    telefone       varchar(20),
     user_id        integer,
     vaga_id        integer,
     constraint fk_tab_curriculum_tab_user foreign key(user_id) references tab_user(id),
@@ -26,11 +26,11 @@ create table tab_user
 create table tab_vaga
 (
     id integer primary key auto_increment,
-    cargo varchar(255),
+    cargo varchar(50),
     data_postada date,
-    descricao varchar(255),
-    horario varchar(255),
-    local varchar(255),
+    descricao varchar(1200),
+    horario varchar(20),
+    local varchar(20),
     remuneracao double,
     user_id integer,
     constraint fk_tab_vaga_tab_user foreign key(user_id) references tab_user(id)
@@ -46,7 +46,7 @@ create table tab_candidaturas
 create table tab_experiencias
 (
     tab_curriculum integer,
-    experiencias   varchar(255),
+    experiencias   varchar(1000),
     constraint fk_tab_experiencias_tab_curriculum foreign key (tab_curriculum) references tab_curriculum(id)
 );
 

@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       cv: 'CADASTRADO',
       email: 'toddy@toddy',
       token:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjcxNjQ3NH0.qrPxB9OAaeLpuB9UkgFQ-GbHL1dVM53-3T7yWc-9OgLsvo-uiEzsuZogs1Py_r0BwK66dDwbb_UBerNxrSSyVg',
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjcxODQxOH0.-aXqESYDd1n0ku4Ak9eoUj59Pb5AbO53S8Lh05WXzHgLz95oxKkIuz9V0aP5Zw9gCLQUX-mCE8Zx4XZgaOt6kQ',
       vagasAceitas: [2, 2, 3],
       admin: true,
     );

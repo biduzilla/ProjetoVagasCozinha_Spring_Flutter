@@ -17,7 +17,7 @@ public class VagaDtoEnviado {
     private String descricao;
     private String local;
     private String horario;
-    List<String> requisitos;
+    private List<String> requisitos;
     private double remuneracao;
     private String dataPostada;
     private List<CurriculumDto> curriculumDtos;

@@ -195,14 +195,14 @@ public class VagaServiceImpl implements VagaService {
         if (cv.contains(curriculum)) {
             throw new RegrasNegocioException("Você já está participando desta vaga!");
         }
-        cv.add(curriculum);
-        vaga.setCurriculum(cv);
+        vaga.getCurriculum().add(curriculum);
         vagasRepository.save(vaga);
 
         List<Integer> addVagaToList = user.getCandidaturas();
         addVagaToList.add(vaga.getId());
         user.setCandidaturas(addVagaToList);
         userRepositorio.save(user);
+
 
         return VagaDtoEnviado.builder()
                 .vagaId(idVaga)
@@ -305,5 +305,9 @@ public class VagaServiceImpl implements VagaService {
                             .size()));
         }
         return vagaDtoId;
+    }
+
+    public List<Vaga> getAllVagas(){
+        return vagasRepository.findAll();
     }
 }

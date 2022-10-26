@@ -111,6 +111,7 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
   }
 
   void returnController(var text, int index) {
+    print(text);
     switch (index) {
       case 1:
         cargo = text;
@@ -125,7 +126,7 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
         horario = text;
         break;
       case 5:
-        remuneracao = text;
+        remuneracao = double.parse(text);
         break;
       default:
     }
@@ -144,16 +145,18 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
 
     var body = json.encode(data);
 
-    var response = await http.put(url,
+    var response = await http.post(url,
         headers: {
           'Authorization': 'Bearer ' + usuario.token,
           'Content-Type': 'application/json',
         },
         body: body);
 
-    if (response.statusCode != 201 && response.statusCode != 403) {
+    if (response.statusCode != 201 || response.statusCode != 403) {
       alertDialog("Error ao cadastrar vaga", 0);
       print(response.body);
+    } else if (response.statusCode == 201) {
+      alertDialog("Vaga Cadastrada", 0);
     }
   }
 
@@ -166,7 +169,6 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
       alertDialog("Preencha os dados!", 0);
     } else {
       cadastrarVaga();
-      alertDialog("Vaga Cadastrada", 0);
     }
   }
 

@@ -1,14 +1,15 @@
 package com.example.vagascozinhaapi.service.impl;
 
-import com.example.vagascozinhaapi.Exception.RegrasNegocioException;
-import com.example.vagascozinhaapi.Exception.UserJaCadastrado;
-import com.example.vagascozinhaapi.Exception.UserNaoEncontrado;
+import com.example.vagascozinhaapi.Exception.*;
 import com.example.vagascozinhaapi.dto.CredenciaisDto;
 import com.example.vagascozinhaapi.dto.TokenDTO;
 import com.example.vagascozinhaapi.dto.UserDto;
+import com.example.vagascozinhaapi.entidade.Curriculum;
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import com.example.vagascozinhaapi.entidade.Usuario;
+import com.example.vagascozinhaapi.entidade.Vaga;
 import com.example.vagascozinhaapi.repositorio.UserRepositorio;
+import com.example.vagascozinhaapi.repositorio.VagasRepository;
 import com.example.vagascozinhaapi.security.JwtService;
 import com.example.vagascozinhaapi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepositorio userRepositorio;
+    private final VagasRepository vagasRepository;
     private final UsuarioServiceAuthImpl usuarioServiceImpl;
     private final JwtService jwtService;
 
@@ -49,10 +53,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     public void deleteUser(String token) {
         token = token.split(" ")[1];
+
         userRepositorio.findByToken(token)
                 .map(user -> {
+                    for (int idVaga : user.getCandidaturas()) {
+                        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
+                        List<Curriculum> cvList = vaga.getCurriculum();
+                        cvList.remove(user.getCurriculum());
+                        vagasRepository.save(vaga);
+                    }
                     userRepositorio.delete(user);
                     return user;
                 }).orElseThrow(UserNaoEncontrado::new);

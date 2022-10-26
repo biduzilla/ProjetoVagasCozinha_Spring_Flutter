@@ -2,6 +2,8 @@ package com.example.vagascozinhaapi.entidade;
 
 import com.example.vagascozinhaapi.entidade.Enum.StatusCv;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -36,15 +38,15 @@ public class Usuario {
     @Column(name = "cv")
     private StatusCv cv;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval=true)
     private Curriculum curriculum;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Vaga> vaga;
 
     @ElementCollection
     @Column(name = "candidaturas")
-    @CollectionTable(name = "tab_candidaturas", joinColumns = @JoinColumn(name = "tab_user"))
+    @CollectionTable(name = "tab_user_candidaturas", joinColumns = @JoinColumn(name = "tab_user"))
     private List<Integer> candidaturas;
 
     @Column(name = "admin")
