@@ -111,8 +111,6 @@ class _FooterInscrever extends State<FooterInscrever> {
       'Authorization': 'Bearer ' + userAuth!.token,
     });
 
-    print(response.statusCode);
-    print(response.body);
     print('http://10.61.104.110:8081/api/aceitar/${vaga!.vagaId}');
     if (response.statusCode == 400) {
       error = ErrorModel.fromJson(jsonDecode(response.body));

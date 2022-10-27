@@ -41,45 +41,45 @@ class MyApp extends StatelessWidget {
       cv: 'CADASTRADO',
       email: 'toddy@toddy',
       token:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NjcxODQxOH0.-aXqESYDd1n0ku4Ak9eoUj59Pb5AbO53S8Lh05WXzHgLz95oxKkIuz9V0aP5Zw9gCLQUX-mCE8Zx4XZgaOt6kQ',
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeSIsImV4cCI6MTY2Njg5MDMxN30.4ljLY5dT6xrcPSPySIpMXSyQa0G1USNKqafGlq-01nYm0KPJIxuInQTunKFCIFMkXHvQRc7H_ul3lptLrbcuOw',
       vagasAceitas: [2, 2, 3],
       admin: true,
     );
 
     return MaterialApp(
-        //
-        // home: loginScreen(),
+      //
+      home: loginScreen(),
 
-        // home: VagaScreen(
-        //   usuario: user,
-        // ),
+      // home: VagaScreen(
+      //   usuario: user,
+      // ),
 
-        // home: VagaScreen(
-        //   usuario: user,
-        //   empresa: true,
-        // ),
+      // home: VagaScreen(
+      //   usuario: user,
+      //   empresa: true,
+      // ),
 
-        // home: homePageScreen(
-        //   usuario: user,
-        // ),
-        // home: CvPageScreen(
-        //   usuario: userAuth,
-        // ),
+      // home: homePageScreen(
+      //   usuario: user,
+      // ),
+      // home: CvPageScreen(
+      //   usuario: userAuth,
+      // ),
 
-        // home: CvMostrarScreen(
-        //   usuario: user,
-        // ),
+      // home: CvMostrarScreen(
+      //   usuario: user,
+      // ),
 
-        // home: AreaEmpresaScreen(
-        //   usuario: user,
-        // ),
+      // home: AreaEmpresaScreen(
+      //   usuario: user,
+      // ),
 
-        home: VagaBuildScreen(
-      isSalvarVaga: true,
-      usuario: user,
-    )
+      //     home: VagaBuildScreen(
+      //   isSalvarVaga: true,
+      //   usuario: user,
+      // )
 
-        //
-        );
+      //
+    );
   }
 }

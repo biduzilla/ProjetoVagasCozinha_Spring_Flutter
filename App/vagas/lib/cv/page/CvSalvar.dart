@@ -21,9 +21,9 @@ import 'dart:convert';
 import '../../../model/userModel.dart';
 
 class CvPageScreen extends StatefulWidget {
-  final User usuario;
+  User usuario;
 
-  const CvPageScreen({
+  CvPageScreen({
     Key? key,
     required this.usuario,
   }) : super(key: key);
@@ -35,7 +35,7 @@ class CvPageScreen extends StatefulWidget {
 }
 
 class _CvPageScreenState extends State<CvPageScreen> {
-  final User? usuario;
+  User? usuario;
   List<String> experiencias = [];
   List<String> qualificacoes = [];
   bool flag = false;
@@ -112,6 +112,28 @@ class _CvPageScreenState extends State<CvPageScreen> {
     );
   }
 
+  Future<void> getUserDados() async {
+    String token;
+    var url = Uri.parse('http://10.61.104.110:8081/api/users/getDados');
+
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + usuario!.token,
+    });
+
+    if (response.statusCode == 200) {
+      usuario = User.fromJson(jsonDecode(response.body));
+      usuario!.token = usuario!.token;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => homePageScreen(
+            usuario: usuario!,
+          ),
+        ),
+      );
+    }
+  }
+
   void getTextList(List<String> lst, int code) {
     if (code == 0) {
       experiencias = lst;
@@ -130,7 +152,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
 
   void montarCv() {
     if (nome == null || email == null || sobre == null || semestre == null) {
-      alertDialog("Preencha os dados!", 0);
+      alertDialog("Preencha os dados!", 1);
     } else if (usuario!.cv == "NAO_CADASTRADO") {
       salvarCv();
     } else if (usuario!.cv == "CADASTRADO") {
@@ -162,6 +184,7 @@ class _CvPageScreenState extends State<CvPageScreen> {
         body: body);
 
     if (response.statusCode == 201) {
+      getUserDados();
       Navigator.push(
         context,
         MaterialPageRoute(
