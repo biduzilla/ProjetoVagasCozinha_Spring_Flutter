@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       cv: 'CADASTRADO',
       email: 'toddy@toddy',
       token:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeSIsImV4cCI6MTY2Njg5MDMxN30.4ljLY5dT6xrcPSPySIpMXSyQa0G1USNKqafGlq-01nYm0KPJIxuInQTunKFCIFMkXHvQRc7H_ul3lptLrbcuOw',
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2Njg5MTg2NH0.-jQgID_Pp50C_xf9kTi1CoRSZQn9FafCvma0JT3t6FkZSXXosoaqUBCe-t_HEBZ4cL2EPv4CpgCd-YZe-WiamQ',
       vagasAceitas: [2, 2, 3],
       admin: true,
     );
@@ -50,9 +50,10 @@ class MyApp extends StatelessWidget {
       //
       home: loginScreen(),
 
-      // home: VagaScreen(
+      //     home: VagaBuildScreen(
+      //   isSalvarVaga: true,
       //   usuario: user,
-      // ),
+      // )
 
       // home: VagaScreen(
       //   usuario: user,

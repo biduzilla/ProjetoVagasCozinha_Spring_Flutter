@@ -12,22 +12,28 @@ import 'package:vagas/cv/widget/multipleTextForm.dart';
 import 'package:vagas/cv/widget/textForm.dart';
 import 'package:vagas/home/page/homepage.dart';
 import 'package:vagas/model/userModel.dart';
+import 'package:vagas/model/vagaModel.dart';
+import 'package:vagas/vaga/page/vaga.dart';
 
 class VagaBuildScreen extends StatefulWidget {
-  const VagaBuildScreen(
-      {Key? key, required this.usuario, required this.isSalvarVaga})
-      : super(key: key);
+  VagaBuildScreen({
+    Key? key,
+    required this.usuario,
+    required this.isSalvarVaga,
+    this.vaga,
+  }) : super(key: key);
   final User usuario;
   final bool isSalvarVaga;
+  final Vaga? vaga;
   @override
   State<VagaBuildScreen> createState() =>
-      _VagaBuildScreenState(usuario, isSalvarVaga);
+      _VagaBuildScreenState(usuario, isSalvarVaga, vaga);
 }
 
 class _VagaBuildScreenState extends State<VagaBuildScreen> {
   final User usuario;
   final bool isSalvarVaga;
-
+  final Vaga? vaga;
   String? cargo;
   String? descricao;
   String? local;
@@ -35,7 +41,7 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
   double? remuneracao;
   List<String>? requisitos;
 
-  _VagaBuildScreenState(this.usuario, this.isSalvarVaga);
+  _VagaBuildScreenState(this.usuario, this.isSalvarVaga, this.vaga);
 
   void getTextList(List<String> lst, int code) {
     requisitos = lst;
@@ -61,24 +67,38 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
                 ),
               ),
               onPressed: () {
-                if (code == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => loginScreen(),
-                    ),
-                  );
-                } else if (code == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => homePageScreen(
-                        usuario: usuario,
+                switch (code) {
+                  case 1:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => loginScreen(),
                       ),
-                    ),
-                  );
-                } else {
-                  Navigator.pop(context);
+                    );
+                    break;
+                  case 0:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => homePageScreen(
+                          usuario: usuario,
+                        ),
+                      ),
+                    );
+                    break;
+                  case 2:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VagaScreen(
+                          usuario: usuario,
+                          empresa: usuario.admin,
+                        ),
+                      ),
+                    );
+                    break;
+                  default:
+                    Navigator.pop(context);
                 }
               },
             ),
@@ -111,7 +131,6 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
   }
 
   void returnController(var text, int index) {
-    print(text);
     switch (index) {
       case 1:
         cargo = text;
@@ -152,11 +171,50 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
         },
         body: body);
 
-    if (response.statusCode != 201 || response.statusCode != 403) {
-      alertDialog("Error ao cadastrar vaga", 0);
-      print(response.body);
-    } else if (response.statusCode == 201) {
-      alertDialog("Vaga Cadastrada", 0);
+    switch (response.statusCode) {
+      case 201:
+        alertDialog("Vaga Cadastrada", 0);
+        break;
+      case 403:
+        alertDialog("Error ao cadastrar vaga", 0);
+        break;
+      default:
+    }
+  }
+
+  Future<void> updateVaga() async {
+    var url =
+        Uri.parse('http://10.61.104.110:8081/api/vagas/update/${vaga!.vagaId}');
+    Map data = {
+      "cargo": cargo,
+      "descricao": descricao,
+      "local": local,
+      "horario": horario,
+      "requisitos": requisitos,
+      "remuneracao": remuneracao,
+    };
+
+    var body = json.encode(data);
+
+    var response = await http.put(url,
+        headers: {
+          'Authorization': 'Bearer ' + usuario.token,
+          'Content-Type': 'application/json',
+        },
+        body: body);
+
+    switch (response.statusCode) {
+      case 201:
+        alertDialog("Vaga Cadastrada", 2);
+        break;
+      case 403:
+        alertDialog("Error ao cadastrar vaga", 0);
+        break;
+      case 204:
+        alertDialog("Vaga Atualizada", 2);
+        break;
+      default:
+        alertDialog("Error ao cadastrar vaga", 0);
     }
   }
 
@@ -166,9 +224,13 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
         local == null ||
         horario == null ||
         remuneracao == null) {
-      alertDialog("Preencha os dados!", 0);
+      alertDialog("Preencha os dados!", 3);
     } else {
-      cadastrarVaga();
+      if (isSalvarVaga) {
+        cadastrarVaga();
+      } else {
+        updateVaga();
+      }
     }
   }
 
@@ -236,31 +298,42 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
                                     text: "Cargo",
                                     index: 1,
                                     returnController: returnController,
-                                    num: false,
+                                    isNumber: false,
+                                    initialValue:
+                                        isSalvarVaga ? null : vaga!.cargo,
                                   ),
                                   TextFormWidget(
                                     text: "Descrição",
                                     index: 2,
                                     returnController: returnController,
-                                    num: false,
+                                    isNumber: false,
+                                    initialValue:
+                                        isSalvarVaga ? null : vaga!.descricao,
                                   ),
                                   TextFormWidget(
                                     text: "Local",
                                     index: 3,
                                     returnController: returnController,
-                                    num: false,
+                                    isNumber: false,
+                                    initialValue:
+                                        isSalvarVaga ? null : vaga!.local,
                                   ),
                                   TextFormWidget(
                                     text: "Horario",
                                     index: 4,
                                     returnController: returnController,
-                                    num: false,
+                                    isNumber: false,
+                                    initialValue:
+                                        isSalvarVaga ? null : vaga!.horario,
                                   ),
                                   TextFormWidget(
                                     text: "Remuneração",
                                     index: 5,
                                     returnController: returnController,
-                                    num: true,
+                                    isNumber: true,
+                                    initialValue: isSalvarVaga
+                                        ? null
+                                        : vaga!.remuneracao.toString(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 24),

@@ -11,6 +11,7 @@ import 'package:vagas/model/VagaListIdModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 import 'package:vagas/vaga/page/vaga.dart';
+import 'package:vagas/vaga/page/vagaBuild.dart';
 import 'package:vagas/vaga/widget/CardWidget.dart';
 
 class ExpandandedContainerWidget extends StatefulWidget {
@@ -219,7 +220,14 @@ class _ExpandandedContainerWidgetState
                             builder: (context) =>
                                 VagaScreen(usuario: usuario, empresa: true)));
                   } else {
-                    print("Cadastrar Vaga");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VagaBuildScreen(
+                                  usuario: usuario,
+                                  isSalvarVaga: true,
+                                  vaga: null,
+                                )));
                   }
                 } else if (!empresa) {
                   alertDialog("Acesso Negado", 0);

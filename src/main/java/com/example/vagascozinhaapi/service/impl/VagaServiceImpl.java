@@ -307,7 +307,4 @@ public class VagaServiceImpl implements VagaService {
         return vagaDtoId;
     }
 
-    public List<Vaga> getAllVagas(){
-        return vagasRepository.findAll();
-    }
 }

@@ -12,6 +12,8 @@ import 'package:vagas/model/ErrorModel.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
+import 'package:vagas/vaga/page/vaga.dart';
+import 'package:vagas/vaga/page/vagaBuild.dart';
 
 class FooterInscrever extends StatefulWidget {
   FooterInscrever(
@@ -56,23 +58,41 @@ class _FooterInscrever extends State<FooterInscrever> {
                 ),
               ),
               onPressed: () {
-                if (code == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => loginScreen(),
-                    ),
-                  );
-                } else if (code == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => homePageScreen(
-                        usuario: userAuth!,
+                switch (code) {
+                  case 1:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => loginScreen(),
                       ),
-                    ),
-                  );
+                    );
+                    break;
+                  case 0:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => homePageScreen(
+                          usuario: userAuth!,
+                        ),
+                      ),
+                    );
+                    break;
+                  case 2:
+                    deleteVaga();
+                    break;
+                  default:
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VagaScreen(
+                          usuario: userAuth!,
+                          empresa: userAuth!.admin,
+                        ),
+                      ),
+                    );
                 }
+                if (code == 1) {
+                } else if (code == 0) {}
               },
             ),
           ],
@@ -111,7 +131,6 @@ class _FooterInscrever extends State<FooterInscrever> {
       'Authorization': 'Bearer ' + userAuth!.token,
     });
 
-    print('http://10.61.104.110:8081/api/aceitar/${vaga!.vagaId}');
     if (response.statusCode == 400) {
       error = ErrorModel.fromJson(jsonDecode(response.body));
       alertDialog("Você já está participando desta vaga!", 0);
@@ -121,6 +140,20 @@ class _FooterInscrever extends State<FooterInscrever> {
       alertDialog("Cadastre um currículo primeiro!", 0);
     } else {
       alertDialog("Currículo Enviado!", 0);
+    }
+  }
+
+  Future<void> deleteVaga() async {
+    var url = Uri.parse(
+        'http://10.61.104.110:8081/api/vagas/deletarVaga/${vaga!.vagaId}');
+    var response = await http.delete(url, headers: {
+      'Authorization': 'Bearer ' + userAuth!.token,
+    });
+
+    if (response.statusCode == 204) {
+      alertDialog("Vaga Apagada", 1);
+    } else {
+      alertDialog("Entre novamento na sua conta!", 1);
     }
   }
 
@@ -138,9 +171,18 @@ class _FooterInscrever extends State<FooterInscrever> {
               if (!empresa) {
                 aceitarVaga();
               } else if (empresa && txt == "Editar Vaga") {
-                print("Editar Vaga");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VagaBuildScreen(
+                      usuario: userAuth!,
+                      isSalvarVaga: false,
+                      vaga: vaga,
+                    ),
+                  ),
+                );
               } else {
-                print("Excluir Vaga");
+                alertDialog("Você tem certeza que quer excluir essa vaga?", 2);
               }
             },
             style: ElevatedButton.styleFrom(
