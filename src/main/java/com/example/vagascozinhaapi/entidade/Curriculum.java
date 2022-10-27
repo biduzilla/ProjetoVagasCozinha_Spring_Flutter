@@ -48,11 +48,11 @@ public class Curriculum {
 
     @ElementCollection
     @Column(name = "experiencias", length = 1000)
-    @CollectionTable(name = "tab_curriculum_experiencias", joinColumns = @JoinColumn(name = "tab_curriculum"))
+    @CollectionTable(name = "tab_curriculum_experiencias", joinColumns = @JoinColumn(name = "curriculum_id"))
     private List<String> experiencias;
 
     @ElementCollection
     @Column(name = "qualificacoes")
-    @CollectionTable(name = "tab_curriculum_qualificacoes", joinColumns = @JoinColumn(name = "tab_curriculum"))
+    @CollectionTable(name = "tab_curriculum_qualificacoes", joinColumns = @JoinColumn(name = "curriculum_id"))
     private List<String> qualificacoes;
 }

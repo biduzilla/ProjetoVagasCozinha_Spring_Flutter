@@ -46,7 +46,7 @@ public class Usuario {
 
     @ElementCollection
     @Column(name = "candidaturas")
-    @CollectionTable(name = "tab_user_candidaturas", joinColumns = @JoinColumn(name = "tab_user"))
+    @CollectionTable(name = "tab_user_candidaturas", joinColumns = @JoinColumn(name = "user_id"))
     private List<Integer> candidaturas;
 
     @Column(name = "admin")

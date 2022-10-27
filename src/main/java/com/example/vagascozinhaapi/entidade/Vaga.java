@@ -45,7 +45,7 @@ public class Vaga {
 //    @ElementCollection
     @ElementCollection
     @Column(name = "requisitos")
-    @CollectionTable(name = "tab_vaga_requisitos", joinColumns = @JoinColumn(name = "tab_vaga"))
+    @CollectionTable(name = "tab_vaga_requisitos", joinColumns = @JoinColumn(name = "vaga_id"))
     List<String> requisitos;
 
     @Column(name = "remuneracao")
