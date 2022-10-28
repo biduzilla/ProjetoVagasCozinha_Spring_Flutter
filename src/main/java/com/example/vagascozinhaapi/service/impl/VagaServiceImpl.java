@@ -78,16 +78,13 @@ public class VagaServiceImpl implements VagaService {
         Usuario user = usuarioServiceAuth.searchUserbyToken(token);
 
         if (user.getCandidaturas().contains(idVaga) && !vagasRepository.existsById(idVaga)) {
-            List<Integer> listCandidaturas = user.getCandidaturas();
-            listCandidaturas.removeAll(List.of(idVaga));
+            user.getCandidaturas().removeAll(List.of(idVaga));
             userRepositorio.save(user);
             throw new VagaApagadaNaoEncontrada();
-
         }
 
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-
-
+        
         return VagaDtoEnviado.builder()
                 .vagaId(idVaga)
                 .userId(user.getId())

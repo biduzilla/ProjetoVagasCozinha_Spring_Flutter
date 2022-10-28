@@ -60,9 +60,11 @@ public class UserServiceImpl implements UserService {
         userRepositorio.findByToken(token)
                 .map(user -> {
                     for (int idVaga : user.getCandidaturas()) {
-                        Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-                        vaga.getCurriculumId().remove(user.getCurriculum().getId());
-                        vagasRepository.save(vaga);
+                        if (vagasRepository.existsById(idVaga)) {
+                            Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
+                            vaga.getCurriculumId().remove(user.getCurriculum().getId());
+                            vagasRepository.save(vaga);
+                        }
                     }
                     userRepositorio.delete(user);
                     return user;

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vagas/auth/page/login.dart';
 import 'package:vagas/cv/widget/ButtonWidget.dart';
+import 'package:vagas/model/MinhaVagaModel.dart';
 import 'package:vagas/model/VagaListIdModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
@@ -30,6 +31,8 @@ class _ExpandandedContainerWidgetState
     extends State<ExpandandedContainerWidget> {
   final bool empresa;
   List<Vaga> vagas = [];
+  List<MinhaVaga> minhasVagas = [];
+  MinhaVaga? minhaVaga;
   final User usuario;
   Vaga? vaga;
   VagaListIdModel? vagasList;
@@ -74,12 +77,12 @@ class _ExpandandedContainerWidgetState
     var response = await http.get(url, headers: {
       'Authorization': 'Bearer ' + usuario.token,
     });
-
+    print(response.body);
     if (response.statusCode == 200) {
       String source = Utf8Decoder().convert(response.bodyBytes);
-      vaga = Vaga.fromJson(jsonDecode(source));
+      minhaVaga = MinhaVaga.fromJson(jsonDecode(source));
       setState(() {
-        vagas.add(vaga!);
+        minhasVagas.add(minhaVaga!);
       });
     } else {
       alertDialog("Entre novamento na sua conta!", 1);

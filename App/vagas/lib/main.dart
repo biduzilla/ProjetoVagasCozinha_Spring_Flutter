@@ -48,17 +48,17 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       //
-      home: loginScreen(),
+      // home: loginScreen(),
 
       //     home: VagaBuildScreen(
       //   isSalvarVaga: true,
       //   usuario: user,
       // )
 
-      // home: VagaScreen(
-      //   usuario: user,
-      //   empresa: true,
-      // ),
+      home: VagaScreen(
+        usuario: user,
+        empresa: true,
+      ),
 
       // home: homePageScreen(
       //   usuario: user,
