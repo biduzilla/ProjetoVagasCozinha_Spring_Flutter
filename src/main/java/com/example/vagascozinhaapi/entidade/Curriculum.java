@@ -1,6 +1,7 @@
 package com.example.vagascozinhaapi.entidade;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -22,14 +23,11 @@ public class Curriculum {
     @Column(name = "curriculum_id")
     private Integer id;
 
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     private Usuario user;
-
-//    @JsonBackReference
-    @ManyToMany(mappedBy = "curriculum", cascade = CascadeType.ALL)
-    private List<Vaga> vaga;
 
     @Column(name = "nome",length = 50)
     private String nome;

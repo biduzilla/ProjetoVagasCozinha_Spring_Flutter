@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> {
                     for (int idVaga : user.getCandidaturas()) {
                         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-                        vaga.getCurriculum().remove(user.getCurriculum());
+                        vaga.getCurriculumId().remove(user.getCurriculum().getId());
                         vagasRepository.save(vaga);
                     }
                     userRepositorio.delete(user);

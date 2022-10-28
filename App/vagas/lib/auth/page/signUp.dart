@@ -18,6 +18,7 @@ class _signupScreen extends State<signupScreen> {
   String? errorText;
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  bool passwordVisivel = true;
 
   Widget _buildEmailTF() {
     return Padding(
@@ -57,9 +58,24 @@ class _signupScreen extends State<signupScreen> {
           style: TextStyle(color: Colors.green),
           cursorColor: Colors.green,
           controller: passwordController,
-          obscureText: true,
+          obscureText: passwordVisivel,
           autofocus: false,
           decoration: InputDecoration(
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  if (passwordVisivel) {
+                    passwordVisivel = false;
+                  } else {
+                    passwordVisivel = true;
+                  }
+                });
+              },
+              icon: Icon(
+                passwordVisivel ? Icons.visibility_off : Icons.visibility,
+                color: Colors.green,
+              ),
+            ),
             errorText: errorText,
             errorStyle: TextStyle(color: Colors.red),
             enabledBorder: UnderlineInputBorder(

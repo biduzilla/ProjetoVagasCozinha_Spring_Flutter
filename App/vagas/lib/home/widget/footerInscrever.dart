@@ -151,7 +151,7 @@ class _FooterInscrever extends State<FooterInscrever> {
     });
 
     if (response.statusCode == 204) {
-      alertDialog("Vaga Apagada", 1);
+      alertDialog("Vaga Apagada", 3);
     } else {
       alertDialog("Entre novamento na sua conta!", 1);
     }

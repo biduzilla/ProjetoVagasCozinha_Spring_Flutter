@@ -41,8 +41,7 @@ public class Vaga {
     @Column(name = "horario", length = 50)
     private String horario;
 
-//    @Column(name = "tab_vaga_tab_curriculum")
-//    @ElementCollection
+
     @ElementCollection
     @Column(name = "requisitos")
     @CollectionTable(name = "tab_vaga_requisitos", joinColumns = @JoinColumn(name = "vaga_id"))
@@ -54,9 +53,8 @@ public class Vaga {
     @Column(name = "data_postada")
     private LocalDate dataPostada;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tab_vaga_cv",
-            joinColumns = @JoinColumn(name="vaga_id"),
-            inverseJoinColumns = @JoinColumn(name="curriculum_id"))
-    private List<Curriculum> curriculum;
+    @ElementCollection
+    @Column(name = "curriculum_id")
+    @CollectionTable(name = "tab_vaga_curriculum_id", joinColumns = @JoinColumn(name = "vaga_id"))
+    List<Integer> curriculumId;
 }

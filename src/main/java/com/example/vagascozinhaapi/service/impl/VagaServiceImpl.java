@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class VagaServiceImpl implements VagaService {
                 .map(Vaga::getId)
                 .collect(Collectors.toList());
 
-        if (listVagas.isEmpty()){
+        if (listVagas.isEmpty()) {
             throw new VagaNaoEncontrada();
         }
 
@@ -124,6 +125,7 @@ public class VagaServiceImpl implements VagaService {
                 .curriculumDtos(cvDtoList)
                 .build();
     }
+
     public boolean verificarDonoVaga(Usuario user, Integer idVaga) {
         List<Integer> listVagasId = vagasRepository.findAllByUserId(user.getId())
                 .stream()
@@ -172,7 +174,6 @@ public class VagaServiceImpl implements VagaService {
                             return vaga;
                         })
                 .orElseThrow(VagaNaoEncontrada::new);
-
         userRepositorio.save(user);
     }
 
@@ -190,12 +191,11 @@ public class VagaServiceImpl implements VagaService {
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
         Curriculum curriculum = validCv(user);
 
-
-        List<Curriculum> cv = vaga.getCurriculum();
-        if (cv.contains(curriculum)) {
+        List<Integer> cv = vaga.getCurriculumId();
+        if (cv.contains(curriculum.getId())) {
             throw new RegrasNegocioException("Você já está participando desta vaga!");
         }
-        vaga.getCurriculum().add(curriculum);
+        vaga.getCurriculumId().add(curriculum.getId());
         vagasRepository.save(vaga);
 
         List<Integer> addVagaToList = user.getCandidaturas();
@@ -219,7 +219,7 @@ public class VagaServiceImpl implements VagaService {
 
     public List<CurriculumDto> converter(Integer idVaga) {
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-        List<Curriculum> cv = vaga.getCurriculum();
+        List<Curriculum> cv = curriculumRepository.findAllById(vaga.getCurriculumId());
 
         return cv
                 .stream()
@@ -272,7 +272,7 @@ public class VagaServiceImpl implements VagaService {
                 ).collect(Collectors.toList());
         vagaDtoId.setVagaId(listVagas);
 
-        if (listVagas.isEmpty()){
+        if (listVagas.isEmpty()) {
             throw new VagaNaoEncontrada();
         }
 
