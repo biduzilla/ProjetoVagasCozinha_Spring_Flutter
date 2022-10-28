@@ -77,12 +77,12 @@ class _ExpandandedContainerWidgetState
     var response = await http.get(url, headers: {
       'Authorization': 'Bearer ' + usuario.token,
     });
-    print(response.body);
+
     if (response.statusCode == 200) {
       String source = Utf8Decoder().convert(response.bodyBytes);
-      minhaVaga = MinhaVaga.fromJson(jsonDecode(source));
+      vaga = Vaga.fromJson(jsonDecode(source));
       setState(() {
-        minhasVagas.add(minhaVaga!);
+        vagas.add(vaga!);
       });
     } else {
       alertDialog("Entre novamento na sua conta!", 1);
@@ -96,14 +96,19 @@ class _ExpandandedContainerWidgetState
       'Authorization': 'Bearer ' + usuario.token,
     });
 
-    if (response.statusCode == 200) {
-      String source = Utf8Decoder().convert(response.bodyBytes);
-      vaga = Vaga.fromJson(jsonDecode(source));
-      setState(() {
-        vagas.add(vaga!);
-      });
-    } else {
-      alertDialog("Entre novamento na sua conta!", 1);
+    switch (response.statusCode) {
+      case 200:
+        String source = Utf8Decoder().convert(response.bodyBytes);
+        vaga = Vaga.fromJson(jsonDecode(source));
+        setState(() {
+          vagas.add(vaga!);
+        });
+        break;
+      case 403:
+        alertDialog("Entre novamento na sua conta!", 1);
+        break;
+      default:
+        print(response.body);
     }
   }
 

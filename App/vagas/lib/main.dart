@@ -22,16 +22,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Vaga vagaTeste = Vaga(
-      vagaId: 2,
-      cargo: "cachorro de oficina",
-      descricao: "cuidar da oficina",
-      local: "bandera",
-      horario: "tarde",
-      requisitos: ["correr", "pular"],
-      remuneracao: 123.12,
-      dataPostada: "01/01/2022",
-    );
     UserAuth userAuth = UserAuth(
       email: "toddy@toddy",
       token:

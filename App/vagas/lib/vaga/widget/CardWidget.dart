@@ -4,30 +4,39 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import 'package:flutter/material.dart';
 import 'package:vagas/home/widget/vagaList.dart';
+import 'package:vagas/model/MinhaVagaModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget(
-      {Key? key, this.vagas, required this.usuario, required this.empresa})
+      {Key? key,
+      this.vagas,
+      required this.usuario,
+      required this.empresa,
+      this.minhaVaga})
       : super(key: key);
   final List<Vaga>? vagas;
   final User usuario;
   final bool empresa;
+  final MinhaVaga? minhaVaga;
 
   @override
-  State<CardWidget> createState() => _CardWidgetState(vagas, usuario, empresa);
+  State<CardWidget> createState() =>
+      _CardWidgetState(vagas, usuario, empresa, minhaVaga);
 }
 
 class _CardWidgetState extends State<CardWidget> {
   final List<Vaga>? vagas;
   final User usuario;
   final bool empresa;
+  final MinhaVaga? minhaVaga;
 
   _CardWidgetState(
     this.vagas,
     this.usuario,
     this.empresa,
+    this.minhaVaga,
   );
 
   @override

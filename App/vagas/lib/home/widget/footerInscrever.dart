@@ -39,6 +39,7 @@ class _FooterInscrever extends State<FooterInscrever> {
   final User? userAuth;
   final bool empresa;
   final String txt;
+  User? user;
 
   _FooterInscrever(this.vaga, this.userAuth, this.empresa, this.txt);
 
@@ -72,7 +73,7 @@ class _FooterInscrever extends State<FooterInscrever> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => homePageScreen(
-                          usuario: userAuth!,
+                          usuario: user == null ? userAuth! : user!,
                         ),
                       ),
                     );
@@ -124,6 +125,21 @@ class _FooterInscrever extends State<FooterInscrever> {
     );
   }
 
+  Future<void> getUserDados() async {
+    String token;
+    var url = Uri.parse('http://10.61.104.110:8081/api/users/getDados');
+
+    var response = await http.get(url, headers: {
+      'Authorization': 'Bearer ' + userAuth!.token,
+    });
+
+    if (response.statusCode == 200) {
+      user = User.fromJson(jsonDecode(response.body));
+      user!.token = userAuth!.token;
+      alertDialog("Currículo Enviado!", 0);
+    }
+  }
+
   Future<void> aceitarVaga() async {
     var url = Uri.parse(
         'http://10.61.104.110:8081/api/vagas/aceitar/${vaga!.vagaId}');
@@ -139,7 +155,7 @@ class _FooterInscrever extends State<FooterInscrever> {
     } else if (response.statusCode == 404) {
       alertDialog("Cadastre um currículo primeiro!", 0);
     } else {
-      alertDialog("Currículo Enviado!", 0);
+      getUserDados();
     }
   }
 
