@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vagas/home/widget/footerInscrever.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
+import 'package:vagas/vaga/widget/BlocksCvs.dart';
 
 extension StringCasingExtension on String {
   String toCapitalized() =>
@@ -222,6 +223,7 @@ class VagaDetailsScreen extends StatelessWidget {
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 50,
                       ),
+                      if (empresa) CvBlockWidget(),
                     ],
                   )
                 ],

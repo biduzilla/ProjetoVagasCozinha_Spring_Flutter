@@ -84,7 +84,7 @@ public class VagaServiceImpl implements VagaService {
         }
 
         Vaga vaga = vagasRepository.findById(idVaga).orElseThrow(VagaNaoEncontrada::new);
-        
+
         return VagaDtoEnviado.builder()
                 .vagaId(idVaga)
                 .userId(user.getId())
