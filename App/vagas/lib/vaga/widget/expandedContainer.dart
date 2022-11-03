@@ -44,8 +44,7 @@ class _ExpandandedContainerWidgetState
       for (int id in usuario.vagasAceitas) {
         getVaga(id);
       }
-    }
-    if (empresa) {
+    } else {
       getListVagasDaEmpresa();
     }
   }
@@ -79,6 +78,7 @@ class _ExpandandedContainerWidgetState
     });
 
     if (response.statusCode == 200) {
+      print(response.body);
       String source = Utf8Decoder().convert(response.bodyBytes);
       vaga = Vaga.fromJson(jsonDecode(source));
       setState(() {
