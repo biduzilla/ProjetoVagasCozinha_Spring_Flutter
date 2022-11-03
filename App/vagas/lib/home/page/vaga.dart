@@ -220,10 +220,10 @@ class VagaDetailsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 50,
-                      ),
-                      if (empresa) CvBlockWidget(),
+                      if (empresa)
+                        CvBlockWidget(
+                          vaga: vaga,
+                        ),
                     ],
                   )
                 ],
