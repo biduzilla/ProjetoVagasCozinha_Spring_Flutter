@@ -3,6 +3,7 @@ import 'package:vagas/auth/page/signUp.dart';
 import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/page/vaga.dart';
+import 'package:vagas/meuDados/page/meuDados.dart';
 import 'package:vagas/model/CvModel.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       cv: 'CADASTRADO',
       email: 'toddy@toddy',
       token:
-          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeSIsImV4cCI6MTY2NzUwNzEzOX0.n0gibIj3N-LFRRLpHINRk823kid0CW86qo0H1eDRxypT2MJPBh01GTy732oLu4ytOdfdHkU8PU1Kw_bp6M06Yw',
+          'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2RkeUB0b2RkeXkiLCJleHAiOjE2NjkxNTEwNzh9.qyT4bUdRfHZUJcVNo-qR70f5CbwC1rMWGtL-1_4E9_xSL_1BmG42ZS36j8qXGtq6RMegpRHJb93036P2E77SoA',
       vagasAceitas: [3],
       admin: true,
     );
@@ -49,7 +50,11 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       //
-      home: loginScreen(),
+      // home: loginScreen(),
+
+      home: MeusDadosScreen(
+        usuario: user,
+      ),
 
       //     home: VagaBuildScreen(
       //   isSalvarVaga: true,

@@ -174,7 +174,6 @@ class _CvPageScreenState extends State<CvPageScreen> {
     };
 
     var body = json.encode(data);
-    print(body);
 
     var response = await http.post(url,
         headers: {

@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/page/homepage.dart';
+import 'package:vagas/meuDados/page/meuDados.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/vaga/page/vaga.dart';
@@ -67,7 +68,7 @@ class _FooterWidgetState extends State<FooterWidget> {
             Icons.settings,
             color: page == 3 ? Colors.amber[800] : Colors.white,
           ),
-          label: 'Meus Dados',
+          label: 'Configuração',
         ),
       ],
       currentIndex: page,
@@ -119,6 +120,16 @@ class _FooterWidgetState extends State<FooterWidget> {
             builder: (context) => VagaScreen(
               usuario: usuario,
               empresa: false,
+            ),
+          ),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MeusDadosScreen(
+              usuario: usuario,
             ),
           ),
         );

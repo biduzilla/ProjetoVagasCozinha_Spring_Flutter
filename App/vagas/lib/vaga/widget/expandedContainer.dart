@@ -30,10 +30,10 @@ class ExpandandedContainerWidget extends StatefulWidget {
 class _ExpandandedContainerWidgetState
     extends State<ExpandandedContainerWidget> {
   final bool empresa;
+  final User usuario;
   List<Vaga> vagas = [];
   List<MinhaVaga> minhasVagas = [];
   MinhaVaga? minhaVaga;
-  final User usuario;
   Vaga? vaga;
   VagaListIdModel? vagasList;
   bool empresaVagas = false;
