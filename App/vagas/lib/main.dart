@@ -3,9 +3,11 @@ import 'package:vagas/auth/page/signUp.dart';
 import 'package:vagas/cv/page/CvMostrar.dart';
 import 'package:vagas/cv/page/CvSalvar.dart';
 import 'package:vagas/home/page/vaga.dart';
+import 'package:vagas/model/CvModel.dart';
 import 'package:vagas/model/userAuthModel.dart';
 import 'package:vagas/model/userModel.dart';
 import 'package:vagas/model/vagaModel.dart';
+import 'package:vagas/vaga/page/CvDetails.dart';
 import 'package:vagas/vaga/page/vaga.dart';
 import 'package:vagas/vaga/page/vagaBuild.dart';
 
@@ -36,19 +38,29 @@ class MyApp extends StatelessWidget {
       admin: true,
     );
 
+    CvModel cvModel = CvModel(
+        emailContatoCV: 'teste@teste.com',
+        experiencias: ['teste', 'teste'],
+        nome: 'teste',
+        qualificacoes: ['teste', 'teste'],
+        semestre: 'teste',
+        sobre: 'teste',
+        telefone: 'teste');
+
     return MaterialApp(
       //
-      // home: loginScreen(),
+      home: loginScreen(),
 
       //     home: VagaBuildScreen(
       //   isSalvarVaga: true,
       //   usuario: user,
       // )
 
-      home: VagaScreen(
-        usuario: user,
-        empresa: true,
-      ),
+      // home: VagaScreen(
+      //   usuario: user,
+      //   empresa: true,
+      // ),
+      // home: CvDetailsScreen(cv: cvModel),
 
       // home: homePageScreen(
       //   usuario: user,

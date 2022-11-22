@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:vagas/model/CvModel.dart';
 import 'package:flutter/material.dart';
+import 'package:vagas/vaga/page/CvDetails.dart';
 
 class CvListWidget extends StatelessWidget {
   const CvListWidget({Key? key, required this.cv}) : super(key: key);
@@ -10,7 +11,16 @@ class CvListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (() => {print("cv")}),
+      onTap: (() => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CvDetailsScreen(
+                  cv: cv,
+                ),
+              ),
+            )
+          }),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(
