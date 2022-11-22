@@ -270,106 +270,110 @@ class _VagaBuildScreenState extends State<VagaBuildScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: ListView(
-                        reverse: false,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context)
+                            .copyWith(scrollbars: false),
+                        child: ListView(
+                          reverse: false,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(
+                                    20,
                                   ),
-                                ],
-                                borderRadius: BorderRadius.circular(
-                                  20,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextFormWidget(
+                                      text: "Cargo",
+                                      index: 1,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                      initialValue:
+                                          isSalvarVaga ? null : vaga!.cargo,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Descrição",
+                                      index: 2,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                      initialValue:
+                                          isSalvarVaga ? null : vaga!.descricao,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Local",
+                                      index: 3,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                      initialValue:
+                                          isSalvarVaga ? null : vaga!.local,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Horario",
+                                      index: 4,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                      initialValue:
+                                          isSalvarVaga ? null : vaga!.horario,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Remuneração",
+                                      index: 5,
+                                      returnController: returnController,
+                                      isNumber: true,
+                                      initialValue: isSalvarVaga
+                                          ? null
+                                          : vaga!.remuneracao.toString(),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 24),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20.0),
+                                            bottom: Radius.circular(20.0),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            MultipleTextForm(
+                                              code: 0,
+                                              title: "Requisitos",
+                                              hint: "Requisitos para vaga",
+                                              getTextList: getTextList,
+                                              removeTextList: removeTextList,
+                                            ),
+                                          ],
+                                        ),
+                                        // child:
+                                      ),
+                                    ),
+                                    ButtonWidget(
+                                      press: montarVaga,
+                                      text: isSalvarVaga
+                                          ? 'Cadastrar Vaga'
+                                          : 'Atualizar Vaga',
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextFormWidget(
-                                    text: "Cargo",
-                                    index: 1,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                    initialValue:
-                                        isSalvarVaga ? null : vaga!.cargo,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Descrição",
-                                    index: 2,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                    initialValue:
-                                        isSalvarVaga ? null : vaga!.descricao,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Local",
-                                    index: 3,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                    initialValue:
-                                        isSalvarVaga ? null : vaga!.local,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Horario",
-                                    index: 4,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                    initialValue:
-                                        isSalvarVaga ? null : vaga!.horario,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Remuneração",
-                                    index: 5,
-                                    returnController: returnController,
-                                    isNumber: true,
-                                    initialValue: isSalvarVaga
-                                        ? null
-                                        : vaga!.remuneracao.toString(),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 24),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20.0),
-                                          bottom: Radius.circular(20.0),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          MultipleTextForm(
-                                            code: 0,
-                                            title: "Requisitos",
-                                            hint: "Requisitos para vaga",
-                                            getTextList: getTextList,
-                                            removeTextList: removeTextList,
-                                          ),
-                                        ],
-                                      ),
-                                      // child:
-                                    ),
-                                  ),
-                                  ButtonWidget(
-                                    press: montarVaga,
-                                    text: isSalvarVaga
-                                        ? 'Cadastrar Vaga'
-                                        : 'Atualizar Vaga',
-                                  ),
-                                ],
-                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

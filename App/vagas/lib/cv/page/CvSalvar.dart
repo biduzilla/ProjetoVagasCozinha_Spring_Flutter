@@ -261,102 +261,106 @@ class _CvPageScreenState extends State<CvPageScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: ListView(
-                        reverse: false,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context)
+                            .copyWith(scrollbars: false),
+                        child: ListView(
+                          reverse: false,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(
+                                    20,
                                   ),
-                                ],
-                                borderRadius: BorderRadius.circular(
-                                  20,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextFormWidget(
+                                      text: "Nome",
+                                      index: 1,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Email",
+                                      index: 2,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Telefone",
+                                      index: 3,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Sobre",
+                                      index: 4,
+                                      returnController: returnController,
+                                      isNumber: false,
+                                    ),
+                                    TextFormWidget(
+                                      text: "Semestre",
+                                      index: 5,
+                                      returnController: returnController,
+                                      isNumber: true,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 24),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20.0),
+                                            bottom: Radius.circular(20.0),
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            MultipleTextForm(
+                                              code: 0,
+                                              title: "Experiências",
+                                              hint: "Minhas Experiências",
+                                              getTextList: getTextList,
+                                              removeTextList: removeTextList,
+                                            ),
+                                            MultipleTextForm(
+                                              code: 1,
+                                              title: "Qualificações",
+                                              hint: "Minhas Qualificações",
+                                              getTextList: getTextList,
+                                              removeTextList: removeTextList,
+                                            ),
+                                          ],
+                                        ),
+                                        // child:
+                                      ),
+                                    ),
+                                    ButtonWidget(
+                                      press: montarCv,
+                                      text: usuario!.cv != "CADASTRADO"
+                                          ? 'Salvar Currículo'
+                                          : 'Atualizar Currículo',
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextFormWidget(
-                                    text: "Nome",
-                                    index: 1,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Email",
-                                    index: 2,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Telefone",
-                                    index: 3,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Sobre",
-                                    index: 4,
-                                    returnController: returnController,
-                                    isNumber: false,
-                                  ),
-                                  TextFormWidget(
-                                    text: "Semestre",
-                                    index: 5,
-                                    returnController: returnController,
-                                    isNumber: true,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 24),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20.0),
-                                          bottom: Radius.circular(20.0),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          MultipleTextForm(
-                                            code: 0,
-                                            title: "Experiências",
-                                            hint: "Minhas Experiências",
-                                            getTextList: getTextList,
-                                            removeTextList: removeTextList,
-                                          ),
-                                          MultipleTextForm(
-                                            code: 1,
-                                            title: "Qualificações",
-                                            hint: "Minhas Qualificações",
-                                            getTextList: getTextList,
-                                            removeTextList: removeTextList,
-                                          ),
-                                        ],
-                                      ),
-                                      // child:
-                                    ),
-                                  ),
-                                  ButtonWidget(
-                                    press: montarCv,
-                                    text: usuario!.cv != "CADASTRADO"
-                                        ? 'Salvar Currículo'
-                                        : 'Atualizar Currículo',
-                                  ),
-                                ],
-                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

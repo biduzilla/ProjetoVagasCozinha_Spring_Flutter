@@ -48,67 +48,72 @@ class _CardWidgetState extends State<CardWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: ListView(
-                reverse: false,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
+              child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: ListView(
+                  reverse: false,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(
+                            20,
                           ),
-                        ],
-                        borderRadius: BorderRadius.circular(
-                          20,
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(
+                                    30,
+                                  ),
+                                ),
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    !empresa
+                                        ? "Vagas Inscritas"
+                                        : "Minhas Vagas Cadastradas",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 28,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            if (vagas != null)
+                              for (Vaga vaga in vagas!)
+                                vagaList(
+                                  vaga: vaga,
+                                  home: false,
+                                  usuario: usuario,
+                                  empresa: empresa,
+                                ),
+                          ],
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.vertical(
-                                bottom: Radius.circular(
-                                  30,
-                                ),
-                              ),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                  !empresa
-                                      ? "Vagas Inscritas"
-                                      : "Minhas Vagas Cadastradas",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 28,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (vagas != null)
-                            for (Vaga vaga in vagas!)
-                              vagaList(
-                                vaga: vaga,
-                                home: false,
-                                usuario: usuario,
-                                empresa: empresa,
-                              ),
-                        ],
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

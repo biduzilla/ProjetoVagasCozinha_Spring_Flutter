@@ -303,22 +303,26 @@ class _homePageScreenState extends State<homePageScreen> {
                       ),
                     ),
                     Expanded(
-                      child: ListView(
-                        children: [
-                          // if (vagas.isEmpty) NoVagas(),
-                          Column(
-                            children: [
-                              if (vagas != null)
-                                for (Vaga vagaDaLista in vagas)
-                                  vagaList(
-                                    vaga: vagaDaLista,
-                                    usuario: usuario,
-                                    home: true,
-                                    empresa: false,
-                                  )
-                            ],
-                          ),
-                        ],
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context)
+                            .copyWith(scrollbars: false),
+                        child: ListView(
+                          children: [
+                            // if (vagas.isEmpty) NoVagas(),
+                            Column(
+                              children: [
+                                if (vagas != null)
+                                  for (Vaga vagaDaLista in vagas)
+                                    vagaList(
+                                      vaga: vagaDaLista,
+                                      usuario: usuario,
+                                      home: true,
+                                      empresa: false,
+                                    )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

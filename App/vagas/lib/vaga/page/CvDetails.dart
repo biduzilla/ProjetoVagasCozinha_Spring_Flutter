@@ -43,57 +43,61 @@ class CvDetailsScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.grey.shade200,
                   ),
-                  child: ListView(children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(
-                              cv.nome.toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green,
+                  child: ScrollConfiguration(
+                    behavior: ScrollConfiguration.of(context)
+                        .copyWith(scrollbars: false),
+                    child: ListView(children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                cv.nome.toUpperCase(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        ContainerTextWidget(
-                          text: cv.emailContatoCV,
-                          type: 'Email',
-                          isList: false,
-                        ),
-                        ContainerTextWidget(
-                          text: cv.telefone,
-                          type: 'Telefone',
-                          isList: false,
-                        ),
-                        ContainerTextWidget(
-                          text: cv.sobre,
-                          type: 'Sobre',
-                          isList: false,
-                        ),
-                        ContainerTextWidget(
-                          text: cv.semestre,
-                          type: 'Semestre',
-                          isList: false,
-                        ),
-                        ContainerTextWidget(
-                          cv: cv,
-                          type: 'Experiências',
-                          isList: true,
-                        ),
-                        ContainerTextWidget(
-                          cv: cv,
-                          type: 'Qualificações',
-                          isList: true,
-                        ),
-                      ],
-                    ),
-                  ])))
+                          ContainerTextWidget(
+                            text: cv.emailContatoCV,
+                            type: 'Email',
+                            isList: false,
+                          ),
+                          ContainerTextWidget(
+                            text: cv.telefone,
+                            type: 'Telefone',
+                            isList: false,
+                          ),
+                          ContainerTextWidget(
+                            text: cv.sobre,
+                            type: 'Sobre',
+                            isList: false,
+                          ),
+                          ContainerTextWidget(
+                            text: cv.semestre,
+                            type: 'Semestre',
+                            isList: false,
+                          ),
+                          ContainerTextWidget(
+                            cv: cv,
+                            type: 'Experiências',
+                            isList: true,
+                          ),
+                          ContainerTextWidget(
+                            cv: cv,
+                            type: 'Qualificações',
+                            isList: true,
+                          ),
+                        ],
+                      ),
+                    ]),
+                  )))
         ]));
   }
 }

@@ -43,104 +43,109 @@ class _CardDadosWidgetState extends State<CardDadosWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: ListView(
-                reverse: false,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(
-                          20,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.vertical(
-                                bottom: Radius.circular(
-                                  30,
-                                ),
-                              ),
+              child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: ListView(
+                  reverse: false,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
                             ),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                  "Meu Currículo",
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
+                          ],
+                          borderRadius: BorderRadius.circular(
+                            20,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(
+                                    30,
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          InfoCardDadosWidget(
-                            info: "Nome",
-                            dados: cv.nome,
-                            usuario: usuario,
-                          ),
-                          InfoCardDadosWidget(
-                            info: "Email",
-                            dados: cv.emailContatoCV,
-                            usuario: usuario,
-                          ),
-                          InfoCardDadosWidget(
-                            info: "Telefone",
-                            dados: cv.telefone,
-                            usuario: usuario,
-                          ),
-                          InfoCardDadosWidget(
-                            info: "Semestre",
-                            dados: cv.semestre,
-                            usuario: usuario,
-                          ),
-                          InfoCardDadosWidget(
-                            info: "Sobre",
-                            dados: cv.sobre,
-                            usuario: usuario,
-                          ),
-                          InfoCardDadosWidget(
-                            info: "Experiências",
-                            lstDados: cv.experiencias,
-                            usuario: usuario,
-                          ),
-                          InfoCardDadosWidget(
-                            info: "Qualificações",
-                            lstDados: cv.qualificacoes,
-                            usuario: usuario,
-                          ),
-                          ButtonWidget(
-                              press: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CvPageScreen(
-                                      usuario: usuario,
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    "Meu Currículo",
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                );
-                              },
-                              text: "Editar Currículo")
-                        ],
+                                ),
+                              ),
+                            ),
+                            InfoCardDadosWidget(
+                              info: "Nome",
+                              dados: cv.nome,
+                              usuario: usuario,
+                            ),
+                            InfoCardDadosWidget(
+                              info: "Email",
+                              dados: cv.emailContatoCV,
+                              usuario: usuario,
+                            ),
+                            InfoCardDadosWidget(
+                              info: "Telefone",
+                              dados: cv.telefone,
+                              usuario: usuario,
+                            ),
+                            InfoCardDadosWidget(
+                              info: "Semestre",
+                              dados: cv.semestre,
+                              usuario: usuario,
+                            ),
+                            InfoCardDadosWidget(
+                              info: "Sobre",
+                              dados: cv.sobre,
+                              usuario: usuario,
+                            ),
+                            InfoCardDadosWidget(
+                              info: "Experiências",
+                              lstDados: cv.experiencias,
+                              usuario: usuario,
+                            ),
+                            InfoCardDadosWidget(
+                              info: "Qualificações",
+                              lstDados: cv.qualificacoes,
+                              usuario: usuario,
+                            ),
+                            ButtonWidget(
+                                press: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CvPageScreen(
+                                        usuario: usuario,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                text: "Editar Currículo")
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
