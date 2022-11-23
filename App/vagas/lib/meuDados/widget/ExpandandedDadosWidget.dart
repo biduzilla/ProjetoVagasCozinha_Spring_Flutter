@@ -111,14 +111,14 @@ class _ExpandandedDadosWidgetState extends State<ExpandandedDadosWidget> {
                     ),
                   )
                 },
-                text: "Alterar Dados",
+                text: "Alterar Senha",
               ),
               ButtonWidget(
                 press: () => {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => loginScreen()),
-                      ModalRoute.withName("/Home"))
+                      ModalRoute.withName("../../auth/page/login.dart"))
                 },
                 text: "Sair",
               ),

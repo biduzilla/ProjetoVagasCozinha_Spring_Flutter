@@ -27,18 +27,13 @@ class DadosAlterarScreen extends StatefulWidget {
 
 class _DadosAlterarScreenState extends State<DadosAlterarScreen> {
   final User usuario;
-  String? email;
   String? senha;
 
   void montarDados() {
-    if (email == null || senha == null) {
+    if (senha == null) {
       alertDialog("Preencha os dados!", 3);
     } else {
-      if (email!.length < 5) {
-        alertDialog("Email Invalido", 3);
-      } else if (!email!.contains("@")) {
-        alertDialog("Email Invalido", 3);
-      } else if (senha!.length < 5) {
+      if (senha!.length < 5) {
         alertDialog("Senha muito curta!", 3);
       } else {
         updateUser();
@@ -114,7 +109,7 @@ class _DadosAlterarScreenState extends State<DadosAlterarScreen> {
   Future<void> updateUser() async {
     var url = Uri.parse('http://10.61.104.110:8081/api/users/atualizar');
     Map data = {
-      'email': email,
+      'email': usuario.email,
       'password': senha,
       'token': usuario.token,
     };
@@ -128,7 +123,6 @@ class _DadosAlterarScreenState extends State<DadosAlterarScreen> {
 
     if (response.statusCode.toString().contains('20')) {
       UserUpdate update = UserUpdate.fromJson(jsonDecode(response.body));
-      print("token: " + update.token + " -- email: " + update.email);
       usuario.token = update.token;
       usuario.email = update.email;
       alertDialog('Atualizado com Sucesso', 0);
@@ -199,12 +193,6 @@ class _DadosAlterarScreenState extends State<DadosAlterarScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextFormWidget(
-                              text: "Email",
-                              index: 1,
-                              returnController: returnController,
-                              isNumber: false,
-                            ),
-                            TextFormWidget(
                               text: "Senha",
                               index: 2,
                               returnController: returnController,
@@ -237,9 +225,6 @@ class _DadosAlterarScreenState extends State<DadosAlterarScreen> {
 
   void returnController(String text, int index) {
     switch (index) {
-      case 1:
-        email = text;
-        break;
       case 2:
         senha = text;
         break;
